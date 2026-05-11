@@ -1,0 +1,1849 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pubity Suite — Ecosystem Hub (v0)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        colors: {
+          border: 'hsl(var(--border))', input: 'hsl(var(--input))', ring: 'hsl(var(--ring))',
+          background: 'hsl(var(--background))', foreground: 'hsl(var(--foreground))',
+          brand: { DEFAULT: 'hsl(var(--brand))', foreground: 'hsl(var(--brand-foreground))' },
+          primary: { DEFAULT: 'hsl(var(--primary))', foreground: 'hsl(var(--primary-foreground))' },
+          secondary: { DEFAULT: 'hsl(var(--secondary))', foreground: 'hsl(var(--secondary-foreground))' },
+          destructive: { DEFAULT: 'hsl(var(--destructive))', foreground: 'hsl(var(--destructive-foreground))' },
+          muted: { DEFAULT: 'hsl(var(--muted))', foreground: 'hsl(var(--muted-foreground))' },
+          accent: { DEFAULT: 'hsl(var(--accent))', foreground: 'hsl(var(--accent-foreground))' },
+          card: { DEFAULT: 'hsl(var(--card))', foreground: 'hsl(var(--card-foreground))' },
+          ok: 'hsl(var(--ok))', warn: 'hsl(var(--warn))',
+        },
+        borderRadius: { lg: 'var(--radius)', md: 'calc(var(--radius) - 2px)', sm: 'calc(var(--radius) - 4px)' },
+        fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+      },
+    },
+  };
+</script>
+<style>
+  :root {
+    --background: 0 0% 100%; --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%; --card-foreground: 0 0% 3.9%;
+    --primary: 0 0% 9%; --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%; --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%; --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%; --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%; --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%; --input: 0 0% 89.8%; --ring: 0 0% 3.9%;
+    --radius: 0.5rem;
+    --brand: 41 96% 40%; --brand-foreground: 0 0% 100%;
+    --ok: 142 71% 45%; --warn: 38 92% 50%;
+  }
+  .dark {
+    --background: 0 0% 3.9%; --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%; --card-foreground: 0 0% 98%;
+    --primary: 0 0% 98%; --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%; --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%; --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%; --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 50%; --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%; --input: 0 0% 14.9%; --ring: 0 0% 83.1%;
+    --brand: 60 100% 50%; --brand-foreground: 0 0% 9%;
+    --ok: 142 71% 55%; --warn: 38 92% 60%;
+  }
+  body { font-family: 'Inter', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  .num { font-feature-settings: 'tnum'; }
+  .label { font-size: 0.6875rem; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 500; }
+  .pill { display: inline-flex; align-items: center; gap: 0.3125rem; padding: 0.1875rem 0.5rem; border-radius: 9999px; font-size: 0.6875rem; font-weight: 500; line-height: 1; }
+  .dot { width: 0.375rem; height: 0.375rem; border-radius: 9999px; display: inline-block; }
+  .pulse-dot { animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: hsl(var(--border)); border-radius: 4px; }
+  .heat-100 { background: hsl(var(--brand)); color: hsl(var(--brand-foreground)); }
+  .dark .heat-60 { background: hsl(var(--brand) / 0.4); color: hsl(var(--foreground)); }
+  .heat-60 { background: hsl(var(--brand) / 0.2); color: hsl(var(--foreground)); }
+  .heat-40 { background: hsl(var(--brand) / 0.1); color: hsl(var(--foreground)); }
+  .heat-20 { background: hsl(var(--muted)); color: hsl(var(--muted-foreground)); }
+  .heat-0 { background: transparent; color: hsl(var(--muted-foreground)); border: 1px dashed hsl(var(--border)); }
+  .search-input { background: hsl(var(--card)); border: 1px solid hsl(var(--border)); color: hsl(var(--foreground)); }
+  .search-input:focus { outline: none; border-color: hsl(var(--ring)); box-shadow: 0 0 0 1px hsl(var(--ring)); }
+  .filter-chip[data-active="true"] { background: hsl(var(--brand)); color: hsl(var(--brand-foreground)); border-color: hsl(var(--brand)); }
+  /* Timeline */
+  .timeline-item { position: relative; padding-left: 2rem; }
+  .timeline-item::before { content: ''; position: absolute; left: 0.4375rem; top: 0.625rem; bottom: -1.25rem; width: 1px; background: hsl(var(--border)); }
+  .timeline-item:last-child::before { display: none; }
+  .timeline-dot { position: absolute; left: 0; top: 0.5rem; width: 0.9375rem; height: 0.9375rem; border-radius: 9999px; background: hsl(var(--card)); border: 2px solid hsl(var(--brand)); }
+  .timeline-dot.ok { border-color: hsl(var(--ok)); }
+  .timeline-dot.warn { border-color: hsl(var(--warn)); }
+  .timeline-dot.fail { border-color: hsl(var(--destructive)); }
+  .timeline-dot.muted { border-color: hsl(var(--muted-foreground)); }
+  details > summary { list-style: none; cursor: pointer; }
+  details > summary::-webkit-details-marker { display: none; }
+  details[open] .chev { transform: rotate(180deg); }
+  .chev { transition: transform 0.2s; }
+</style>
+</head>
+<body class="bg-background text-foreground min-h-screen">
+
+<div class="fixed top-3 left-3 z-50 text-[10px] font-mono font-semibold bg-brand text-brand-foreground px-2 py-1 rounded uppercase tracking-wider">v0 prototype</div>
+
+<!-- HEADER -->
+<header class="border-b border-border bg-background sticky top-0 z-40">
+  <div class="max-w-[1400px] mx-auto px-8 h-16 flex items-center justify-between">
+    <div class="flex items-center gap-10">
+      <a href="#" onclick="switchTab('home')" class="flex items-center gap-2">
+        <div class="w-7 h-7 rounded bg-brand flex items-center justify-center">
+          <span class="text-brand-foreground font-extrabold text-sm">P</span>
+        </div>
+        <span class="font-bold text-lg tracking-tight">Pubity Suite</span>
+        <span class="text-xs text-muted-foreground border-l border-border pl-3 ml-1">Ecosystem Hub</span>
+      </a>
+      <nav class="flex items-center gap-1" id="tabnav">
+        <button data-tab="home" class="tab-btn px-3 h-8 text-sm font-medium rounded-md">Home</button>
+        <button data-tab="pages" class="tab-btn px-3 h-8 text-sm font-medium rounded-md">Pages</button>
+        <button data-tab="creators" class="tab-btn px-3 h-8 text-sm font-medium rounded-md">Creators</button>
+        <button data-tab="extended" class="tab-btn px-3 h-8 text-sm font-medium rounded-md">Extended Network</button>
+        <button data-tab="verticals" class="tab-btn px-3 h-8 text-sm font-medium rounded-md">Verticals</button>
+        <button data-tab="campaigns" class="tab-btn px-3 h-8 text-sm font-medium rounded-md">Campaigns</button>
+        <button data-tab="brief" class="tab-btn px-3 h-8 text-sm font-medium rounded-md ml-2 border border-brand text-brand">+ Brief</button>
+      </nav>
+    </div>
+    <div class="flex items-center gap-3">
+      <div class="text-right hidden md:block">
+        <div class="label text-muted-foreground">Kit's view</div>
+        <div class="text-xs font-mono">Mon 11 May 2026</div>
+      </div>
+      <button id="themeToggle" class="w-9 h-9 rounded-md border border-border hover:bg-accent flex items-center justify-center transition-colors" title="Toggle theme">
+        <svg id="iconMoon" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        <svg id="iconSun" class="w-4 h-4 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      </button>
+      <div class="w-9 h-9 rounded-full bg-brand text-brand-foreground flex items-center justify-center font-bold text-sm">K</div>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-[1400px] mx-auto px-8 py-10">
+
+<!-- ═══════════════ HOME ═══════════════ -->
+<section data-pane="home" class="pane">
+
+  <div class="mb-6">
+    <h1 class="text-3xl font-bold tracking-tight mb-1">Ecosystem Hub</h1>
+    <p class="text-muted-foreground">Pubity+, the partner network, creators and campaigns in one place.</p>
+  </div>
+
+  <!-- TOP ROW: Featured vertical (BIG) + To-do list (sticky right) -->
+  <div class="grid grid-cols-12 gap-6 mb-10">
+
+    <!-- ═══ FEATURED VERTICAL · MOVIES (the main bit) ═══ -->
+    <div class="col-span-8">
+      <div class="mb-3 flex items-end justify-between">
+        <div>
+          <div class="label text-muted-foreground mb-1">Featured vertical</div>
+          <h2 class="text-2xl font-bold tracking-tight">The wedge — Movies</h2>
+        </div>
+        <button onclick="switchTab('verticals')" class="text-sm text-muted-foreground hover:text-foreground">All verticals →</button>
+      </div>
+      <div class="rounded-xl border-2 border-brand bg-card p-8 hover:bg-accent/10 transition-colors cursor-pointer" onclick="openVertical('movies')">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="text-4xl">🎬</span>
+          <h3 class="text-3xl font-bold">Movies</h3>
+          <span class="pill bg-brand text-brand-foreground font-semibold">READY · WEDGE</span>
+        </div>
+        <p class="text-muted-foreground mb-6 max-w-2xl">Premium curated bundle. The template every other vertical copies if it works. Theatrical + TV/Streaming pages, anchored by the Yas Island account that has bought four campaigns already.</p>
+
+        <div class="grid grid-cols-4 gap-6 mb-6">
+          <div><div class="text-3xl font-bold num">~120M</div><div class="label text-muted-foreground">reach</div></div>
+          <div><div class="text-3xl font-bold num">14</div><div class="label text-muted-foreground">pages</div></div>
+          <div><div class="text-3xl font-bold num">4</div><div class="label text-muted-foreground">proof campaigns</div></div>
+          <div><div class="text-3xl font-bold num">£0.18</div><div class="label text-muted-foreground">avg CPV</div></div>
+        </div>
+
+        <div class="border-t border-border pt-5">
+          <div class="label text-muted-foreground mb-3">Top pages in bundle</div>
+          <div class="grid grid-cols-4 gap-x-6 gap-y-2 text-sm">
+            <div class="flex justify-between"><span>9GAG</span><span class="num text-muted-foreground">52.8M</span></div>
+            <div class="flex justify-between"><span>Wasted</span><span class="num text-muted-foreground">20.5M</span></div>
+            <div class="flex justify-between"><span>ladbible</span><span class="num text-muted-foreground">15.5M</span></div>
+            <div class="flex justify-between"><span>ight</span><span class="num text-muted-foreground">10.9M</span></div>
+            <div class="flex justify-between"><span>todayyearsold</span><span class="num text-muted-foreground">9.6M</span></div>
+            <div class="flex justify-between"><span>Insidehistory</span><span class="num text-muted-foreground">8.2M</span></div>
+            <div class="flex justify-between text-brand"><span>MarvelMovies</span><span class="num">3.0M</span></div>
+            <div class="flex justify-between text-brand"><span>howmoviesarefilmed</span><span class="num">1.5M</span></div>
+          </div>
+          <div class="mt-5 text-sm text-brand font-medium">Open Movies workspace →</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ EDITABLE TO-DO LIST (top right, sticky) ═══ -->
+    <div class="col-span-4">
+      <div class="rounded-lg border border-border bg-card p-5 sticky top-20">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="font-semibold">To-do</h3>
+          <span id="todoCount" class="pill bg-muted text-muted-foreground">—</span>
+        </div>
+        <div class="flex items-center gap-2 mb-4">
+          <input id="todoInput" type="text" placeholder="Add a task…" class="search-input flex-1 px-3 h-9 rounded-md text-sm" />
+          <button id="todoAdd" class="px-3 h-9 bg-brand text-brand-foreground rounded-md text-sm font-semibold">+</button>
+        </div>
+        <ul id="todoList" class="space-y-2 max-h-[480px] overflow-y-auto"></ul>
+        <div class="mt-4 pt-4 border-t border-border text-xs text-muted-foreground">
+          Saved locally · cleared with browser data
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ═══ OTHER VERTICALS (collapsed) ═══ -->
+  <details class="rounded-lg border border-border bg-card mb-12">
+    <summary class="px-6 py-4 flex items-center justify-between hover:bg-accent/30 transition-colors rounded-lg">
+      <div class="flex items-center gap-3">
+        <span class="font-semibold">Other verticals</span>
+        <span class="pill bg-muted text-muted-foreground">13</span>
+        <span class="text-xs text-muted-foreground">· 1 ready · 3 near · 1 partial · 8 gap</span>
+      </div>
+      <svg class="chev w-4 h-4 text-muted-foreground" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+    </summary>
+    <div class="px-6 pb-6 pt-2 grid grid-cols-4 gap-3">
+      <div class="heat-100 p-4 rounded-lg cursor-pointer hover:opacity-90" onclick="event.stopPropagation(); openVertical('audio')">
+        <div class="label opacity-80 mb-1">READY</div>
+        <div class="font-bold">🎧 Audio</div>
+        <div class="text-xs opacity-90 mt-0.5">5 pages · 100%</div>
+      </div>
+      <div class="heat-60 p-4 rounded-lg cursor-pointer hover:opacity-90" onclick="event.stopPropagation(); openVertical('gaming')">
+        <div class="label opacity-70 mb-1">NEAR · 60%</div>
+        <div class="font-bold">🎮 Gaming</div>
+        <div class="text-xs opacity-80 mt-0.5">3 pages · Epic missed</div>
+      </div>
+      <div class="heat-60 p-4 rounded-lg cursor-pointer hover:opacity-90" onclick="event.stopPropagation(); openVertical('streaming')">
+        <div class="label opacity-70 mb-1">NEAR · 60%</div>
+        <div class="font-bold">📺 TV + Streaming</div>
+        <div class="text-xs opacity-80 mt-0.5">3 pages · culture deal</div>
+      </div>
+      <div class="heat-40 p-4 rounded-lg cursor-pointer hover:opacity-90" onclick="event.stopPropagation(); openVertical('travel')">
+        <div class="label opacity-70 mb-1">PARTIAL · 40%</div>
+        <div class="font-bold">✈️ Travel</div>
+        <div class="text-xs opacity-80 mt-0.5">Yas Island anchor</div>
+      </div>
+      <div class="heat-20 p-4 rounded-lg cursor-pointer hover:opacity-90" onclick="event.stopPropagation(); openVertical('retail')">
+        <div class="label mb-1">EARLY · 20%</div>
+        <div class="font-bold">🛍️ Retail</div>
+        <div class="text-xs mt-0.5">1 page</div>
+      </div>
+      <div class="heat-20 p-4 rounded-lg cursor-pointer hover:opacity-90" onclick="event.stopPropagation(); openVertical('tech')">
+        <div class="label mb-1">EARLY · 20%</div>
+        <div class="font-bold">💻 Tech</div>
+        <div class="text-xs mt-0.5">1 page</div>
+      </div>
+      <div class="heat-0 p-4 rounded-lg cursor-pointer hover:opacity-90" onclick="event.stopPropagation(); openVertical('qsr')">
+        <div class="label mb-1">GAP</div>
+        <div class="font-bold text-foreground">🍔 QSR</div>
+        <div class="text-xs mt-0.5">Chili's via multi</div>
+      </div>
+      <div class="heat-0 p-4 rounded-lg cursor-pointer hover:opacity-90" onclick="event.stopPropagation(); openVertical('finance')">
+        <div class="label mb-1">GAP</div>
+        <div class="font-bold text-foreground">💰 Finance</div>
+        <div class="text-xs mt-0.5">No premium signed</div>
+      </div>
+      <div class="heat-0 p-4 rounded-lg cursor-pointer hover:opacity-90" onclick="event.stopPropagation(); openVertical('auto')">
+        <div class="label mb-1">GAP</div>
+        <div class="font-bold text-foreground">🚗 Auto</div>
+        <div class="text-xs mt-0.5">No premium signed</div>
+      </div>
+      <div class="heat-0 p-4 rounded-lg cursor-pointer hover:opacity-90" onclick="event.stopPropagation(); openVertical('cpg')">
+        <div class="label mb-1">GAP</div>
+        <div class="font-bold text-foreground">🧴 CPG</div>
+        <div class="text-xs mt-0.5">Multi-vertical only</div>
+      </div>
+      <div class="heat-0 p-4 rounded-lg cursor-pointer hover:opacity-90" onclick="event.stopPropagation(); openVertical('beauty')">
+        <div class="label mb-1">GAP</div>
+        <div class="font-bold text-foreground">💄 Beauty</div>
+        <div class="text-xs mt-0.5">Big white space</div>
+      </div>
+      <div class="heat-0 p-4 rounded-lg cursor-pointer hover:opacity-90" onclick="event.stopPropagation(); openVertical('pets')">
+        <div class="label mb-1">GAP</div>
+        <div class="font-bold text-foreground">🐾 Pets</div>
+        <div class="text-xs mt-0.5">Pubity owns Fluffy</div>
+      </div>
+      <div class="heat-0 p-4 rounded-lg cursor-pointer hover:opacity-90" onclick="event.stopPropagation(); openVertical('betting')">
+        <div class="label mb-1">GAP</div>
+        <div class="font-bold text-foreground">🎰 Betting</div>
+        <div class="text-xs mt-0.5">Compliance gating</div>
+      </div>
+    </div>
+  </details>
+
+  <!-- ═══ RECENT CAMPAIGNS TIMELINE ═══ -->
+  <div class="mb-4 flex items-end justify-between">
+    <div>
+      <div class="label text-muted-foreground mb-1">Activity</div>
+      <h2 class="text-xl font-bold tracking-tight">Recent campaigns</h2>
+    </div>
+    <button onclick="switchTab('campaigns')" class="text-sm text-muted-foreground hover:text-foreground">All campaigns →</button>
+  </div>
+  <div class="rounded-lg border border-border bg-card p-6 mb-12">
+    <div id="homeTimeline" class="space-y-6"><!-- populated by JS --></div>
+  </div>
+
+</section>
+
+<!-- ═══════════════ CAMPAIGN DETAIL ═══════════════ -->
+<section data-pane="campaign-detail" class="pane hidden">
+  <button onclick="goBack()" class="text-sm text-muted-foreground hover:text-foreground mb-4 flex items-center gap-1">← Back</button>
+
+  <div class="mb-8 flex items-end justify-between">
+    <div>
+      <div class="text-xs text-muted-foreground mb-1" id="cdMeta">#000 · Date · Vertical</div>
+      <h1 class="text-3xl font-bold tracking-tight" id="cdTitle">Campaign Title</h1>
+      <p class="text-muted-foreground mt-1" id="cdClient">Client</p>
+    </div>
+    <span class="pill" id="cdStatus">status</span>
+  </div>
+
+  <div class="grid grid-cols-4 gap-4 mb-8">
+    <div class="rounded-lg border border-border bg-card p-5">
+      <div class="label text-muted-foreground mb-2">Views delivered</div>
+      <div class="text-3xl font-bold num" id="cdViews">—</div>
+      <div class="text-xs mt-1.5" id="cdTarget"></div>
+    </div>
+    <div class="rounded-lg border border-border bg-card p-5">
+      <div class="label text-muted-foreground mb-2">Spend</div>
+      <div class="text-3xl font-bold num" id="cdSpend">—</div>
+    </div>
+    <div class="rounded-lg border border-border bg-card p-5">
+      <div class="label text-muted-foreground mb-2">CPV</div>
+      <div class="text-3xl font-bold num" id="cdCPV">—</div>
+    </div>
+    <div class="rounded-lg border border-border bg-card p-5">
+      <div class="label text-muted-foreground mb-2">Partners</div>
+      <div class="text-3xl font-bold num" id="cdPartners">—</div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-12 gap-6">
+    <!-- Timeline -->
+    <div class="col-span-7">
+      <h2 class="font-semibold mb-4">Campaign timeline</h2>
+      <div class="rounded-lg border border-border bg-card p-6">
+        <div id="cdTimeline" class="space-y-5"></div>
+      </div>
+    </div>
+
+    <!-- Partners + notes -->
+    <div class="col-span-5 space-y-4">
+      <div class="rounded-lg border border-border bg-card p-5">
+        <h3 class="font-semibold text-sm mb-3">Partners involved</h3>
+        <div id="cdPartnerList" class="space-y-2 text-sm"></div>
+      </div>
+      <div class="rounded-lg border border-border bg-card p-5">
+        <h3 class="font-semibold text-sm mb-2">Notes</h3>
+        <p id="cdNotes" class="text-sm text-muted-foreground"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ PAGES ═══════════════ -->
+<section data-pane="pages" class="pane hidden">
+  <div class="mb-6 flex items-end justify-between">
+    <div>
+      <h1 class="text-3xl font-bold tracking-tight mb-1">Pages</h1>
+      <p class="text-muted-foreground">Extended Network · third-party IG pages we distribute campaigns through.</p>
+    </div>
+    <button id="addPageBtn" class="px-4 h-9 bg-brand text-brand-foreground hover:bg-brand/90 rounded-md text-sm font-semibold">+ Add page</button>
+  </div>
+  <div class="mb-5">
+    <div class="relative">
+      <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="M21 21l-4-4"/></svg>
+      <input id="pagesSearch" type="text" placeholder="Search pages by handle, vertical, market..." class="search-input w-full pl-10 pr-4 h-11 rounded-lg text-sm" />
+      <span id="pagesCount" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs text-muted-foreground"></span>
+    </div>
+  </div>
+  <div class="grid grid-cols-4 gap-3 mb-5">
+    <div class="rounded-lg border border-border bg-card p-3 flex items-center justify-between"><div><div class="label text-muted-foreground">Onboarded</div><div class="text-xl font-bold num">64</div></div><span class="dot bg-ok"></span></div>
+    <div class="rounded-lg border border-border bg-card p-3 flex items-center justify-between"><div><div class="label text-muted-foreground">In conversation</div><div class="text-xl font-bold num">23</div></div><span class="dot bg-warn"></span></div>
+    <div class="rounded-lg border border-border bg-card p-3 flex items-center justify-between"><div><div class="label text-muted-foreground">Prospect</div><div class="text-xl font-bold num">93</div></div><span class="dot bg-muted-foreground"></span></div>
+    <div class="rounded-lg border border-destructive/40 bg-card p-3 flex items-center justify-between"><div><div class="label text-destructive">Cold (14d+)</div><div class="text-xl font-bold text-destructive num">4</div></div><span class="dot bg-destructive pulse-dot"></span></div>
+  </div>
+  <div class="flex items-center gap-2 mb-4 flex-wrap">
+    <button class="filter-chip pill border border-border bg-card hover:bg-accent" data-filter="all" data-active="true">All 180</button>
+    <button class="filter-chip pill border border-border bg-card hover:bg-accent" data-filter="onboarded">Onboarded</button>
+    <button class="filter-chip pill border border-border bg-card hover:bg-accent" data-filter="in-conv">In conversation</button>
+    <button class="filter-chip pill border border-border bg-card hover:bg-accent" data-filter="prospect">Prospect</button>
+    <button class="filter-chip pill border border-border bg-card hover:bg-accent" data-filter="cold">Cold ⚡</button>
+    <button class="filter-chip pill border border-border bg-card hover:bg-accent" data-filter="premium">Premium ★</button>
+    <button class="filter-chip pill border border-border bg-card hover:bg-accent" data-filter="movies">Movies vertical</button>
+    <button class="filter-chip pill border border-border bg-card hover:bg-accent" data-filter="uk">UK only</button>
+  </div>
+  <div class="rounded-lg border border-border overflow-hidden bg-card">
+    <table class="w-full text-sm">
+      <thead class="bg-muted/50 text-xs"><tr class="text-left">
+        <th class="px-4 py-2.5 font-medium text-muted-foreground sort-th cursor-pointer hover:text-foreground" data-sort="handle">Handle <span class="sort-arrow text-muted-foreground"></span></th>
+        <th class="px-4 py-2.5 font-medium text-muted-foreground sort-th cursor-pointer hover:text-foreground" data-sort="status">Status <span class="sort-arrow text-muted-foreground"></span></th>
+        <th class="px-4 py-2.5 font-medium text-muted-foreground sort-th cursor-pointer hover:text-foreground" data-sort="followers">Followers <span class="sort-arrow text-muted-foreground"></span></th>
+        <th class="px-4 py-2.5 font-medium text-muted-foreground sort-th cursor-pointer hover:text-foreground" data-sort="vertical">Vertical <span class="sort-arrow text-muted-foreground"></span></th>
+        <th class="px-4 py-2.5 font-medium text-muted-foreground sort-th cursor-pointer hover:text-foreground" data-sort="market">Market <span class="sort-arrow text-muted-foreground"></span></th>
+        <th class="px-4 py-2.5 font-medium text-muted-foreground sort-th cursor-pointer hover:text-foreground" data-sort="comms">Comms <span class="sort-arrow text-muted-foreground"></span></th>
+        <th class="px-4 py-2.5 font-medium text-muted-foreground sort-th cursor-pointer hover:text-foreground" data-sort="last">Last contact <span class="sort-arrow text-muted-foreground"></span></th>
+        <th class="px-4 py-2.5 font-medium text-muted-foreground sort-th cursor-pointer hover:text-foreground" data-sort="cpm">CPM <span class="sort-arrow text-muted-foreground"></span></th>
+        <th class="px-4 py-2.5 font-medium text-muted-foreground">★</th>
+      </tr></thead>
+      <tbody id="pagesTbody" class="divide-y divide-border"></tbody>
+    </table>
+    <div class="px-4 py-3 text-xs text-muted-foreground bg-muted/50 border-t border-border" id="pagesFooter">Showing 80 pages · click column headers to sort</div>
+  </div>
+</section>
+
+<!-- ═══════════════ CREATORS ═══════════════ -->
+<section data-pane="creators" class="pane hidden">
+  <div class="mb-6 flex items-end justify-between">
+    <div>
+      <h1 class="text-3xl font-bold tracking-tight mb-1">Creators</h1>
+      <p class="text-muted-foreground">Danny Yorston's roster across three plays.</p>
+    </div>
+    <button id="addCreatorBtn" class="px-4 h-9 bg-brand text-brand-foreground hover:bg-brand/90 rounded-md text-sm font-semibold">+ Add creator</button>
+  </div>
+  <div class="mb-5">
+    <div class="relative">
+      <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="M21 21l-4-4"/></svg>
+      <input id="creatorsSearch" type="text" placeholder="Search creators by name, niche, play..." class="search-input w-full pl-10 pr-4 h-11 rounded-lg text-sm" />
+      <span id="creatorsCount" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs text-muted-foreground"></span>
+    </div>
+  </div>
+  <div class="grid grid-cols-3 gap-4 mb-6">
+    <div class="rounded-lg border border-border bg-card p-5">
+      <div class="flex items-center justify-between mb-2"><div class="label text-muted-foreground">Play 1 · Rev Share</div><span class="pill bg-ok/15 text-ok"><span class="dot bg-ok"></span>Active</span></div>
+      <div class="flex items-baseline gap-3 mb-2"><div class="text-3xl font-bold text-brand num">6</div><div class="text-sm text-muted-foreground">signed · ~1B views</div></div>
+      <div class="text-xs text-muted-foreground">Underperforming FB pages → 50/50 split. Foundation.</div>
+    </div>
+    <div class="rounded-lg border border-border bg-card p-5">
+      <div class="flex items-center justify-between mb-2"><div class="label text-muted-foreground">Play 2 · Commercial</div><span class="pill bg-warn/15 text-warn"><span class="dot bg-warn"></span>Scaling</span></div>
+      <div class="flex items-baseline gap-3 mb-2"><div class="text-3xl font-bold num">68</div><div class="text-sm text-muted-foreground">pipeline · 31 active · 23% win</div></div>
+      <div class="text-xs text-muted-foreground">Plug into brand campaigns. Bigger budget pot.</div>
+    </div>
+    <div class="rounded-lg border border-border bg-card p-5">
+      <div class="flex items-center justify-between mb-2"><div class="label text-muted-foreground">Play 3 · Shows + IP</div><span class="pill bg-muted text-muted-foreground"><span class="dot bg-muted-foreground"></span>Early</span></div>
+      <div class="flex items-baseline gap-3 mb-2"><div class="text-3xl font-bold num">2</div><div class="text-sm text-muted-foreground">commissions · 0 co-owned</div></div>
+      <div class="text-xs text-muted-foreground">Commission shows → co-develop → own formats.</div>
+    </div>
+  </div>
+  <div class="flex items-center gap-2 mb-4 flex-wrap">
+    <button class="filter-chip pill border border-border bg-card hover:bg-accent" data-filter="all" data-active="true">All</button>
+    <button class="filter-chip pill border border-border bg-card hover:bg-accent" data-filter="signed">Signed</button>
+    <button class="filter-chip pill border border-border bg-card hover:bg-accent" data-filter="active">Active</button>
+    <button class="filter-chip pill border border-border bg-card hover:bg-accent" data-filter="early">Early</button>
+    <button class="filter-chip pill border border-border bg-card hover:bg-accent" data-filter="play1">Play 1 · Rev Share</button>
+    <button class="filter-chip pill border border-border bg-card hover:bg-accent" data-filter="play2">Play 2 · Commercial</button>
+    <button class="filter-chip pill border border-border bg-card hover:bg-accent" data-filter="play3">Play 3 · Shows+IP</button>
+  </div>
+  <div class="rounded-lg border border-border overflow-hidden bg-card">
+    <table class="w-full text-sm">
+      <thead class="bg-muted/50 text-xs"><tr class="text-left"><th class="px-4 py-2.5 font-medium text-muted-foreground">Creator</th><th class="px-4 py-2.5 font-medium text-muted-foreground">Status</th><th class="px-4 py-2.5 font-medium text-muted-foreground">Play</th><th class="px-4 py-2.5 font-medium text-muted-foreground">Reach</th><th class="px-4 py-2.5 font-medium text-muted-foreground">Niche</th><th class="px-4 py-2.5 font-medium text-muted-foreground">Model</th><th class="px-4 py-2.5 font-medium text-muted-foreground">Owner</th><th class="px-4 py-2.5 font-medium text-muted-foreground">Signal</th></tr></thead>
+      <tbody id="creatorsTbody" class="divide-y divide-border"></tbody>
+    </table>
+    <div class="px-4 py-3 text-xs text-muted-foreground bg-muted/50 border-t border-border">v0 sample · replace with Danny's actual roster in Phase 2</div>
+  </div>
+</section>
+
+<!-- ═══════════════ EXTENDED NETWORK ═══════════════ -->
+<section data-pane="extended" class="pane hidden">
+  <div class="mb-6">
+    <h1 class="text-3xl font-bold tracking-tight mb-1">Extended Network</h1>
+    <p class="text-muted-foreground">Inventory products beyond the 180 IG partner pages — YouTube CPM management, OOH, clipping, broadcast. The full distribution surface.</p>
+  </div>
+
+  <!-- Stat strip -->
+  <div class="grid grid-cols-4 gap-4 mb-8">
+    <div class="rounded-lg border border-border bg-card p-5">
+      <div class="label text-muted-foreground mb-2">Live products</div>
+      <div class="text-3xl font-bold num">2</div>
+      <div class="text-xs text-muted-foreground mt-1.5">Pubity Plus · Pubity Insiders</div>
+    </div>
+    <div class="rounded-lg border border-border bg-card p-5">
+      <div class="label text-muted-foreground mb-2">In development</div>
+      <div class="text-3xl font-bold num">1</div>
+      <div class="text-xs text-muted-foreground mt-1.5">Clipping Network</div>
+    </div>
+    <div class="rounded-lg border border-destructive/40 bg-card p-5">
+      <div class="label text-destructive mb-2">⚠ Net-new revenue gap</div>
+      <div class="text-3xl font-bold text-destructive">2</div>
+      <div class="text-xs text-muted-foreground mt-1.5">Vuture · Out-of-Home</div>
+    </div>
+    <div class="rounded-lg border border-border bg-card p-5">
+      <div class="label text-muted-foreground mb-2">Combined reach</div>
+      <div class="text-3xl font-bold num">~500K+</div>
+      <div class="text-xs text-muted-foreground mt-1.5">Insiders broadcast · TBC for others</div>
+    </div>
+  </div>
+
+  <!-- Inventory products -->
+  <h2 class="font-semibold mb-3">Inventory products</h2>
+  <div class="grid grid-cols-2 gap-4 mb-8">
+
+    <!-- Clipping Network (top — Pubity+ priority #2) -->
+    <div class="rounded-lg border-2 border-brand bg-card p-6 col-span-2">
+      <div class="flex items-start justify-between mb-3">
+        <div class="flex items-center gap-3">
+          <span class="text-2xl">🎞️</span>
+          <div>
+            <h3 class="text-lg font-bold">Clipping Network</h3>
+            <p class="text-sm text-muted-foreground">Video-first product across community pages. Premium, not "clipping". Pubity+ near-term priority #2 · the most active build right now.</p>
+          </div>
+        </div>
+        <span class="pill bg-warn/15 text-warn font-semibold">In development</span>
+      </div>
+      <div class="grid grid-cols-5 gap-4 pt-4 border-t border-border">
+        <div><div class="label text-muted-foreground mb-1">Format</div><div class="text-sm">Video-first across community pages</div></div>
+        <div><div class="label text-muted-foreground mb-1">Pricing</div><div class="text-sm">CPM / CPV</div></div>
+        <div><div class="label text-muted-foreground mb-1">Strong fit</div><div class="text-sm">Movies trailers · Music drops · Entertainment launches</div></div>
+        <div><div class="label text-muted-foreground mb-1">Owner</div><div class="text-sm">Seb + Aya</div></div>
+        <div><div class="label text-muted-foreground mb-1">To unlock sale</div><div class="text-sm">Whitelist · rate card · one-pager</div></div>
+      </div>
+    </div>
+
+    <!-- YouTube Pre-Roll · Vuture -->
+    <div class="rounded-lg border-2 border-destructive/50 bg-card p-6 col-span-2">
+      <div class="flex items-start justify-between mb-3">
+        <div class="flex items-center gap-3">
+          <span class="text-2xl">📺</span>
+          <div>
+            <h3 class="text-lg font-bold">YouTube Pre-Roll · Vuture partnership</h3>
+            <p class="text-sm text-muted-foreground">Highest-margin, tag-based, scalable. Per Pubity+ strategy: the actual net-new revenue play.</p>
+          </div>
+        </div>
+        <span class="pill bg-destructive/15 text-destructive font-semibold">⚠ Not live · stalled 28 Feb</span>
+      </div>
+      <div class="grid grid-cols-5 gap-4 pt-4 border-t border-border">
+        <div><div class="label text-muted-foreground mb-1">Status</div><div class="text-sm">Commercial discussion paused</div></div>
+        <div><div class="label text-muted-foreground mb-1">Inventory</div><div class="text-sm">US YT creator network (Sidemen, Miniminter etc.)</div></div>
+        <div><div class="label text-muted-foreground mb-1">Model</div><div class="text-sm">High CPM, tag-based</div></div>
+        <div><div class="label text-muted-foreground mb-1">Owner</div><div class="text-sm">Seb + Danny</div></div>
+        <div><div class="label text-muted-foreground mb-1">Risk</div><div class="text-sm text-destructive">Vendor timeline · biggest revenue lever</div></div>
+      </div>
+    </div>
+
+    <!-- Out-of-Home -->
+    <div class="rounded-lg border border-border bg-card p-6">
+      <div class="flex items-start justify-between mb-3">
+        <div class="flex items-center gap-3">
+          <span class="text-2xl">🪧</span>
+          <div>
+            <h3 class="font-bold">Out-of-Home</h3>
+            <p class="text-xs text-muted-foreground">Physical inventory tie-ins · cinema lobby, transit, billboards.</p>
+          </div>
+        </div>
+        <span class="pill bg-muted text-muted-foreground">Not yet</span>
+      </div>
+      <div class="text-sm text-foreground/80 mb-4">Brand-new product line. No supplier partnerships yet. Strong fit for movie launches (cinema OOH) and theatrical campaigns where Pubity's social inventory could be sold alongside physical placement as a 360° package.</div>
+      <button class="px-3 h-8 border border-border hover:bg-accent rounded-md text-xs">+ Scope this product</button>
+    </div>
+
+    <!-- Pubity Plus -->
+    <div class="rounded-lg border border-border bg-card p-6">
+      <div class="flex items-start justify-between mb-3">
+        <div class="flex items-center gap-3">
+          <span class="text-2xl">➕</span>
+          <div>
+            <h3 class="font-bold">Pubity Plus</h3>
+            <p class="text-xs text-muted-foreground">54+ partner pages broadcast network managed by Pubity.</p>
+          </div>
+        </div>
+        <span class="pill bg-warn/15 text-warn">Live · low adoption</span>
+      </div>
+      <div class="text-sm text-foreground/80 mb-4">MVP dashboard exists but adoption is weak (per 11 May Check-in). Action: clearer commercial package + sales incentive model. Owned by Kit + Iyrah + Patrick.</div>
+      <button class="px-3 h-8 border border-border hover:bg-accent rounded-md text-xs">Open dashboard</button>
+    </div>
+
+    <!-- Pubity Insiders -->
+    <div class="rounded-lg border border-border bg-card p-6">
+      <div class="flex items-start justify-between mb-3">
+        <div class="flex items-center gap-3">
+          <span class="text-2xl">📡</span>
+          <div>
+            <h3 class="font-bold">Pubity Insiders</h3>
+            <p class="text-xs text-muted-foreground">526K direct broadcast subscribers · Telegram channel.</p>
+          </div>
+        </div>
+        <span class="pill bg-ok/15 text-ok">Live</span>
+      </div>
+      <div class="text-sm text-foreground/80 mb-4">Owned distribution channel. 526K subscribers receive Pubity-curated content directly. Commercial inventory not yet productised — opportunity to sell sponsored entries.</div>
+      <button class="px-3 h-8 border border-border hover:bg-accent rounded-md text-xs">View subscriber growth</button>
+    </div>
+
+  </div>
+
+  <!-- Strategic note -->
+  <div class="rounded-lg border border-border bg-card p-6">
+    <h3 class="font-semibold mb-2">Why Extended Network matters</h3>
+    <p class="text-sm text-muted-foreground mb-3">The 180 partner pages give Pubity scale, but they support existing briefs more than originate new revenue (per Pubity+ strategy). The Extended Network products — especially Vuture YouTube Pre-Roll — are where genuinely incremental revenue comes from.</p>
+    <p class="text-sm text-muted-foreground">Brands stop buying a campaign and start buying access to Pubity's whole distribution machine: pages + creators + YouTube + OOH + broadcast as one packaged proposition.</p>
+  </div>
+</section>
+
+<!-- ═══════════════ VERTICALS GRID ═══════════════ -->
+<section data-pane="verticals" class="pane hidden">
+  <div class="mb-6">
+    <h1 class="text-3xl font-bold tracking-tight mb-1">Verticals</h1>
+    <p class="text-muted-foreground">Bundle every vertical into a sellable product. Movies and Audio are ready. The rest need building.</p>
+  </div>
+
+  <!-- Featured: Movies + Audio (the two ready bundles) -->
+  <div class="label text-muted-foreground mb-2">Ready bundles</div>
+  <div class="grid grid-cols-2 gap-4 mb-8">
+    <div class="heat-100 p-6 rounded-lg cursor-pointer hover:opacity-90" onclick="openVertical('movies')">
+      <div class="flex items-center gap-2 mb-2"><span class="label opacity-80">★ WEDGE · READY</span></div>
+      <div class="flex items-center gap-3 mb-2"><span class="text-2xl">🎬</span><div class="text-2xl font-bold">Movies</div></div>
+      <div class="text-sm opacity-90 mb-4">Theatrical + TV/Streaming · Yas Island proven account · ~120M reach</div>
+      <div class="flex items-center gap-4 text-xs opacity-90">
+        <span><b>14</b> pages</span><span>·</span>
+        <span><b>4</b> proof campaigns</span><span>·</span>
+        <span><b>£0.18</b> CPV</span>
+      </div>
+      <div class="mt-4 label opacity-90">Open workspace →</div>
+    </div>
+    <div class="heat-100 p-6 rounded-lg cursor-pointer hover:opacity-90" onclick="openVertical('audio')">
+      <div class="flex items-center gap-2 mb-2"><span class="label opacity-80">READY</span></div>
+      <div class="flex items-center gap-3 mb-2"><span class="text-2xl">🎧</span><div class="text-2xl font-bold">Audio</div></div>
+      <div class="text-sm opacity-90 mb-4">5 premium pages signed · 100% coverage · needs proof campaigns</div>
+      <div class="flex items-center gap-4 text-xs opacity-90">
+        <span><b>5</b> pages</span><span>·</span>
+        <span><b>0</b> proof campaigns</span><span>·</span>
+        <span><b>—</b> CPV</span>
+      </div>
+      <div class="mt-4 label opacity-90">Open workspace →</div>
+    </div>
+  </div>
+
+  <!-- Other verticals — dropdown -->
+  <details class="rounded-lg border border-border bg-card mb-8">
+    <summary class="px-6 py-4 flex items-center justify-between hover:bg-accent/30 transition-colors rounded-lg">
+      <div class="flex items-center gap-3">
+        <span class="font-semibold">Other verticals</span>
+        <span class="pill bg-muted text-muted-foreground">12</span>
+        <span class="text-xs text-muted-foreground">· 3 near · 1 partial · 8 gap · click any to drill</span>
+      </div>
+      <svg class="chev w-4 h-4 text-muted-foreground" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+    </summary>
+    <div class="px-6 pb-6 pt-2 grid grid-cols-3 gap-3">
+      <div class="heat-60 p-4 rounded-lg cursor-pointer hover:opacity-90" onclick="openVertical('gaming')"><div class="label opacity-70 mb-1">NEAR · 60%</div><div class="font-bold">🎮 Gaming</div><div class="text-xs opacity-80 mt-0.5">3 pages · Epic missed target</div></div>
+      <div class="heat-60 p-4 rounded-lg cursor-pointer hover:opacity-90" onclick="openVertical('streaming')"><div class="label opacity-70 mb-1">NEAR · 60%</div><div class="font-bold">📺 TV + Streaming</div><div class="text-xs opacity-80 mt-0.5">3 pages · culture deal in flight</div></div>
+      <div class="heat-40 p-4 rounded-lg cursor-pointer hover:opacity-90" onclick="openVertical('travel')"><div class="label opacity-70 mb-1">PARTIAL · 40%</div><div class="font-bold">✈️ Travel</div><div class="text-xs opacity-80 mt-0.5">Yas Island anchor</div></div>
+      <div class="heat-20 p-4 rounded-lg cursor-pointer hover:opacity-90" onclick="openVertical('retail')"><div class="label mb-1">EARLY · 20%</div><div class="font-bold">🛍️ Retail</div><div class="text-xs mt-0.5">1 page</div></div>
+      <div class="heat-20 p-4 rounded-lg cursor-pointer hover:opacity-90" onclick="openVertical('tech')"><div class="label mb-1">EARLY · 20%</div><div class="font-bold">💻 Tech</div><div class="text-xs mt-0.5">1 page</div></div>
+      <div class="heat-0 p-4 rounded-lg cursor-pointer hover:opacity-90" onclick="openVertical('qsr')"><div class="label mb-1">GAP · 0%</div><div class="font-bold text-foreground">🍔 QSR</div><div class="text-xs mt-0.5">Chili's via multi</div></div>
+      <div class="heat-0 p-4 rounded-lg cursor-pointer hover:opacity-90" onclick="openVertical('finance')"><div class="label mb-1">GAP · 0%</div><div class="font-bold text-foreground">💰 Finance</div><div class="text-xs mt-0.5">No premium signed</div></div>
+      <div class="heat-0 p-4 rounded-lg cursor-pointer hover:opacity-90" onclick="openVertical('auto')"><div class="label mb-1">GAP · 0%</div><div class="font-bold text-foreground">🚗 Auto</div><div class="text-xs mt-0.5">No premium signed</div></div>
+      <div class="heat-0 p-4 rounded-lg cursor-pointer hover:opacity-90" onclick="openVertical('cpg')"><div class="label mb-1">GAP · 0%</div><div class="font-bold text-foreground">🧴 CPG</div><div class="text-xs mt-0.5">Multi-vertical only</div></div>
+      <div class="heat-0 p-4 rounded-lg cursor-pointer hover:opacity-90" onclick="openVertical('beauty')"><div class="label mb-1">GAP · 0%</div><div class="font-bold text-foreground">💄 Beauty</div><div class="text-xs mt-0.5">Big white space</div></div>
+      <div class="heat-0 p-4 rounded-lg cursor-pointer hover:opacity-90" onclick="openVertical('pets')"><div class="label mb-1">GAP · 0%</div><div class="font-bold text-foreground">🐾 Pets</div><div class="text-xs mt-0.5">Pubity owns Fluffy</div></div>
+      <div class="heat-0 p-4 rounded-lg cursor-pointer hover:opacity-90" onclick="openVertical('betting')"><div class="label mb-1">GAP · 0%</div><div class="font-bold text-foreground">🎰 Betting</div><div class="text-xs mt-0.5">Compliance gating</div></div>
+    </div>
+  </details>
+</section>
+
+<!-- ═══════════════ VERTICAL DRILL: MOVIES ═══════════════ -->
+<section data-pane="vertical-movies" class="pane hidden">
+  <button onclick="switchTab('verticals')" class="text-sm text-muted-foreground hover:text-foreground mb-4 flex items-center gap-1">← All verticals</button>
+  <div class="mb-8 flex items-end justify-between">
+    <div>
+      <div class="flex items-center gap-3 mb-2"><span class="text-3xl">🎬</span><h1 class="text-3xl font-bold tracking-tight">Movies</h1><span class="pill bg-brand text-brand-foreground font-semibold">READY · WEDGE</span></div>
+      <p class="text-muted-foreground">Premium curated bundle. The template every other vertical copies.</p>
+    </div>
+    <button class="px-4 h-9 bg-brand text-brand-foreground hover:bg-brand/90 rounded-md text-sm font-semibold">Generate pitch one-pager →</button>
+  </div>
+  <div class="grid grid-cols-4 gap-4 mb-8">
+    <div class="rounded-lg border border-border bg-card p-5"><div class="label text-muted-foreground mb-2">Reach</div><div class="text-3xl font-bold num">~120M</div><div class="text-xs text-muted-foreground mt-1">14 partners</div></div>
+    <div class="rounded-lg border border-border bg-card p-5"><div class="label text-muted-foreground mb-2">Coverage</div><div class="text-3xl font-bold num">60%</div><div class="text-xs text-muted-foreground mt-1">Theatrical + TV</div></div>
+    <div class="rounded-lg border border-border bg-card p-5"><div class="label text-muted-foreground mb-2">Proof</div><div class="text-3xl font-bold num">4</div><div class="text-xs text-muted-foreground mt-1">all Yas Island</div></div>
+    <div class="rounded-lg border border-border bg-card p-5"><div class="label text-muted-foreground mb-2">Avg CPV</div><div class="text-3xl font-bold num">£0.18</div><div class="text-xs text-muted-foreground mt-1">across proofs</div></div>
+  </div>
+  <div class="grid grid-cols-12 gap-6 mb-6">
+    <div class="col-span-7">
+      <h2 class="font-semibold mb-3">Pages in the bundle</h2>
+      <div class="rounded-lg border border-border overflow-hidden bg-card">
+        <table class="w-full text-sm">
+          <thead class="bg-muted/50 text-xs"><tr class="text-left"><th class="px-4 py-2.5 font-medium text-muted-foreground">Handle</th><th class="px-4 py-2.5 font-medium text-muted-foreground">Followers</th><th class="px-4 py-2.5 font-medium text-muted-foreground">Type</th><th class="px-4 py-2.5 font-medium text-muted-foreground">CPM</th><th class="px-4 py-2.5 font-medium text-muted-foreground">Reliability</th></tr></thead>
+          <tbody class="divide-y divide-border">
+            <tr class="hover:bg-accent/40"><td class="px-4 py-2.5 font-medium">9GAG</td><td class="px-4 py-2.5 num">52.8M</td><td class="px-4 py-2.5 text-muted-foreground">Multi-vertical</td><td class="px-4 py-2.5 num">£12,000</td><td class="px-4 py-2.5"><span class="text-ok">●●●●●</span></td></tr>
+            <tr class="hover:bg-accent/40"><td class="px-4 py-2.5 font-medium">Wasted</td><td class="px-4 py-2.5 num">20.5M</td><td class="px-4 py-2.5 text-muted-foreground">Humour</td><td class="px-4 py-2.5 num">£2,500</td><td class="px-4 py-2.5"><span class="text-ok">●●●●●</span></td></tr>
+            <tr class="hover:bg-accent/40"><td class="px-4 py-2.5 font-medium">ladbible</td><td class="px-4 py-2.5 num">15.5M</td><td class="px-4 py-2.5 text-muted-foreground">UK Mass</td><td class="px-4 py-2.5 num">£20,000</td><td class="px-4 py-2.5"><span class="text-ok">●●●●○</span></td></tr>
+            <tr class="hover:bg-accent/40"><td class="px-4 py-2.5 font-medium">ight</td><td class="px-4 py-2.5 num">10.9M</td><td class="px-4 py-2.5 text-muted-foreground">Memes</td><td class="px-4 py-2.5 num">£1,500</td><td class="px-4 py-2.5"><span class="text-ok">●●●●●</span></td></tr>
+            <tr class="hover:bg-accent/40"><td class="px-4 py-2.5 font-medium">todayyearsold</td><td class="px-4 py-2.5 num">9.6M</td><td class="px-4 py-2.5 text-muted-foreground">Facts</td><td class="px-4 py-2.5 num">£2,500</td><td class="px-4 py-2.5"><span class="text-ok">●●●●●</span></td></tr>
+            <tr class="hover:bg-accent/40"><td class="px-4 py-2.5 font-medium">Explaining</td><td class="px-4 py-2.5 num">8.2M</td><td class="px-4 py-2.5 text-muted-foreground">Multi-vertical</td><td class="px-4 py-2.5 num">£4,000</td><td class="px-4 py-2.5"><span class="text-ok">●●●●○</span></td></tr>
+            <tr class="hover:bg-accent/40"><td class="px-4 py-2.5 font-medium">Insidehistory</td><td class="px-4 py-2.5 num">8.2M</td><td class="px-4 py-2.5 text-muted-foreground">Headline</td><td class="px-4 py-2.5 num">£700</td><td class="px-4 py-2.5"><span class="text-ok">●●●●○</span></td></tr>
+            <tr class="hover:bg-accent/40"><td class="px-4 py-2.5 font-medium">MarvelMovies</td><td class="px-4 py-2.5 num">3.0M</td><td class="px-4 py-2.5 text-brand">Movies specialist</td><td class="px-4 py-2.5 num">£1,250</td><td class="px-4 py-2.5"><span class="text-warn">●●●○○</span></td></tr>
+            <tr class="hover:bg-accent/40"><td class="px-4 py-2.5 font-medium">Sociaty</td><td class="px-4 py-2.5 num">2.3M</td><td class="px-4 py-2.5 text-muted-foreground">Headline</td><td class="px-4 py-2.5 num">£650</td><td class="px-4 py-2.5"><span class="text-ok">●●●●●</span></td></tr>
+            <tr class="hover:bg-accent/40"><td class="px-4 py-2.5 font-medium">howmoviesarefilmed</td><td class="px-4 py-2.5 num">1.5M</td><td class="px-4 py-2.5 text-brand">Movies specialist</td><td class="px-4 py-2.5 num">£800</td><td class="px-4 py-2.5"><span class="text-warn">●●●○○</span></td></tr>
+            <tr class="hover:bg-accent/40"><td class="px-4 py-2.5 font-medium">spottedhollywood</td><td class="px-4 py-2.5 num">1.3M</td><td class="px-4 py-2.5 text-brand">Movies specialist</td><td class="px-4 py-2.5 num">—</td><td class="px-4 py-2.5"><span class="text-muted-foreground">●○○○○</span></td></tr>
+            <tr class="hover:bg-accent/40"><td class="px-4 py-2.5 font-medium">MoviesOfScary</td><td class="px-4 py-2.5 num">638K</td><td class="px-4 py-2.5 text-brand">Movies specialist</td><td class="px-4 py-2.5 num">£160</td><td class="px-4 py-2.5"><span class="text-warn">●●○○○</span></td></tr>
+            <tr class="hover:bg-accent/40"><td class="px-4 py-2.5 font-medium">movienaton</td><td class="px-4 py-2.5 num">551K</td><td class="px-4 py-2.5 text-brand">Movies specialist</td><td class="px-4 py-2.5 num">£300</td><td class="px-4 py-2.5"><span class="text-warn">●●○○○</span></td></tr>
+            <tr class="hover:bg-accent/40"><td class="px-4 py-2.5 font-medium">thefilmmemes</td><td class="px-4 py-2.5 num">329K</td><td class="px-4 py-2.5 text-brand">Movies specialist</td><td class="px-4 py-2.5 num">—</td><td class="px-4 py-2.5"><span class="text-muted-foreground">●○○○○</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="col-span-5">
+      <h2 class="font-semibold mb-3">Proof campaigns</h2>
+      <div id="moviesCampaigns" class="space-y-3"></div>
+    </div>
+  </div>
+
+  <!-- Creators in Movies bundle -->
+  <h2 class="font-semibold mb-3">Creators in this bundle</h2>
+  <div class="rounded-lg border border-border overflow-hidden bg-card mb-6">
+    <table class="w-full text-sm">
+      <thead class="bg-muted/50 text-xs"><tr class="text-left"><th class="px-4 py-2.5 font-medium text-muted-foreground">Creator</th><th class="px-4 py-2.5 font-medium text-muted-foreground">Status</th><th class="px-4 py-2.5 font-medium text-muted-foreground">Play</th><th class="px-4 py-2.5 font-medium text-muted-foreground">Reach</th><th class="px-4 py-2.5 font-medium text-muted-foreground">Niche</th><th class="px-4 py-2.5 font-medium text-muted-foreground">Model</th><th class="px-4 py-2.5 font-medium text-muted-foreground">Owner</th></tr></thead>
+      <tbody id="moviesCreatorsTbody" class="divide-y divide-border"></tbody>
+    </table>
+    <div class="px-4 py-3 text-xs text-muted-foreground bg-muted/50 border-t border-border">Movies-relevant creators · click into Creators tab for full roster</div>
+  </div>
+
+  <!-- Extended Network inventory for Movies -->
+  <h2 class="font-semibold mb-3">Extended Network inventory for Movies</h2>
+  <div class="grid grid-cols-3 gap-4">
+    <div class="rounded-lg border border-destructive/40 bg-card p-5">
+      <div class="flex items-center justify-between mb-2"><div class="flex items-center gap-2"><span class="text-lg">📺</span><div class="font-semibold">YouTube Pre-Roll</div></div><span class="pill bg-destructive/15 text-destructive">Not live</span></div>
+      <div class="text-xs text-muted-foreground">Vuture US movie inventory · highest CPM unlock for Movies bundle. Gated on commercial timeline.</div>
+    </div>
+    <div class="rounded-lg border border-border bg-card p-5">
+      <div class="flex items-center justify-between mb-2"><div class="flex items-center gap-2"><span class="text-lg">🎞️</span><div class="font-semibold">Clipping Network</div></div><span class="pill bg-warn/15 text-warn">In dev</span></div>
+      <div class="text-xs text-muted-foreground">Trailer-driven video format across community pages. Strong fit for theatrical launches.</div>
+    </div>
+    <div class="rounded-lg border border-border bg-card p-5 opacity-70">
+      <div class="flex items-center justify-between mb-2"><div class="flex items-center gap-2"><span class="text-lg">🪧</span><div class="font-semibold">Out-of-Home</div></div><span class="pill bg-muted text-muted-foreground">Not yet</span></div>
+      <div class="text-xs text-muted-foreground">Cinema lobby + transit ad inventory tie-ins. Exploration phase.</div>
+    </div>
+  </div>
+</section>
+
+<!-- Generic vertical workspace -->
+<section data-pane="vertical-generic" class="pane hidden">
+  <button onclick="switchTab('verticals')" class="text-sm text-muted-foreground hover:text-foreground mb-4 flex items-center gap-1">← All verticals</button>
+  <div class="mb-8 flex items-center gap-3">
+    <span class="text-3xl" id="genericIcon">🎯</span>
+    <h1 class="text-3xl font-bold tracking-tight" id="genericName">Vertical</h1>
+    <span class="pill bg-muted text-muted-foreground font-semibold" id="genericStatus">NOT YET BUILT</span>
+  </div>
+  <p class="text-muted-foreground mb-8" id="genericSub">Bundle not yet built.</p>
+  <div class="rounded-lg border border-border bg-card p-8">
+    <h3 class="font-semibold mb-4">To make this vertical sellable</h3>
+    <ol class="text-sm text-foreground/80 space-y-3 list-decimal pl-5 mb-6">
+      <li>Identify 5-10 premium pages aligned to the vertical</li>
+      <li>Sign tier-1 specialists + multi-vertical anchors that already work</li>
+      <li>Run pilot campaigns to generate proof</li>
+      <li>Set CPM rate card</li>
+      <li>Generate pitch one-pager</li>
+    </ol>
+    <button class="px-4 h-9 bg-brand text-brand-foreground hover:bg-brand/90 rounded-md text-sm font-semibold">+ Start building this bundle</button>
+  </div>
+</section>
+
+<!-- ═══════════════ ALL CAMPAIGNS (timeline) ═══════════════ -->
+<section data-pane="campaigns" class="pane hidden">
+  <div class="mb-6">
+    <h1 class="text-3xl font-bold tracking-tight mb-1">Campaigns</h1>
+    <p class="text-muted-foreground">Every campaign linked to its partners. Click any to drill in.</p>
+  </div>
+  <div class="rounded-lg border border-border bg-card p-6 mb-6">
+    <h3 class="font-semibold mb-4">ROI by vertical · 6 logged campaigns</h3>
+    <div class="grid grid-cols-3 gap-6 text-sm">
+      <div><div class="label text-muted-foreground mb-1">Travel (Yas Island)</div><div class="flex items-baseline gap-2"><div class="text-2xl font-bold text-ok num">19.5M</div><div class="text-xs text-muted-foreground">total views</div></div><div class="text-xs text-muted-foreground mt-1">3 campaigns · £113K · £0.58 CPV</div></div>
+      <div><div class="label text-muted-foreground mb-1">QSR (Chili's)</div><div class="flex items-baseline gap-2"><div class="text-2xl font-bold text-ok num">20M</div><div class="text-xs text-muted-foreground">total views</div></div><div class="text-xs text-ok mt-1">154% of 13M target</div></div>
+      <div><div class="label text-muted-foreground mb-1">Gaming (Epic)</div><div class="flex items-baseline gap-2"><div class="text-2xl font-bold text-destructive num">4.8M</div><div class="text-xs text-muted-foreground">total views</div></div><div class="text-xs text-destructive mt-1">24% of 20M target</div></div>
+    </div>
+  </div>
+  <div class="rounded-lg border border-border bg-card p-6">
+    <h3 class="font-semibold mb-4">All campaigns · timeline</h3>
+    <div id="allTimeline" class="space-y-6"></div>
+  </div>
+</section>
+
+<!-- ═══════════════ BRIEF BUILDER ═══════════════ -->
+<section data-pane="brief" class="pane hidden">
+  <div class="mb-6 flex items-end justify-between">
+    <div>
+      <h1 class="text-3xl font-bold tracking-tight mb-1">Brief Builder</h1>
+      <p class="text-muted-foreground">Build a client brief and get a packaged proposal back. Plugs into pages, creators and Extended Network inventory automatically.</p>
+    </div>
+    <div class="flex items-center gap-2">
+      <button id="loadSampleBrief" class="px-4 h-9 border border-border hover:bg-accent rounded-md text-sm font-medium">Load sample brief</button>
+      <button id="resetBrief" class="px-4 h-9 border border-border hover:bg-accent rounded-md text-sm font-medium">Clear</button>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-12 gap-6">
+    <!-- LEFT: FORM -->
+    <div class="col-span-5">
+      <div class="rounded-lg border border-border bg-card p-6 space-y-5 sticky top-20">
+        <h3 class="font-semibold">Brief details</h3>
+
+        <div>
+          <label class="label text-muted-foreground block mb-1.5">Client</label>
+          <input id="brief_client" type="text" placeholder="e.g. Yas Island" class="search-input w-full px-3 h-9 rounded-md text-sm" />
+        </div>
+
+        <div>
+          <label class="label text-muted-foreground block mb-1.5">Brand / property</label>
+          <input id="brief_brand" type="text" placeholder="e.g. Stranger Things final season" class="search-input w-full px-3 h-9 rounded-md text-sm" />
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="label text-muted-foreground block mb-1.5">Vertical</label>
+            <select id="brief_vertical" class="search-input w-full px-3 h-9 rounded-md text-sm">
+              <option value="">Pick…</option>
+              <option value="Movies">Movies</option>
+              <option value="Audio">Audio</option>
+              <option value="Gaming">Gaming</option>
+              <option value="TV+Streaming">TV + Streaming</option>
+              <option value="Travel">Travel</option>
+              <option value="Retail">Retail</option>
+              <option value="Tech">Tech</option>
+              <option value="QSR">QSR</option>
+              <option value="Finance">Finance</option>
+              <option value="Auto">Auto</option>
+              <option value="CPG">CPG</option>
+              <option value="Beauty">Beauty</option>
+              <option value="Pets">Pets</option>
+              <option value="Betting">Betting</option>
+            </select>
+          </div>
+          <div>
+            <label class="label text-muted-foreground block mb-1.5">Campaign type</label>
+            <select id="brief_type" class="search-input w-full px-3 h-9 rounded-md text-sm">
+              <option value="launch">Launch / event tie-in</option>
+              <option value="awareness">Awareness</option>
+              <option value="always-on">Always-on</option>
+              <option value="bespoke">Bespoke / custom</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="label text-muted-foreground block mb-1.5">Budget (£)</label>
+            <input id="brief_budget" type="number" placeholder="50000" class="search-input w-full px-3 h-9 rounded-md text-sm" />
+          </div>
+          <div>
+            <label class="label text-muted-foreground block mb-1.5">Target views</label>
+            <input id="brief_target" type="text" placeholder="e.g. 10M" class="search-input w-full px-3 h-9 rounded-md text-sm" />
+          </div>
+        </div>
+
+        <div>
+          <label class="label text-muted-foreground block mb-1.5">Regions</label>
+          <div class="flex flex-wrap gap-2">
+            <label class="pill border border-border bg-card cursor-pointer hover:bg-accent"><input type="checkbox" class="brief-region mr-1.5 align-middle" value="Global" />Global</label>
+            <label class="pill border border-border bg-card cursor-pointer hover:bg-accent"><input type="checkbox" class="brief-region mr-1.5 align-middle" value="UK" />UK</label>
+            <label class="pill border border-border bg-card cursor-pointer hover:bg-accent"><input type="checkbox" class="brief-region mr-1.5 align-middle" value="US" />US</label>
+            <label class="pill border border-border bg-card cursor-pointer hover:bg-accent"><input type="checkbox" class="brief-region mr-1.5 align-middle" value="LATAM" />LATAM</label>
+            <label class="pill border border-border bg-card cursor-pointer hover:bg-accent"><input type="checkbox" class="brief-region mr-1.5 align-middle" value="EU" />EU</label>
+            <label class="pill border border-border bg-card cursor-pointer hover:bg-accent"><input type="checkbox" class="brief-region mr-1.5 align-middle" value="UAE" />UAE</label>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="label text-muted-foreground block mb-1.5">Live from</label>
+            <input id="brief_start" type="date" class="search-input w-full px-3 h-9 rounded-md text-sm" />
+          </div>
+          <div>
+            <label class="label text-muted-foreground block mb-1.5">Live until</label>
+            <input id="brief_end" type="date" class="search-input w-full px-3 h-9 rounded-md text-sm" />
+          </div>
+        </div>
+
+        <div>
+          <label class="label text-muted-foreground block mb-1.5">Brief notes</label>
+          <textarea id="brief_notes" rows="3" placeholder="What the brand wants. Tone, references, no-go's…" class="search-input w-full px-3 py-2 rounded-md text-sm"></textarea>
+        </div>
+
+        <div class="pt-2 flex items-center gap-2">
+          <button id="saveBrief" class="px-4 h-9 bg-brand text-brand-foreground rounded-md text-sm font-semibold flex-1">Save brief →</button>
+          <button id="convertBrief" class="px-4 h-9 border border-border hover:bg-accent rounded-md text-sm font-medium">Convert to campaign</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: LIVE PACKAGE PREVIEW -->
+    <div class="col-span-7 space-y-4">
+
+      <!-- Best-fit summary -->
+      <div id="briefSummary" class="rounded-lg border border-border bg-card p-6">
+        <div class="text-sm text-muted-foreground">Fill the form on the left — package preview will build here in real time.</div>
+      </div>
+
+      <!-- Three tier cards -->
+      <div id="briefTiers" class="space-y-4 hidden">
+        <h3 class="font-semibold mt-2">Recommended packages</h3>
+        <div id="tier1" class="rounded-lg border border-border bg-card p-5"></div>
+        <div id="tier2" class="rounded-lg border border-border bg-card p-5"></div>
+        <div id="tier3" class="rounded-lg border-2 border-brand bg-card p-5"></div>
+      </div>
+
+      <!-- Honest gaps -->
+      <div id="briefGaps" class="rounded-lg border border-destructive/40 bg-card p-5 hidden">
+        <h3 class="font-semibold text-sm mb-2 flex items-center gap-2"><span class="dot bg-destructive"></span>What we can't deliver against this brief</h3>
+        <ul id="briefGapsList" class="text-sm text-foreground/80 space-y-1"></ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ═══════════════ ADD PAGE / CREATOR MODAL ═══════════════ -->
+<div id="modal" class="fixed inset-0 bg-black/60 z-50 hidden items-center justify-center p-6">
+  <div class="bg-card border border-border rounded-lg w-full max-w-md p-6">
+    <div class="flex items-center justify-between mb-5">
+      <h3 id="modalTitle" class="text-lg font-bold">Add</h3>
+      <button id="modalClose" class="text-muted-foreground hover:text-foreground text-xl leading-none">×</button>
+    </div>
+    <div id="modalBody" class="space-y-4"></div>
+    <div class="flex items-center gap-2 mt-6">
+      <button id="modalSave" class="px-4 h-9 bg-brand text-brand-foreground rounded-md text-sm font-semibold flex-1">Save</button>
+      <button id="modalCancel" class="px-4 h-9 border border-border hover:bg-accent rounded-md text-sm font-medium">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<footer class="mt-12 border-t border-border">
+  <div class="max-w-[1400px] mx-auto px-8 py-5 flex items-center justify-between text-xs text-muted-foreground">
+    <div>v0 prototype · 11 May 2026</div>
+    <div>Sources: Partner CRM · Campaign Tracker · deals.pubitypgl.com · Pubity+ Strategy · Ecosystem Strategy</div>
+  </div>
+</footer>
+
+<script>
+// =================== DATA ===================
+const CAMPAIGNS = [
+  {
+    id: 241, slug: '241', title: 'Yas Island × Stranger Things', client: 'Yas Island', vertical: 'Movies / TV',
+    date: '2026-05-08', dateLabel: 'May 2026', status: 'live', statusLabel: 'live',
+    views: '—', spend: '~£15K (est)', cpv: '—', partnersCount: 3,
+    partners: [{n:'Sociaty', f:'2.3M'}, {n:'Explaining', f:'8.2M'}, {n:'Wasted', f:'20.5M'}],
+    notes: 'UAE region. Stranger Things final season tie-in. Awaiting first-week performance data.',
+    timeline: [
+      { date: '2026-05-08', state: 'ok', text: '<b>Sociaty</b> live grid post · UAE' },
+      { date: '2026-05-08', state: 'ok', text: '<b>Explaining</b> live grid post' },
+      { date: '2026-04-28', state: 'warn', text: 'All 3 partners briefed via WhatsApp · Wasted asset approval pending' },
+      { date: '2026-04-22', state: 'muted', text: 'Brief shared with Aya · 3 partners selected' },
+      { date: '2026-04-18', state: 'muted', text: 'Yas Island confirmed Stranger Things campaign' }
+    ]
+  },
+  {
+    id: 231, slug: '231', title: 'Slime Life × Nickelodeon', client: 'Slime Life', vertical: 'Movies / Entertainment',
+    date: '2026-05-05', dateLabel: 'May 2026', status: 'live', statusLabel: 'live',
+    views: '—', spend: '—', cpv: '—', partnersCount: 6,
+    partners: [{n:'Mememanmyles', f:'1.2M'}, {n:'meme.ig', f:'14.3M'}, {n:'9GAG', f:'52.8M'}, {n:'8Fact', f:'12M'}, {n:'Ight', f:'10.9M'}, {n:'Wasted', f:'20.5M'}],
+    notes: 'US-targeted launch for new Nickelodeon Slime Life format. Six premium pages — biggest concurrent posting we\'ve run.',
+    timeline: [
+      { date: '2026-05-05', state: 'ok', text: '<b>9GAG</b> live grid post · US' },
+      { date: '2026-05-04', state: 'ok', text: '<b>meme.ig</b> live reel' },
+      { date: '2026-05-03', state: 'ok', text: '<b>Mememanmyles</b> + <b>Ight</b> + <b>Wasted</b> live' },
+      { date: '2026-04-29', state: 'muted', text: 'All 6 partners briefed' },
+      { date: '2026-04-22', state: 'muted', text: 'Slime Life campaign confirmed' }
+    ]
+  },
+  {
+    id: 173, slug: '173', title: 'Yas Island × Disney Announcement', client: 'Yas Island', vertical: 'Movies / Travel',
+    date: '2025-05-12', dateLabel: 'May 2025', status: 'ok', statusLabel: 'delivered',
+    views: '9.9M', target: '—', spend: '£25.5K', cpv: '£0.26', partnersCount: 8,
+    partners: [{n:'Wasted', f:'20.5M'}, {n:'Explaining', f:'8.2M'}, {n:'Insidehistory', f:'8.2M'}, {n:'Sociaty', f:'2.3M'}, {n:'8Facts', f:'12M'}, {n:'I\'m Just Bait', f:'5.3M'}, {n:'Earthpix', f:'22.9M'}],
+    notes: 'Global Extended Network campaign. Strongest performer in the Yas Island Movies series — built the proof case for the Movies bundle.',
+    timeline: [
+      { date: '2025-09-05', state: 'ok', text: '<b>Earthpix</b> final post live · 1.7M views' },
+      { date: '2025-05-10', state: 'ok', text: '<b>I\'m Just Bait</b> grid + story · UK' },
+      { date: '2025-05-08', state: 'ok', text: '<b>8Facts</b> grid · global · 5.5M views (top performer)' },
+      { date: '2025-05-08', state: 'ok', text: '<b>Insidehistory</b> + <b>Sociaty</b> grid posts · UK' },
+      { date: '2025-05-07', state: 'ok', text: '<b>Wasted</b> + <b>Explaining</b> grid posts · UK' },
+      { date: '2025-05-01', state: 'muted', text: 'All 8 partners briefed · Disney announcement embargo lifted' }
+    ]
+  },
+  {
+    id: 167, slug: '167', title: 'Chili\'s Big QP', client: "Chili's", vertical: 'QSR',
+    date: '2025-05-31', dateLabel: 'May 2025', status: 'ok', statusLabel: '154% — beat target',
+    views: '20M', target: '13M', spend: '£12.7K', cpv: '£0.06', partnersCount: 6,
+    partners: [{n:'Pun_Bible', f:'2.5M'}, {n:'Meme.IG', f:'14.3M'}, {n:'Explaining', f:'8.2M'}, {n:'TodayYearsOld', f:'9.6M'}, {n:'Wasted', f:'20.5M'}, {n:'MemeManMyles', f:'1.2M'}],
+    notes: 'Best ROI campaign on record. Multi-vertical pages worked beautifully for QSR despite no QSR-specific bundle. Case study ready.',
+    timeline: [
+      { date: '2025-06-15', state: 'ok', text: 'Final report · 154% of 13M target · CPV £0.06 (record low)' },
+      { date: '2025-05-31', state: 'ok', text: 'All 6 partners live in single day · concurrent posting' },
+      { date: '2025-05-28', state: 'muted', text: 'All 6 partners briefed · CPM model trial' },
+      { date: '2025-05-15', state: 'muted', text: 'Chili\'s Big QP campaign brief received' }
+    ]
+  },
+  {
+    id: 130, slug: '130', title: 'Epic Games · Fortnite OG Map', client: 'Epic Games', vertical: 'Gaming',
+    date: '2024-12-24', dateLabel: 'Dec 2024', status: 'fail', statusLabel: '24% — missed target',
+    views: '4.8M', target: '20M', spend: '£8.7K', cpv: '£1.81 (LATAM)', partnersCount: 14,
+    partners: [{n:'Controller', f:'1.1M'}, {n:'Comedy Slam', f:'10M'}, {n:'worldy.it', f:'528K'}, {n:'PlaymakerHQ', f:'—'}, {n:'sportscenter', f:'38.6M'}, {n:'momos_saad', f:'9.5M'}, {n:'fcmotivate', f:'—'}, {n:'memesdeutsch_', f:'166K'}, {n:'Ight', f:'10.9M'}, {n:'Todayyearsold', f:'9.6M'}, {n:'MemesBR', f:'—'}, {n:'Gaminglot', f:'271K'}, {n:'PCGaming1998', f:'—'}, {n:'El Kilombo', f:'—'}],
+    notes: 'Missed badly. LATAM CPV unsustainable (£1,811 per single post on momos_saad). Regional pricing model needs work. Some pages had high engagement (Controller 9.73%) but volume short.',
+    timeline: [
+      { date: '2025-01-15', state: 'fail', text: 'Final report · 4.8M of 20M target (24%) · investigate LATAM regional pricing' },
+      { date: '2025-01-02', state: 'warn', text: '<b>El Kilombo</b> LATAM grid · 435K views · £1,208 spend' },
+      { date: '2025-01-01', state: 'warn', text: '<b>Gaminglot</b> + <b>PCGaming1998</b> live · UK · combined 112K views' },
+      { date: '2024-12-31', state: 'warn', text: '<b>Todayyearsold</b> + <b>MemesBR</b> live · 1.3M views' },
+      { date: '2024-12-30', state: 'warn', text: '<b>Ight</b> + <b>memesdeutsch_</b> 2nd post · UK + DE' },
+      { date: '2024-12-29', state: 'warn', text: '<b>fcmotivate</b> + <b>memesdeutsch_</b> live · UK + DE' },
+      { date: '2024-12-28', state: 'ok', text: '<b>sportscenter</b> + <b>momos_saad</b> LATAM live · 1.06M views' },
+      { date: '2024-12-27', state: 'ok', text: '<b>PlaymakerHQ</b> live · UK · 277K views' },
+      { date: '2024-12-24', state: 'ok', text: 'First wave: <b>Controller</b>, <b>Comedy Slam</b>, <b>worldy.it</b> live' },
+      { date: '2024-12-20', state: 'muted', text: 'All 14 partners briefed · Fortnite OG Map launch' }
+    ]
+  },
+  {
+    id: 119, slug: '119', title: 'Yas Island × Shaq Rap', client: 'Yas Island', vertical: 'Travel',
+    date: '2024-11-12', dateLabel: 'Nov 2024', status: 'ok', statusLabel: 'delivered',
+    views: '3.3M', target: '—', spend: '£44.9K', cpv: '£1.35', partnersCount: 4,
+    partners: [{n:'LADBible', f:'15.5M'}, {n:'UNILAD', f:'—'}, {n:'RapTV', f:'—'}, {n:'Bars', f:'—'}],
+    notes: 'EN posts only. Best engagement on Bars (6%). RapTV strong organic uplift.',
+    timeline: [
+      { date: '2024-11-14', state: 'ok', text: '<b>RapTV</b> + <b>Bars</b> live · combined 2M views, 4-6% engagement' },
+      { date: '2024-11-13', state: 'ok', text: '<b>UNILAD</b> live · 412K views' },
+      { date: '2024-11-12', state: 'ok', text: '<b>LADBible</b> live · 895K views' },
+      { date: '2024-11-08', state: 'muted', text: 'All 4 partners briefed' }
+    ]
+  },
+  {
+    id: 57, slug: '57', title: 'Yas Island × Ryan Reynolds', client: 'Yas Island', vertical: 'Travel',
+    date: '2024-08-15', dateLabel: 'Aug 2024', status: 'ok', statusLabel: 'delivered',
+    views: '6.3M', target: '—', spend: '£43K', cpv: '£0.68', partnersCount: 3,
+    partners: [{n:'9GAG', f:'52.8M'}, {n:'UNILAD', f:'—'}, {n:'LADBible', f:'15.5M'}],
+    notes: 'First Yas Island campaign. Established the account relationship that became the four-campaign sequence.',
+    timeline: [
+      { date: '2024-08-22', state: 'ok', text: 'Final delivery · 6.3M views across 3 partners' },
+      { date: '2024-08-15', state: 'ok', text: 'All 3 partners live concurrent' },
+      { date: '2024-08-08', state: 'muted', text: 'Briefing complete · Yas Island first campaign' }
+    ]
+  }
+];
+
+let PAGES = [
+  // Onboarded — premium core
+  { handle:'9GAG', status:'onboarded', followers:'52.8M', vertical:'Multi', market:'Global', comms:'IG DM', last:'3 days', cpm:'£12,000', star:true },
+  { handle:'Wasted', status:'onboarded', followers:'20.5M', vertical:'Humour', market:'Global', comms:'IG DM', last:'1 day', cpm:'£2,500', star:true },
+  { handle:'ladbible', status:'onboarded', followers:'15.5M', vertical:'Multi', market:'UK', comms:'Email', last:'1 day', cpm:'£20,000', star:true },
+  { handle:'meme.ig', status:'onboarded', followers:'14.3M', vertical:'Memes', market:'Global', comms:'IG DM', last:'2 days', cpm:'£3,000', star:true },
+  { handle:'ight', status:'onboarded', followers:'10.9M', vertical:'Memes', market:'Global', comms:'Email', last:'4 days', cpm:'£1,500', star:true },
+  { handle:'todayyearsold', status:'onboarded', followers:'9.6M', vertical:'Facts', market:'Global', comms:'IG DM', last:'5 days', cpm:'£2,500', star:true },
+  { handle:'Insidehistory', status:'onboarded', followers:'8.2M', vertical:'Headline', market:'Global', comms:'Slack', last:'2 days', cpm:'£700', star:true },
+  { handle:'Explaining', status:'onboarded', followers:'8.2M', vertical:'Multi', market:'Global', comms:'Slack', last:'1 day', cpm:'£4,000', star:true },
+  { handle:'sportscenter', status:'onboarded', followers:'38.6M', vertical:'Sports', market:'Global', comms:'WhatsApp', last:'7 days', cpm:'—', star:false },
+  { handle:'fruitsnacks', status:'onboarded', followers:'3.7M', vertical:'Memes', market:'Global', comms:'Slack', last:'6 days', cpm:'—', star:true },
+  { handle:'archbishopofbantebury', status:'onboarded', followers:'4.6M', vertical:'UK', market:'UK', comms:'IG DM', last:'9 days', cpm:'£4,000', star:false },
+  { handle:'pun_bible', status:'onboarded', followers:'2.5M', vertical:'Memes', market:'Global', comms:'IG DM', last:'5 days', cpm:'£800', star:false },
+  { handle:'Sociaty', status:'onboarded', followers:'2.3M', vertical:'Headline', market:'Global', comms:'Slack', last:'3 days', cpm:'£650', star:true },
+  { handle:'Mememanmyles', status:'onboarded', followers:'1.2M', vertical:'Memes', market:'Global', comms:'Slack', last:'4 days', cpm:'£400', star:false },
+  { handle:'hoodville', status:'onboarded', followers:'9.5M', vertical:'Memes', market:'Global', comms:'IG DM', last:'7 days', cpm:'£3,500', star:false },
+  { handle:'pickuplines', status:'onboarded', followers:'7.7M', vertical:'Memes', market:'Global', comms:'IG DM', last:'4 days', cpm:'£600', star:false },
+  { handle:'explainingtheuniverse', status:'onboarded', followers:'4.7M', vertical:'Memes', market:'Global', comms:'IG DM', last:'5 days', cpm:'£500', star:false },
+  { handle:'thehoodsfinest', status:'onboarded', followers:'4.4M', vertical:'Headline', market:'Global', comms:'IG DM', last:'6 days', cpm:'£1,000', star:false },
+  { handle:'NiceKicks', status:'onboarded', followers:'4.8M', vertical:'Retail', market:'Global', comms:'IG DM', last:'8 days', cpm:'—', star:false },
+  { handle:'scoobydoofruitsnacks', status:'onboarded', followers:'4M', vertical:'Memes', market:'Global', comms:'IG DM', last:'5 days', cpm:'£2,000', star:false },
+  { handle:'foodporn', status:'onboarded', followers:'3.4M', vertical:'Food', market:'Global', comms:'IG DM', last:'9 days', cpm:'—', star:false },
+  { handle:'forrtnite', status:'onboarded', followers:'2.7M', vertical:'Gaming', market:'Global', comms:'IG DM', last:'6 days', cpm:'£500', star:false },
+  { handle:'chatgptricks', status:'onboarded', followers:'2.6M', vertical:'Tech', market:'Global', comms:'IG DM', last:'4 days', cpm:'£3,000', star:false },
+  { handle:'nflmemes_ig', status:'onboarded', followers:'2.4M', vertical:'Sports', market:'Global', comms:'IG DM', last:'7 days', cpm:'—', star:false },
+  { handle:'instatroll_football', status:'onboarded', followers:'3M', vertical:'Sports', market:'Global', comms:'IG DM', last:'6 days', cpm:'£1,900', star:false },
+  { handle:'urbantv', status:'onboarded', followers:'1.7M', vertical:'Memes', market:'Global', comms:'IG DM', last:'10 days', cpm:'£550', star:false },
+  { handle:'houseofheat', status:'onboarded', followers:'1.4M', vertical:'Retail', market:'Global', comms:'IG DM', last:'12 days', cpm:'—', star:false },
+  { handle:'shitpostsonlyig', status:'onboarded', followers:'998K', vertical:'Memes', market:'Global', comms:'IG DM', last:'8 days', cpm:'—', star:false },
+  { handle:'jokeshub', status:'onboarded', followers:'970K', vertical:'Memes', market:'Global', comms:'IG DM', last:'9 days', cpm:'£150', star:false },
+  { handle:'beanexplains', status:'onboarded', followers:'759K', vertical:'Memes', market:'Global', comms:'IG DM', last:'10 days', cpm:'£120', star:false },
+  { handle:'fuckyourluck', status:'onboarded', followers:'724K', vertical:'Memes', market:'Global', comms:'IG DM', last:'11 days', cpm:'£85', star:false },
+  { handle:'thefutbolmoments', status:'onboarded', followers:'487K', vertical:'Sports', market:'Global', comms:'IG DM', last:'8 days', cpm:'—', star:false },
+  { handle:'momos_saad', status:'onboarded', followers:'9.5M', vertical:'Multi', market:'LATAM', comms:'WhatsApp', last:'13 days', cpm:'—', star:false },
+  { handle:'memesdeutsch', status:'onboarded', followers:'166K', vertical:'Multi', market:'EU', comms:'WhatsApp', last:'14 days', cpm:'£200', star:false },
+  { handle:'worldy.it', status:'onboarded', followers:'528K', vertical:'Multi', market:'EU', comms:'WhatsApp', last:'12 days', cpm:'—', star:false },
+  { handle:'UKSlaps', status:'onboarded', followers:'235K', vertical:'UK', market:'UK', comms:'Slack', last:'9 days', cpm:'—', star:false },
+  // Onboarded — Movies specialists
+  { handle:'MarvelMovies', status:'onboarded', followers:'3.0M', vertical:'Movies', market:'Global', comms:'IG DM', last:'5 days', cpm:'£1,250', star:false },
+  { handle:'howmoviesarefilmed', status:'onboarded', followers:'1.5M', vertical:'Movies', market:'Global', comms:'IG DM', last:'8 days', cpm:'£800', star:false },
+  { handle:'spottedhollywood', status:'onboarded', followers:'1.3M', vertical:'Movies', market:'Global', comms:'IG DM', last:'12 days', cpm:'—', star:false },
+  { handle:'MoviesOfScary', status:'onboarded', followers:'638K', vertical:'Movies', market:'Global', comms:'IG DM', last:'9 days', cpm:'£160', star:false },
+  { handle:'movienaton', status:'onboarded', followers:'551K', vertical:'Movies', market:'Global', comms:'IG DM', last:'14 days', cpm:'£300', star:false },
+  { handle:'thefilmmemes', status:'onboarded', followers:'329K', vertical:'Movies', market:'Global', comms:'IG DM', last:'11 days', cpm:'—', star:false },
+  // In conversation
+  { handle:'Earthpix', status:'in-conv', followers:'22.9M', vertical:'Travel', market:'Global', comms:'IG DM', last:'2 days', cpm:'£7,473', star:true },
+  { handle:'wealth', status:'in-conv', followers:'14.5M', vertical:'Finance', market:'Global', comms:'IG DM', last:'17 days', cpm:'—', star:true, cold:true },
+  { handle:'good_news_movement', status:'in-conv', followers:'5.5M', vertical:'Headline', market:'Global', comms:'IG DM', last:'21 days', cpm:'—', star:true, cold:true },
+  { handle:'filmatic', status:'in-conv', followers:'3.5M', vertical:'Movies', market:'Global', comms:'IG DM', last:'15 days', cpm:'—', star:false, cold:true },
+  { handle:'rapup', status:'in-conv', followers:'812K', vertical:'Music', market:'Global', comms:'IG DM', last:'8 days', cpm:'—', star:false },
+  { handle:'rapradar', status:'in-conv', followers:'—', vertical:'Music', market:'Global', comms:'IG DM', last:'9 days', cpm:'—', star:false },
+  { handle:'popculture', status:'in-conv', followers:'1.1M', vertical:'Entertainment', market:'Global', comms:'IG DM', last:'7 days', cpm:'—', star:false },
+  { handle:'10pmcurfew', status:'in-conv', followers:'40.7K', vertical:'Female', market:'Global', comms:'Slack', last:'6 days', cpm:'—', star:true },
+  { handle:'lowbattery', status:'in-conv', followers:'6.5K', vertical:'Multi', market:'Global', comms:'WhatsApp', last:'8 days', cpm:'—', star:true },
+  { handle:'ovary', status:'in-conv', followers:'1.2M', vertical:'Female', market:'Global', comms:'Slack', last:'10 days', cpm:'—', star:false },
+  { handle:'causewerefemales', status:'in-conv', followers:'574K', vertical:'Female', market:'Global', comms:'Email', last:'12 days', cpm:'—', star:false },
+  { handle:'girlsclub', status:'in-conv', followers:'1.95M', vertical:'Female', market:'Global', comms:'Email', last:'12 days', cpm:'—', star:false },
+  { handle:'femalesproblems', status:'in-conv', followers:'1.1M', vertical:'Female', market:'Global', comms:'Email', last:'14 days', cpm:'—', star:false },
+  // Prospects
+  { handle:'theshaderoom', status:'prospect', followers:'28.7M', vertical:'Entertainment', market:'Global', comms:'IG DM', last:'never', cpm:'—', star:true },
+  { handle:'worldstar', status:'prospect', followers:'44.7M', vertical:'Entertainment', market:'Global', comms:'IG DM', last:'never', cpm:'—', star:true },
+  { handle:'beautifuldestinations', status:'prospect', followers:'24.7M', vertical:'Travel', market:'Global', comms:'IG DM', last:'30 days', cpm:'—', star:false },
+  { handle:'doingthingsmedia', status:'prospect', followers:'12M', vertical:'Multi', market:'Global', comms:'Email', last:'never', cpm:'—', star:true },
+  { handle:'hypebeast', status:'prospect', followers:'10.5M', vertical:'Retail', market:'Global', comms:'IG DM', last:'never', cpm:'—', star:true },
+  { handle:'comedyslam', status:'prospect', followers:'10.2M', vertical:'Humour', market:'Global', comms:'IG DM', last:'18 days', cpm:'—', star:false },
+  { handle:'sneakernews', status:'prospect', followers:'10M', vertical:'Retail', market:'Global', comms:'IG DM', last:'never', cpm:'—', star:false },
+  { handle:'complex', status:'prospect', followers:'10.8M', vertical:'Entertainment', market:'Global', comms:'IG DM', last:'never', cpm:'—', star:true },
+  { handle:'hoodclips', status:'prospect', followers:'11.1M', vertical:'UK', market:'UK', comms:'IG DM', last:'never', cpm:'—', star:false },
+  { handle:'imjustbait', status:'prospect', followers:'5.3M', vertical:'UK', market:'Global', comms:'IG DM', last:'10 days', cpm:'—', star:false },
+  { handle:'twisted', status:'prospect', followers:'5.2M', vertical:'Food', market:'Global', comms:'IG DM', last:'never', cpm:'—', star:false },
+  { handle:'upworthy', status:'prospect', followers:'4.9M', vertical:'Headline', market:'Global', comms:'IG DM', last:'never', cpm:'—', star:false },
+  { handle:'foodys', status:'prospect', followers:'7.2M', vertical:'Food', market:'Global', comms:'IG DM', last:'never', cpm:'—', star:false },
+  { handle:'middleclassfancy', status:'prospect', followers:'3.4M', vertical:'Lifestyle', market:'Global', comms:'IG DM', last:'never', cpm:'—', star:true },
+  { handle:'kalesalad', status:'prospect', followers:'3.1M', vertical:'Memes', market:'Global', comms:'IG DM', last:'never', cpm:'—', star:true },
+  { handle:'humor', status:'prospect', followers:'3.4M', vertical:'Memes', market:'Global', comms:'IG DM', last:'never', cpm:'—', star:false },
+  { handle:'highsnobiety', status:'prospect', followers:'5.4M', vertical:'Retail', market:'Global', comms:'IG DM', last:'never', cpm:'—', star:false },
+  { handle:'rizzeduk', status:'prospect', followers:'1.6M', vertical:'UK', market:'UK', comms:'IG DM', last:'never', cpm:'—', star:false },
+  { handle:'grmdaily', status:'prospect', followers:'2.3M', vertical:'Music', market:'UK', comms:'IG DM', last:'never', cpm:'—', star:false },
+  { handle:'gamelancer', status:'prospect', followers:'822K', vertical:'Gaming', market:'Global', comms:'IG DM', last:'never', cpm:'—', star:false },
+  { handle:'thescoreesports', status:'prospect', followers:'365K', vertical:'Gaming', market:'Global', comms:'IG DM', last:'never', cpm:'—', star:false },
+  { handle:'hotnewhiphop', status:'prospect', followers:'957K', vertical:'Music', market:'Global', comms:'IG DM', last:'never', cpm:'—', star:false },
+  { handle:'bossipofficial', status:'prospect', followers:'646K', vertical:'Entertainment', market:'Global', comms:'IG DM', last:'never', cpm:'—', star:false },
+  { handle:'lonelyplanet', status:'prospect', followers:'3.4M', vertical:'Travel', market:'Global', comms:'IG DM', last:'never', cpm:'—', star:true },
+  { handle:'controller', status:'prospect', followers:'1.1M', vertical:'Gaming', market:'Global', comms:'IG DM', last:'never', cpm:'—', star:true },
+  { handle:'lovinsaudi', status:'prospect', followers:'598K', vertical:'Travel', market:'UAE', comms:'IG DM', last:'never', cpm:'—', star:false },
+  { handle:'lovindubai', status:'prospect', followers:'1.7M', vertical:'Travel', market:'UAE', comms:'IG DM', last:'never', cpm:'—', star:false }
+];
+
+let CREATORS = [
+  { name:'Creator A · Food page', play:'play1', status:'signed', reach:'180M FB', niche:'Food', model:'50/50 rev share', owner:'Danny', signal:'rising' },
+  { name:'Creator B · Sports highlights', play:'play1', status:'signed', reach:'220M FB', niche:'Sports', model:'50/50 rev share', owner:'Danny', signal:'flat' },
+  { name:'Creator C · Lifestyle clips', play:'play1', status:'signed', reach:'130M FB', niche:'Lifestyle', model:'50/50 rev share', owner:'Danny', signal:'rising' },
+  { name:'Creator D · Comedy reels', play:'play1', status:'signed', reach:'190M FB', niche:'Comedy', model:'50/50 rev share', owner:'Danny', signal:'rising' },
+  { name:'Creator E · Drama edits', play:'play1', status:'signed', reach:'160M FB', niche:'Entertainment', model:'50/50 rev share', owner:'Danny', signal:'flat' },
+  { name:'Creator F · News headlines', play:'play1', status:'signed', reach:'120M FB', niche:'News', model:'50/50 rev share', owner:'Danny', signal:'declining' },
+  { name:'Food creator collective', play:'play2', status:'active', reach:'~50M IG', niche:'Food', model:'Brand campaign', owner:'Seb', signal:'in pitch' },
+  { name:'Travel YouTuber tier-1', play:'play2', status:'active', reach:'4.2M YT', niche:'Travel', model:'Sponsored series', owner:'Seb', signal:'in pitch' },
+  { name:'Gaming streamer (US)', play:'play2', status:'active', reach:'2.8M Twitch', niche:'Gaming', model:'Brand integration', owner:'Seb', signal:'awaiting' },
+  { name:'Beauty creator (UK)', play:'play2', status:'active', reach:'1.4M IG', niche:'Beauty', model:'Pubity + creator package', owner:'Seb', signal:'in pitch' },
+  { name:'Fitness creator (US)', play:'play2', status:'active', reach:'3.1M IG', niche:'Fitness', model:'Brand integration', owner:'Seb', signal:'in pitch' },
+  { name:'Tech reviewer', play:'play2', status:'active', reach:'1.8M YT', niche:'Tech', model:'Sponsored video', owner:'Seb', signal:'awaiting' },
+  { name:'Lifestyle micro-collective (5)', play:'play2', status:'active', reach:'~8M', niche:'Lifestyle', model:'Bundled package', owner:'Seb', signal:'in pitch' },
+  { name:'Football creator (UK)', play:'play2', status:'active', reach:'2.4M IG', niche:'Sports', model:'Brand activation', owner:'Seb', signal:'won' },
+  { name:'F&B creator (NYC)', play:'play2', status:'active', reach:'900K IG', niche:'Food', model:'Restaurant launch', owner:'Seb', signal:'in pitch' },
+  { name:'Comedy duo (US)', play:'play2', status:'early', reach:'5.6M IG', niche:'Comedy', model:'TBD', owner:'Seb', signal:'discovery' },
+  { name:'Wellness creator', play:'play2', status:'early', reach:'1.1M IG', niche:'Wellness', model:'TBD', owner:'Seb', signal:'discovery' },
+  { name:'Pop culture commentator', play:'play2', status:'early', reach:'2.2M TikTok', niche:'Entertainment', model:'TBD', owner:'Seb', signal:'discovery' },
+  { name:'Auto creator (UK)', play:'play2', status:'early', reach:'820K IG', niche:'Auto', model:'TBD', owner:'Seb', signal:'discovery' },
+  { name:'Finance creator (US)', play:'play2', status:'early', reach:'1.5M IG', niche:'Finance', model:'TBD', owner:'Seb', signal:'discovery' },
+  { name:'Sports docu-series creator', play:'play3', status:'active', reach:'600K YT', niche:'Sports', model:'15% commission', owner:'Kit + Alex + Seb', signal:'season 1 in market' },
+  { name:'Music interview format', play:'play3', status:'active', reach:'1.1M YT', niche:'Music', model:'20% commission', owner:'Kit + Alex + Seb', signal:'season 2 negotiating' },
+  { name:'Cooking show concept', play:'play3', status:'early', reach:'—', niche:'Food', model:'Co-development', owner:'Kit + Alex', signal:'pitching to network' }
+];
+
+// =================== HISTORY (for back button) ===================
+let prevTab = 'home';
+
+// =================== STATUS HELPERS ===================
+function statusPillCampaign(s, label) {
+  const map = { ok: 'bg-ok/15 text-ok', warn: 'bg-warn/15 text-warn', fail: 'bg-destructive/15 text-destructive', live: 'bg-warn/15 text-warn' };
+  return `<span class="pill ${map[s] || 'bg-muted text-muted-foreground'}">${label}</span>`;
+}
+function statusPill(status, cold) {
+  if (cold) return `<span class="pill bg-destructive/15 text-destructive"><span class="dot bg-destructive pulse-dot"></span>Cold</span>`;
+  if (status === 'onboarded') return `<span class="pill bg-ok/15 text-ok">Onboarded</span>`;
+  if (status === 'in-conv') return `<span class="pill bg-warn/15 text-warn">In conv.</span>`;
+  if (status === 'prospect') return `<span class="pill bg-muted text-muted-foreground">Prospect</span>`;
+  return '';
+}
+function creatorStatusPill(status) {
+  if (status === 'signed') return `<span class="pill bg-brand/15 text-brand">Signed</span>`;
+  if (status === 'active') return `<span class="pill bg-ok/15 text-ok">Active</span>`;
+  if (status === 'early') return `<span class="pill bg-muted text-muted-foreground">Early</span>`;
+  return '';
+}
+function playLabel(play) {
+  return play === 'play1' ? 'Rev Share' : play === 'play2' ? 'Commercial' : play === 'play3' ? 'Shows + IP' : '';
+}
+
+// =================== TIMELINE RENDERER ===================
+function renderCampaignsTimeline(target, list) {
+  const el = document.getElementById(target);
+  if (!el) return;
+  el.innerHTML = list.map(c => `
+    <div class="timeline-item cursor-pointer group" onclick="openCampaign(${c.id})">
+      <div class="timeline-dot ${c.status}"></div>
+      <div class="flex items-start justify-between gap-4 -mt-1">
+        <div class="flex-1">
+          <div class="text-xs text-muted-foreground mb-0.5">${c.dateLabel} · ${c.vertical}</div>
+          <div class="font-semibold group-hover:text-brand transition-colors">${c.title}</div>
+          <div class="text-xs text-muted-foreground mt-0.5">${c.partnersCount} partners · ${c.client}</div>
+        </div>
+        <div class="text-right shrink-0">
+          <div class="font-mono text-sm ${c.status === 'fail' ? 'text-destructive' : c.status === 'ok' ? 'text-ok' : 'text-warn'}">${c.views !== '—' ? c.views : 'in flight'}</div>
+          <div class="text-xs text-muted-foreground">${c.target ? 'vs ' + c.target : c.statusLabel}</div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// =================== CAMPAIGN DETAIL ===================
+function openCampaign(id) {
+  const c = CAMPAIGNS.find(x => x.id === id);
+  if (!c) return;
+  prevTab = currentTab;
+  document.getElementById('cdMeta').textContent = `#${c.slug} · ${c.dateLabel} · ${c.vertical}`;
+  document.getElementById('cdTitle').textContent = c.title;
+  document.getElementById('cdClient').textContent = c.client;
+  document.getElementById('cdStatus').outerHTML = `<span id="cdStatus" class="pill ${c.status === 'ok' ? 'bg-ok/15 text-ok' : c.status === 'fail' ? 'bg-destructive/15 text-destructive' : 'bg-warn/15 text-warn'} font-semibold">${c.statusLabel}</span>`;
+  document.getElementById('cdViews').textContent = c.views;
+  document.getElementById('cdViews').className = `text-3xl font-bold num ${c.status === 'fail' ? 'text-destructive' : c.status === 'ok' ? 'text-ok' : ''}`;
+  document.getElementById('cdTarget').textContent = c.target ? `vs ${c.target} target` : c.statusLabel;
+  document.getElementById('cdSpend').textContent = c.spend;
+  document.getElementById('cdCPV').textContent = c.cpv;
+  document.getElementById('cdPartners').textContent = c.partnersCount;
+  document.getElementById('cdNotes').textContent = c.notes;
+  document.getElementById('cdPartnerList').innerHTML = c.partners.map(p => `
+    <div class="flex items-center justify-between border-b border-border last:border-0 pb-2 last:pb-0">
+      <span class="font-medium">${p.n}</span>
+      <span class="text-muted-foreground num">${p.f}</span>
+    </div>
+  `).join('');
+  document.getElementById('cdTimeline').innerHTML = c.timeline.map(t => `
+    <div class="timeline-item">
+      <div class="timeline-dot ${t.state}"></div>
+      <div class="-mt-0.5">
+        <div class="text-xs text-muted-foreground mb-0.5">${formatDate(t.date)}</div>
+        <div class="text-sm">${t.text}</div>
+      </div>
+    </div>
+  `).join('');
+  showPaneOnly('campaign-detail');
+  highlightTab(null); // no tab active for detail view
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function formatDate(iso) {
+  const d = new Date(iso);
+  return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+function goBack() {
+  switchTab(prevTab || 'home');
+}
+
+// =================== PAGES TABLE ===================
+let pagesFilter = 'all';
+let pagesSort = { key: 'followers', dir: 'desc' };
+function parseLastDays(s) {
+  if (!s || s === 'never' || s === 'flagged') return 9999;
+  const n = parseInt(s, 10);
+  return isNaN(n) ? 9999 : n;
+}
+function parseCpmNum(s) {
+  if (!s || s === '—') return -1;
+  return parseInt(s.replace(/[£$,]/g, ''), 10) || -1;
+}
+function renderPages() {
+  const q = (document.getElementById('pagesSearch')?.value || '').toLowerCase().trim();
+  let filtered = PAGES.filter(p => {
+    const matchSearch = !q || p.handle.toLowerCase().includes(q) || p.vertical.toLowerCase().includes(q) || p.market.toLowerCase().includes(q) || p.comms.toLowerCase().includes(q);
+    let matchFilter = true;
+    if (pagesFilter === 'onboarded') matchFilter = p.status === 'onboarded';
+    else if (pagesFilter === 'in-conv') matchFilter = p.status === 'in-conv';
+    else if (pagesFilter === 'prospect') matchFilter = p.status === 'prospect';
+    else if (pagesFilter === 'cold') matchFilter = !!p.cold;
+    else if (pagesFilter === 'premium') matchFilter = !!p.star;
+    else if (pagesFilter === 'movies') matchFilter = p.vertical === 'Movies';
+    else if (pagesFilter === 'uk') matchFilter = p.market === 'UK';
+    return matchSearch && matchFilter;
+  });
+  // Sort
+  const k = pagesSort.key;
+  filtered.sort((a, b) => {
+    let av, bv;
+    if (k === 'followers') { av = parseFollowers(a.followers); bv = parseFollowers(b.followers); }
+    else if (k === 'cpm') { av = parseCpmNum(a.cpm); bv = parseCpmNum(b.cpm); }
+    else if (k === 'last') { av = parseLastDays(a.last); bv = parseLastDays(b.last); }
+    else { av = String(a[k] || '').toLowerCase(); bv = String(b[k] || '').toLowerCase(); }
+    if (av < bv) return pagesSort.dir === 'asc' ? -1 : 1;
+    if (av > bv) return pagesSort.dir === 'asc' ? 1 : -1;
+    return 0;
+  });
+  const tbody = document.getElementById('pagesTbody');
+  if (!tbody) return;
+  tbody.innerHTML = filtered.map(p => `
+    <tr class="hover:bg-accent/40">
+      <td class="px-4 py-2.5 font-medium">${p.handle}</td>
+      <td class="px-4 py-2.5">${statusPill(p.status, p.cold)}</td>
+      <td class="px-4 py-2.5 num">${p.followers}</td>
+      <td class="px-4 py-2.5 ${p.vertical === 'Movies' ? 'text-brand' : 'text-muted-foreground'}">${p.vertical}</td>
+      <td class="px-4 py-2.5 text-muted-foreground">${p.market}</td>
+      <td class="px-4 py-2.5 ${p.comms === 'Slack' ? 'text-ok' : 'text-muted-foreground'}">${p.comms}</td>
+      <td class="px-4 py-2.5 ${p.cold ? 'text-destructive' : 'text-muted-foreground'}">${p.last}</td>
+      <td class="px-4 py-2.5 num">${p.cpm}</td>
+      <td class="px-4 py-2.5 ${p.star ? 'text-brand' : 'text-muted-foreground'}">${p.star ? '★' : '—'}</td>
+    </tr>
+  `).join('');
+  document.getElementById('pagesCount').textContent = `${filtered.length} of ${PAGES.length}`;
+  document.getElementById('pagesFooter').textContent = `Showing ${filtered.length} of ${PAGES.length} pages · sorted by ${k} ${pagesSort.dir} · click column headers to re-sort`;
+  // Update sort arrows
+  document.querySelectorAll('[data-pane="pages"] .sort-th').forEach(th => {
+    const arrow = th.querySelector('.sort-arrow');
+    if (th.dataset.sort === k) {
+      arrow.textContent = pagesSort.dir === 'asc' ? '↑' : '↓';
+      arrow.classList.add('text-brand');
+      arrow.classList.remove('text-muted-foreground');
+    } else {
+      arrow.textContent = '';
+      arrow.classList.remove('text-brand');
+      arrow.classList.add('text-muted-foreground');
+    }
+  });
+}
+// Wire sort headers
+document.querySelectorAll('[data-pane="pages"] .sort-th').forEach(th => {
+  th.addEventListener('click', () => {
+    const key = th.dataset.sort;
+    if (pagesSort.key === key) pagesSort.dir = pagesSort.dir === 'asc' ? 'desc' : 'asc';
+    else { pagesSort.key = key; pagesSort.dir = key === 'handle' || key === 'vertical' || key === 'market' || key === 'comms' || key === 'status' ? 'asc' : 'desc'; }
+    renderPages();
+  });
+});
+
+// =================== CREATORS TABLE ===================
+let creatorsFilter = 'all';
+function renderCreators() {
+  const q = (document.getElementById('creatorsSearch')?.value || '').toLowerCase().trim();
+  const filtered = CREATORS.filter(c => {
+    const matchSearch = !q || c.name.toLowerCase().includes(q) || c.niche.toLowerCase().includes(q) || playLabel(c.play).toLowerCase().includes(q);
+    let matchFilter = true;
+    if (creatorsFilter === 'signed') matchFilter = c.status === 'signed';
+    else if (creatorsFilter === 'active') matchFilter = c.status === 'active';
+    else if (creatorsFilter === 'early') matchFilter = c.status === 'early';
+    else if (creatorsFilter === 'play1') matchFilter = c.play === 'play1';
+    else if (creatorsFilter === 'play2') matchFilter = c.play === 'play2';
+    else if (creatorsFilter === 'play3') matchFilter = c.play === 'play3';
+    return matchSearch && matchFilter;
+  });
+  const tbody = document.getElementById('creatorsTbody');
+  if (!tbody) return;
+  tbody.innerHTML = filtered.map(c => `
+    <tr class="hover:bg-accent/40">
+      <td class="px-4 py-2.5 font-medium">${c.name}</td>
+      <td class="px-4 py-2.5">${creatorStatusPill(c.status)}</td>
+      <td class="px-4 py-2.5 text-muted-foreground">${playLabel(c.play)}</td>
+      <td class="px-4 py-2.5 num text-muted-foreground">${c.reach}</td>
+      <td class="px-4 py-2.5 text-muted-foreground">${c.niche}</td>
+      <td class="px-4 py-2.5 text-muted-foreground">${c.model}</td>
+      <td class="px-4 py-2.5 text-muted-foreground">${c.owner}</td>
+      <td class="px-4 py-2.5 text-muted-foreground">${c.signal}</td>
+    </tr>
+  `).join('');
+  document.getElementById('creatorsCount').textContent = `${filtered.length} of ${CREATORS.length}`;
+}
+
+// =================== TAB / PANE LOGIC ===================
+let currentTab = 'home';
+function showPaneOnly(name) {
+  document.querySelectorAll('.pane').forEach(p => {
+    p.classList.toggle('hidden', p.dataset.pane !== name);
+  });
+}
+function highlightTab(name) {
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    const active = b.dataset.tab === name;
+    b.classList.toggle('bg-brand', active);
+    b.classList.toggle('text-brand-foreground', active);
+    b.classList.toggle('text-muted-foreground', !active);
+    b.classList.toggle('hover:bg-accent', !active);
+    b.classList.toggle('hover:text-foreground', !active);
+  });
+}
+function switchTab(name) {
+  currentTab = name;
+  highlightTab(name);
+  showPaneOnly(name);
+  if (name === 'pages') renderPages();
+  if (name === 'creators') renderCreators();
+  if (name === 'campaigns') renderCampaignsTimeline('allTimeline', CAMPAIGNS);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+document.querySelectorAll('.tab-btn').forEach(b => {
+  b.addEventListener('click', () => switchTab(b.dataset.tab));
+});
+
+// =================== VERTICAL DRILL ===================
+function openVertical(slug) {
+  prevTab = 'verticals';
+  if (slug === 'movies') {
+    showPaneOnly('vertical-movies');
+    highlightTab('verticals');
+    // Populate Movies proof campaigns from CAMPAIGNS
+    const moviesCampaigns = CAMPAIGNS.filter(c => /Movies/.test(c.vertical));
+    document.getElementById('moviesCampaigns').innerHTML = moviesCampaigns.map(c => `
+      <div class="rounded-lg border border-border bg-card p-4 hover:bg-accent/30 transition-colors cursor-pointer" onclick="openCampaign(${c.id})">
+        <div class="flex items-start justify-between mb-2">
+          <div>
+            <div class="font-semibold text-sm">${c.title}</div>
+            <div class="text-xs text-muted-foreground">${c.partnersCount} partners · ${c.dateLabel}</div>
+          </div>
+          ${statusPillCampaign(c.status, c.statusLabel)}
+        </div>
+        <div class="grid grid-cols-3 gap-2 mt-3">
+          <div><div class="font-mono text-sm">${c.views}</div><div class="label text-muted-foreground">views</div></div>
+          <div><div class="font-mono text-sm">${c.spend}</div><div class="label text-muted-foreground">spend</div></div>
+          <div><div class="font-mono text-sm">${c.cpv}</div><div class="label text-muted-foreground">CPV</div></div>
+        </div>
+      </div>
+    `).join('');
+    // Movies-relevant creators (Entertainment / Music / Comedy / Movies niches)
+    const moviesNiches = ['Entertainment', 'Music', 'Comedy', 'Movies'];
+    const moviesCreators = CREATORS.filter(c => moviesNiches.includes(c.niche));
+    document.getElementById('moviesCreatorsTbody').innerHTML = moviesCreators.map(c => `
+      <tr class="hover:bg-accent/40">
+        <td class="px-4 py-2.5 font-medium">${c.name}</td>
+        <td class="px-4 py-2.5">${creatorStatusPill(c.status)}</td>
+        <td class="px-4 py-2.5 text-muted-foreground">${playLabel(c.play)}</td>
+        <td class="px-4 py-2.5 num text-muted-foreground">${c.reach}</td>
+        <td class="px-4 py-2.5 text-muted-foreground">${c.niche}</td>
+        <td class="px-4 py-2.5 text-muted-foreground">${c.model}</td>
+        <td class="px-4 py-2.5 text-muted-foreground">${c.owner}</td>
+      </tr>
+    `).join('');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+  const verticals = {
+    audio: { name: 'Audio', icon: '🎧', status: 'READY · 100%', sub: '5 premium pages signed. Vertical fully covered. Needs proof campaigns to be sellable as a bundle.' },
+    gaming: { name: 'Gaming', icon: '🎮', status: 'NEAR · 60%', sub: '3 premium pages but Epic Fortnite missed target. Investigate before opening sale.' },
+    streaming: { name: 'TV + Streaming', icon: '📺', status: 'NEAR · 60%', sub: 'Streaming culture partnership in flight. Build bundle once 60/40 stake decision is made.' },
+    travel: { name: 'Travel', icon: '✈️', status: 'PARTIAL · 40%', sub: 'Earthpix anchor. Yas Island is the proven account — 4-campaign history.' },
+    retail: { name: 'Retail', icon: '🛍️', status: 'EARLY · 20%', sub: 'Multi-vertical fallback works. Need fashion/streetwear specialists for premium.' },
+    tech: { name: 'Tech', icon: '💻', status: 'EARLY · 20%', sub: 'Hypebeast and Complex are prospect targets. Sign before bundling.' },
+    qsr: { name: 'QSR', icon: '🍔', status: 'GAP · 0%', sub: 'Chili\'s campaign worked across multi-vertical (154% target). No QSR-specific premium pages.' },
+    finance: { name: 'Finance', icon: '💰', status: 'GAP · 0%', sub: 'No premium signed. Wealth (14.5M) is in conversation — convert first.' },
+    auto: { name: 'Auto', icon: '🚗', status: 'GAP · 0%', sub: 'No auto pages. Westenchamplin (3.6M) on the existing app could anchor.' },
+    cpg: { name: 'CPG', icon: '🧴', status: 'GAP · 0%', sub: 'Multi-vertical workaround. Specialist pages needed for premium positioning.' },
+    beauty: { name: 'Beauty', icon: '💄', status: 'GAP · 0%', sub: 'No premium beauty pages. Big white space.' },
+    pets: { name: 'Pets', icon: '🐾', status: 'GAP · 0%', sub: 'Pubity owns Fluffy O&O. Bundle should anchor on Fluffy + extended pet pages.' },
+    betting: { name: 'Betting', icon: '🎰', status: 'GAP · 0%', sub: 'Compliance + brand safety vetting required before sellable.' },
+    institutions: { name: 'Institutions', icon: '🏛️', status: 'GAP · 0%', sub: 'No premium institutional pages signed.' }
+  };
+  const v = verticals[slug];
+  if (!v) return;
+  document.getElementById('genericName').textContent = v.name;
+  document.getElementById('genericIcon').textContent = v.icon;
+  document.getElementById('genericStatus').textContent = v.status;
+  document.getElementById('genericSub').textContent = v.sub;
+  showPaneOnly('vertical-generic');
+  highlightTab('verticals');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// =================== INIT ===================
+document.getElementById('pagesSearch').addEventListener('input', renderPages);
+document.getElementById('creatorsSearch').addEventListener('input', renderCreators);
+
+document.querySelectorAll('[data-pane="pages"] .filter-chip').forEach(c => {
+  c.addEventListener('click', () => {
+    document.querySelectorAll('[data-pane="pages"] .filter-chip').forEach(x => x.dataset.active = 'false');
+    c.dataset.active = 'true';
+    pagesFilter = c.dataset.filter;
+    renderPages();
+  });
+});
+document.querySelectorAll('[data-pane="creators"] .filter-chip').forEach(c => {
+  c.addEventListener('click', () => {
+    document.querySelectorAll('[data-pane="creators"] .filter-chip').forEach(x => x.dataset.active = 'false');
+    c.dataset.active = 'true';
+    creatorsFilter = c.dataset.filter;
+    renderCreators();
+  });
+});
+
+// Theme toggle
+const html = document.documentElement;
+const moon = document.getElementById('iconMoon');
+const sun = document.getElementById('iconSun');
+function setTheme(theme) {
+  html.classList.toggle('dark', theme === 'dark');
+  moon.classList.toggle('hidden', theme === 'dark');
+  sun.classList.toggle('hidden', theme !== 'dark');
+  try { localStorage.setItem('pubity-hub-theme', theme); } catch(e) {}
+}
+document.getElementById('themeToggle').addEventListener('click', () => {
+  setTheme(html.classList.contains('dark') ? 'light' : 'dark');
+});
+try { setTheme(localStorage.getItem('pubity-hub-theme') || 'dark'); } catch(e) { setTheme('dark'); }
+
+// =================== TO-DO LIST (editable, persisted) ===================
+const TODO_KEY = 'pubity-hub-todos';
+const TODO_DEFAULTS = [
+  { id: 1, text: 'Push Vuture / YouTube Pre-Roll forward — no progress since 28 Feb', done: false, priority: 'high' },
+  { id: 2, text: 'Decide Extended Network ownership (Aya vs Danny vs consolidate)', done: false, priority: 'high' },
+  { id: 3, text: 'Streaming culture: push 60% stake, fall back to 40%', done: false, priority: 'high' },
+  { id: 4, text: 'Generate Movies pitch one-pager for Yas Island 5th campaign', done: false, priority: 'med' },
+  { id: 5, text: 'Sam + Danny YouTube crossover — structure call', done: false, priority: 'med' },
+  { id: 6, text: 'Hire community manager (Brazil)', done: false, priority: 'med' },
+  { id: 7, text: 'Chase 4 cold partners (wealth, good_news_movement, filmatic, +1)', done: false, priority: 'low' }
+];
+function loadTodos() {
+  try {
+    const stored = localStorage.getItem(TODO_KEY);
+    if (stored) return JSON.parse(stored);
+  } catch(e) {}
+  return TODO_DEFAULTS;
+}
+function saveTodos(list) { try { localStorage.setItem(TODO_KEY, JSON.stringify(list)); } catch(e) {} }
+let TODOS = loadTodos();
+function renderTodos() {
+  const ul = document.getElementById('todoList');
+  if (!ul) return;
+  const open = TODOS.filter(t => !t.done).length;
+  document.getElementById('todoCount').textContent = `${open} open`;
+  ul.innerHTML = TODOS.map(t => `
+    <li class="flex items-start gap-2 group ${t.done ? 'opacity-50' : ''}">
+      <input type="checkbox" data-id="${t.id}" class="todo-check mt-1 accent-brand cursor-pointer" ${t.done ? 'checked' : ''} />
+      <span class="flex-1 text-sm ${t.done ? 'line-through' : ''} ${t.priority === 'high' ? 'font-medium' : ''}">${t.text}</span>
+      ${t.priority === 'high' ? '<span class="dot bg-destructive mt-2 shrink-0"></span>' : t.priority === 'med' ? '<span class="dot bg-warn mt-2 shrink-0"></span>' : ''}
+      <button data-id="${t.id}" class="todo-del opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-destructive text-xs px-1" title="Delete">✕</button>
+    </li>
+  `).join('');
+  ul.querySelectorAll('.todo-check').forEach(cb => cb.addEventListener('change', () => {
+    const id = parseInt(cb.dataset.id, 10);
+    const t = TODOS.find(x => x.id === id);
+    if (t) { t.done = cb.checked; saveTodos(TODOS); renderTodos(); }
+  }));
+  ul.querySelectorAll('.todo-del').forEach(b => b.addEventListener('click', () => {
+    const id = parseInt(b.dataset.id, 10);
+    TODOS = TODOS.filter(x => x.id !== id);
+    saveTodos(TODOS); renderTodos();
+  }));
+}
+function addTodo() {
+  const inp = document.getElementById('todoInput');
+  const text = inp.value.trim();
+  if (!text) return;
+  TODOS.push({ id: Date.now(), text, done: false, priority: 'low' });
+  saveTodos(TODOS);
+  inp.value = '';
+  renderTodos();
+}
+document.getElementById('todoAdd').addEventListener('click', addTodo);
+document.getElementById('todoInput').addEventListener('keydown', e => { if (e.key === 'Enter') addTodo(); });
+
+// =================== BRIEF BUILDER ===================
+const VERTICAL_NICHES = {
+  'Movies': ['Movies', 'Entertainment', 'Music', 'Comedy'],
+  'Audio': ['Music', 'Entertainment'],
+  'Gaming': ['Gaming'],
+  'TV+Streaming': ['Entertainment', 'Movies'],
+  'Travel': ['Travel'],
+  'Retail': ['Retail', 'Lifestyle'],
+  'Tech': ['Tech'],
+  'QSR': ['Food'],
+  'Finance': ['Finance'],
+  'Auto': ['Auto'],
+  'CPG': ['Lifestyle'],
+  'Beauty': ['Beauty'],
+  'Pets': [],
+  'Betting': []
+};
+const VERTICAL_READINESS = {
+  'Movies': 'READY · WEDGE', 'Audio': 'READY · 100%',
+  'Gaming': 'NEAR · 60%', 'TV+Streaming': 'NEAR · 60%',
+  'Travel': 'PARTIAL · 40%', 'Retail': 'EARLY · 20%', 'Tech': 'EARLY · 20%',
+  'QSR': 'GAP · 0%', 'Finance': 'GAP · 0%', 'Auto': 'GAP · 0%',
+  'CPG': 'GAP · 0%', 'Beauty': 'GAP · 0%', 'Pets': 'GAP · 0%', 'Betting': 'GAP · 0%'
+};
+
+function readBrief() {
+  return {
+    client: document.getElementById('brief_client').value.trim(),
+    brand: document.getElementById('brief_brand').value.trim(),
+    vertical: document.getElementById('brief_vertical').value,
+    type: document.getElementById('brief_type').value,
+    budget: parseInt(document.getElementById('brief_budget').value, 10) || 0,
+    target: document.getElementById('brief_target').value.trim(),
+    regions: Array.from(document.querySelectorAll('.brief-region:checked')).map(c => c.value),
+    start: document.getElementById('brief_start').value,
+    end: document.getElementById('brief_end').value,
+    notes: document.getElementById('brief_notes').value.trim()
+  };
+}
+
+function parseFollowers(str) {
+  if (!str) return 0;
+  const num = parseFloat(str);
+  if (str.includes('M')) return num * 1_000_000;
+  if (str.includes('K')) return num * 1_000;
+  return num;
+}
+function parseCpm(str) {
+  if (!str || str === '—') return null;
+  return parseInt(str.replace(/[£$,]/g, ''), 10);
+}
+function fmtMoney(n) {
+  if (n >= 1_000_000) return '£' + (n / 1_000_000).toFixed(1) + 'M';
+  if (n >= 1_000) return '£' + Math.round(n / 1_000) + 'K';
+  return '£' + n;
+}
+function fmtReach(n) {
+  if (n >= 1_000_000) return (n / 1_000_000).toFixed(1) + 'M';
+  if (n >= 1_000) return Math.round(n / 1_000) + 'K';
+  return String(n);
+}
+
+function renderBrief() {
+  const b = readBrief();
+  const summary = document.getElementById('briefSummary');
+  const tiers = document.getElementById('briefTiers');
+  const gaps = document.getElementById('briefGaps');
+
+  if (!b.vertical || !b.budget) {
+    summary.innerHTML = `<div class="text-sm text-muted-foreground">Pick a vertical and budget — package preview will build here in real time.</div>`;
+    tiers.classList.add('hidden');
+    gaps.classList.add('hidden');
+    return;
+  }
+
+  // Find pages matching vertical (or multi-vertical fallback) and region
+  const regionMatch = (mkt) => {
+    if (!b.regions.length) return true;
+    if (b.regions.includes('Global') && mkt === 'Global') return true;
+    return b.regions.includes(mkt);
+  };
+  const verticalPages = PAGES.filter(p =>
+    (p.vertical === b.vertical || p.vertical === 'Multi') &&
+    p.status === 'onboarded' &&
+    regionMatch(p.market)
+  );
+  // Sort by follower count desc
+  verticalPages.sort((a, b2) => parseFollowers(b2.followers) - parseFollowers(a.followers));
+
+  // Find creators matching vertical niches
+  const niches = VERTICAL_NICHES[b.vertical] || [];
+  const verticalCreators = CREATORS.filter(c => niches.includes(c.niche));
+
+  // Find proof campaigns matching vertical
+  const verticalProof = CAMPAIGNS.filter(c =>
+    new RegExp(b.vertical.split('+')[0], 'i').test(c.vertical) && (c.status === 'ok' || c.status === 'fail')
+  );
+
+  // Summary card
+  const readiness = VERTICAL_READINESS[b.vertical] || 'unknown';
+  const isGap = readiness.includes('GAP') || readiness.includes('EARLY');
+  summary.innerHTML = `
+    <div class="flex items-start justify-between mb-4">
+      <div>
+        <div class="label text-muted-foreground mb-1">Best-fit vertical</div>
+        <div class="text-xl font-bold">${b.vertical}${b.client ? ' · for ' + b.client : ''}${b.brand ? ' (' + b.brand + ')' : ''}</div>
+      </div>
+      <span class="pill ${isGap ? 'bg-destructive/15 text-destructive' : readiness.includes('READY') ? 'bg-brand text-brand-foreground' : 'bg-warn/15 text-warn'} font-semibold">${readiness}</span>
+    </div>
+    <div class="grid grid-cols-4 gap-4 pt-4 border-t border-border">
+      <div><div class="label text-muted-foreground mb-1">Pages available</div><div class="text-2xl font-bold num">${verticalPages.length}</div></div>
+      <div><div class="label text-muted-foreground mb-1">Creators relevant</div><div class="text-2xl font-bold num">${verticalCreators.length}</div></div>
+      <div><div class="label text-muted-foreground mb-1">Proof campaigns</div><div class="text-2xl font-bold num">${verticalProof.length}</div></div>
+      <div><div class="label text-muted-foreground mb-1">Budget</div><div class="text-2xl font-bold num">${fmtMoney(b.budget)}</div></div>
+    </div>
+  `;
+
+  // Build three tiers
+  // Tier 1 — Amplification: top 3 pages, ~30% budget
+  // Tier 2 — Integration: 5-6 pages + 1-2 creators, ~60% budget
+  // Tier 3 — Bespoke: 8+ pages + 2-3 creators + Extended Network, full budget
+  const t1Pages = verticalPages.slice(0, 3);
+  const t2Pages = verticalPages.slice(0, 6);
+  const t3Pages = verticalPages.slice(0, Math.min(10, verticalPages.length));
+  const t2Creators = verticalCreators.slice(0, 2);
+  const t3Creators = verticalCreators.slice(0, 3);
+
+  const sumReach = list => list.reduce((s, p) => s + parseFollowers(p.followers || p.reach), 0);
+  const t1Reach = sumReach(t1Pages);
+  const t2Reach = sumReach(t2Pages) + sumReach(t2Creators);
+  const t3Reach = sumReach(t3Pages) + sumReach(t3Creators);
+
+  const t1Cost = Math.min(b.budget * 0.3, b.budget);
+  const t2Cost = Math.min(b.budget * 0.65, b.budget);
+  const t3Cost = b.budget;
+
+  const tierCard = (n, name, desc, pages, creators, ext, reach, cost, highlight) => `
+    <div class="flex items-start justify-between mb-3">
+      <div>
+        <div class="flex items-center gap-2 mb-0.5">
+          <span class="label ${highlight ? 'text-brand' : 'text-muted-foreground'}">Tier ${n}</span>
+          <h4 class="font-bold">${name}</h4>
+          ${highlight ? '<span class="pill bg-brand text-brand-foreground">recommended</span>' : ''}
+        </div>
+        <div class="text-xs text-muted-foreground">${desc}</div>
+      </div>
+      <div class="text-right">
+        <div class="text-2xl font-bold num">${fmtMoney(cost)}</div>
+        <div class="text-xs text-muted-foreground">~${fmtReach(reach)} reach</div>
+      </div>
+    </div>
+    <div class="space-y-2 text-sm pt-3 border-t border-border">
+      <div><span class="label text-muted-foreground">Pages (${pages.length})</span> <span class="text-foreground/80">${pages.map(p => p.handle).join(' · ') || '—'}</span></div>
+      ${creators.length ? `<div><span class="label text-muted-foreground">Creators (${creators.length})</span> <span class="text-foreground/80">${creators.map(c => c.name.split(' · ')[0]).join(' · ')}</span></div>` : ''}
+      ${ext.length ? `<div><span class="label text-muted-foreground">Extended Network</span> <span class="text-foreground/80">${ext.join(' · ')}</span></div>` : ''}
+    </div>
+  `;
+
+  const t3Ext = ['Pubity Plus broadcast', 'Pubity Insiders'];
+  if (b.vertical === 'Movies' || b.vertical === 'TV+Streaming') t3Ext.push('Clipping Network');
+
+  document.getElementById('tier1').innerHTML = tierCard(1, 'Amplification', 'Page distribution only · simplest sell', t1Pages, [], [], t1Reach, t1Cost, false);
+  document.getElementById('tier2').innerHTML = tierCard(2, 'Integration', 'Pages + creators · bigger budget bracket', t2Pages, t2Creators, [], t2Reach, t2Cost, false);
+  document.getElementById('tier3').innerHTML = tierCard(3, 'Bespoke', 'Full ecosystem · pages + creators + Extended Network', t3Pages, t3Creators, t3Ext, t3Reach, t3Cost, true);
+  tiers.classList.remove('hidden');
+
+  // Honest gaps
+  const gapList = [];
+  if (isGap) gapList.push(`<b>${b.vertical} bundle is not packaged</b> — only multi-vertical pages available. Bundle needs building before clean sell.`);
+  if (b.regions.includes('US') && b.vertical === 'Movies') gapList.push(`<b>US YouTube Pre-Roll (Vuture)</b> — would unlock here, but not live. Stalled since 28 Feb.`);
+  if (b.regions.includes('LATAM')) gapList.push(`<b>LATAM CPV unsustainable</b> — Epic Fortnite delivered LATAM at £1,811 CPV. Regional pricing model needs work.`);
+  if (verticalProof.length === 0) gapList.push(`<b>No proof campaigns</b> for this vertical yet. Pilot needed before opening sale.`);
+  if (b.budget < 10000) gapList.push(`<b>Budget below £10K</b> — premium pages typically priced at £700-£20K each. Consider bundled smaller pages or scale up.`);
+
+  if (gapList.length) {
+    document.getElementById('briefGapsList').innerHTML = gapList.map(g => `<li>· ${g}</li>`).join('');
+    gaps.classList.remove('hidden');
+  } else {
+    gaps.classList.add('hidden');
+  }
+}
+
+function loadSampleBrief() {
+  document.getElementById('brief_client').value = 'Yas Island';
+  document.getElementById('brief_brand').value = 'Avengers Doomsday tie-in';
+  document.getElementById('brief_vertical').value = 'Movies';
+  document.getElementById('brief_type').value = 'launch';
+  document.getElementById('brief_budget').value = '50000';
+  document.getElementById('brief_target').value = '12M';
+  document.querySelectorAll('.brief-region').forEach(c => { c.checked = ['Global', 'UAE'].includes(c.value); });
+  document.getElementById('brief_start').value = '2026-07-01';
+  document.getElementById('brief_end').value = '2026-07-21';
+  document.getElementById('brief_notes').value = '5th Yas Island campaign — Avengers Doomsday theatrical launch. Wants similar reach to the Disney announcement. Tone: hype, exclusive access angles. No spoilers.';
+  renderBrief();
+}
+
+function clearBrief() {
+  ['brief_client', 'brief_brand', 'brief_budget', 'brief_target', 'brief_start', 'brief_end', 'brief_notes'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('brief_vertical').value = '';
+  document.getElementById('brief_type').value = 'launch';
+  document.querySelectorAll('.brief-region').forEach(c => c.checked = false);
+  renderBrief();
+}
+
+// Wire all brief inputs to live render
+document.querySelectorAll('#brief_client, #brief_brand, #brief_vertical, #brief_type, #brief_budget, #brief_target, #brief_start, #brief_end, #brief_notes, .brief-region').forEach(el => {
+  el.addEventListener('input', renderBrief);
+  el.addEventListener('change', renderBrief);
+});
+document.getElementById('loadSampleBrief').addEventListener('click', loadSampleBrief);
+document.getElementById('resetBrief').addEventListener('click', clearBrief);
+document.getElementById('saveBrief').addEventListener('click', () => alert('v0 prototype: brief would save to Notion / CRM here.'));
+document.getElementById('convertBrief').addEventListener('click', () => alert('v0 prototype: this would create a draft campaign linked to this brief.'));
+
+// =================== ADD PAGE / CREATOR MODAL ===================
+const modal = document.getElementById('modal');
+function openModal(type) {
+  document.getElementById('modalTitle').textContent = type === 'page' ? 'Add page' : 'Add creator';
+  const body = document.getElementById('modalBody');
+  if (type === 'page') {
+    body.innerHTML = `
+      <div><label class="label text-muted-foreground block mb-1.5">Handle</label><input id="m_handle" class="search-input w-full px-3 h-9 rounded-md text-sm" placeholder="e.g. newpage" /></div>
+      <div class="grid grid-cols-2 gap-3">
+        <div><label class="label text-muted-foreground block mb-1.5">Followers</label><input id="m_followers" class="search-input w-full px-3 h-9 rounded-md text-sm" placeholder="e.g. 1.2M" /></div>
+        <div><label class="label text-muted-foreground block mb-1.5">Status</label><select id="m_status" class="search-input w-full px-3 h-9 rounded-md text-sm"><option value="prospect">Prospect</option><option value="in-conv">In conversation</option><option value="onboarded">Onboarded</option></select></div>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div><label class="label text-muted-foreground block mb-1.5">Vertical</label><input id="m_vertical" class="search-input w-full px-3 h-9 rounded-md text-sm" placeholder="e.g. Movies" /></div>
+        <div><label class="label text-muted-foreground block mb-1.5">Market</label><select id="m_market" class="search-input w-full px-3 h-9 rounded-md text-sm"><option>Global</option><option>UK</option><option>US</option><option>EU</option><option>LATAM</option><option>UAE</option></select></div>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div><label class="label text-muted-foreground block mb-1.5">Comms channel</label><select id="m_comms" class="search-input w-full px-3 h-9 rounded-md text-sm"><option>IG DM</option><option>Email</option><option>Slack</option><option>WhatsApp</option><option>Telegram</option></select></div>
+        <div><label class="label text-muted-foreground block mb-1.5">CPM (£)</label><input id="m_cpm" class="search-input w-full px-3 h-9 rounded-md text-sm" placeholder="e.g. 1500 or — " /></div>
+      </div>
+      <div class="flex items-center gap-2"><input id="m_star" type="checkbox" class="accent-brand" /><label for="m_star" class="text-sm">★ Premium / starred</label></div>
+    `;
+  } else {
+    body.innerHTML = `
+      <div><label class="label text-muted-foreground block mb-1.5">Creator name</label><input id="m_name" class="search-input w-full px-3 h-9 rounded-md text-sm" placeholder="e.g. Travel YouTuber tier-1" /></div>
+      <div class="grid grid-cols-2 gap-3">
+        <div><label class="label text-muted-foreground block mb-1.5">Play</label><select id="m_play" class="search-input w-full px-3 h-9 rounded-md text-sm"><option value="play1">Play 1 · Rev Share</option><option value="play2">Play 2 · Commercial</option><option value="play3">Play 3 · Shows + IP</option></select></div>
+        <div><label class="label text-muted-foreground block mb-1.5">Status</label><select id="m_status" class="search-input w-full px-3 h-9 rounded-md text-sm"><option value="early">Early</option><option value="active">Active</option><option value="signed">Signed</option></select></div>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div><label class="label text-muted-foreground block mb-1.5">Reach</label><input id="m_reach" class="search-input w-full px-3 h-9 rounded-md text-sm" placeholder="e.g. 2.5M IG" /></div>
+        <div><label class="label text-muted-foreground block mb-1.5">Niche</label><input id="m_niche" class="search-input w-full px-3 h-9 rounded-md text-sm" placeholder="e.g. Movies" /></div>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div><label class="label text-muted-foreground block mb-1.5">Commercial model</label><input id="m_model" class="search-input w-full px-3 h-9 rounded-md text-sm" placeholder="e.g. 50/50 rev share" /></div>
+        <div><label class="label text-muted-foreground block mb-1.5">Owner</label><input id="m_owner" class="search-input w-full px-3 h-9 rounded-md text-sm" placeholder="e.g. Danny" /></div>
+      </div>
+      <div><label class="label text-muted-foreground block mb-1.5">Signal / status note</label><input id="m_signal" class="search-input w-full px-3 h-9 rounded-md text-sm" placeholder="e.g. in pitch" /></div>
+    `;
+  }
+  modal.dataset.type = type;
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
+}
+function closeModal() { modal.classList.add('hidden'); modal.classList.remove('flex'); }
+function saveModal() {
+  const type = modal.dataset.type;
+  if (type === 'page') {
+    const newPage = {
+      handle: document.getElementById('m_handle').value.trim() || 'unnamed',
+      status: document.getElementById('m_status').value,
+      followers: document.getElementById('m_followers').value.trim() || '—',
+      vertical: document.getElementById('m_vertical').value.trim() || 'Multi',
+      market: document.getElementById('m_market').value,
+      comms: document.getElementById('m_comms').value,
+      last: 'just now',
+      cpm: (document.getElementById('m_cpm').value.trim() && document.getElementById('m_cpm').value.trim() !== '—') ? '£' + document.getElementById('m_cpm').value.trim() : '—',
+      star: document.getElementById('m_star').checked
+    };
+    PAGES.unshift(newPage);
+    renderPages();
+  } else {
+    const newCreator = {
+      name: document.getElementById('m_name').value.trim() || 'Unnamed creator',
+      play: document.getElementById('m_play').value,
+      status: document.getElementById('m_status').value,
+      reach: document.getElementById('m_reach').value.trim() || '—',
+      niche: document.getElementById('m_niche').value.trim() || 'Multi',
+      model: document.getElementById('m_model').value.trim() || 'TBD',
+      owner: document.getElementById('m_owner').value.trim() || 'TBD',
+      signal: document.getElementById('m_signal').value.trim() || 'discovery'
+    };
+    CREATORS.unshift(newCreator);
+    renderCreators();
+  }
+  closeModal();
+}
+document.getElementById('addPageBtn').addEventListener('click', () => openModal('page'));
+document.getElementById('addCreatorBtn').addEventListener('click', () => openModal('creator'));
+document.getElementById('modalClose').addEventListener('click', closeModal);
+document.getElementById('modalCancel').addEventListener('click', closeModal);
+document.getElementById('modalSave').addEventListener('click', saveModal);
+modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+
+// Initial render
+renderTodos();
+renderCampaignsTimeline('homeTimeline', CAMPAIGNS);
+renderPages();
+renderCreators();
+renderBrief();
+switchTab('home');
+</script>
+
+</body>
+</html>
