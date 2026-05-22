@@ -5836,7 +5836,9 @@ const LOCAL_PROSPECTS = [
   { handle: 'we_rate_dogs',       igLink: 'https://www.instagram.com/we_rate_dogs',       market: 'Global', vertical: 'Positive Content', urlVerified: true, followers: '2M',    star: true,  urlNote: 'Comedy + wholesome · huge engagement rate' },
   { handle: 'thedogist',          igLink: 'https://www.instagram.com/thedogist',          market: 'Global', vertical: 'Positive Content', urlVerified: true, followers: '4M',    star: true,  urlNote: 'Beautiful dog portraits · premium feel' },
   { handle: 'natgeowild',         igLink: 'https://www.instagram.com/natgeowild',         market: 'Global', vertical: 'Positive Content', urlVerified: true, followers: 'TBC',                urlNote: 'Nature specialist · subset of NatGeo' },
-  { handle: 'dhar_mann',          igLink: 'https://www.instagram.com/dhar_mann',          market: 'Global', vertical: 'Positive Content', urlVerified: true, followers: '137M',  star: true,  urlNote: 'Moral storytelling · 137M cross-platform · huge anchor' }
+  { handle: 'dhar_mann',          igLink: 'https://www.instagram.com/dhar_mann',          market: 'Global', vertical: 'Positive Content', urlVerified: true, followers: '137M',  star: true,  urlNote: 'Moral storytelling · 137M cross-platform · huge anchor' },
+  { handle: 'thedodo',            igLink: 'https://www.instagram.com/thedodo',            market: 'Global', vertical: 'Positive Content', urlVerified: true, followers: '10M',   star: true,  urlNote: 'Animal rescue · emotional stories · anchor positivity page' },
+  { handle: 'tanksgoodnews',      igLink: 'https://www.instagram.com/tanksgoodnews',      market: 'Global', vertical: 'Positive Content', urlVerified: true, followers: '3.1M',  star: true,  urlNote: 'Pure good news · already in Positive Content workspace · confirmed 3.1M' }
 ];
 
 function _localProspectToPage(p) {
@@ -5874,6 +5876,18 @@ const _mondayPages = (window.PUBITY_DATA?.partners || []).map(_partnerToPage);
 const _mondayHandles = new Set(_mondayPages.map(p => (p.handle || '').toLowerCase()));
 const _localPages = LOCAL_PROSPECTS.filter(p => !_mondayHandles.has(p.handle.toLowerCase())).map(_localProspectToPage);
 let PAGES = [..._mondayPages, ..._localPages];
+
+// Vertical re-tag overrides · Monday partners come in with a generic 'Key' vertical;
+// curated vertical overrides here ensure they show up under the right workspace filter.
+const _PAGE_VERTICAL_OVERRIDES = {
+  upworthy: 'Positive Content',
+  goodnews_movement: 'Positive Content',
+  earthpix: 'Positive Content'
+};
+PAGES.forEach(p => {
+  const k = (p.handle || '').toLowerCase();
+  if (_PAGE_VERTICAL_OVERRIDES[k]) p.vertical = _PAGE_VERTICAL_OVERRIDES[k];
+});
 // Sort: onboarded first, then in_conversation, then prospect, then stalled
 PAGES.sort((a,b) => {
   const order = { onboarded: 0, in_conversation: 1, prospect: 2, stalled: 3 };
