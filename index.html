@@ -3290,6 +3290,720 @@ document.addEventListener('click', (e) => {
   renderFormats();
 });
 loadFormats();
+
+// ═════════════════════════════════════════════════════════════════════
+// CAMPAIGN BUILDER · native pane · live catalog + cart + persistence
+// ═════════════════════════════════════════════════════════════════════
+const BLD_KEY = 'pubity-hub-builder-campaigns-v1';
+const BLD_DRAFT_KEY = 'pubity-hub-builder-draft-v1';
+const BLD_FX = 1.25; // USD per GBP, used as approx for currency display
+
+let BLD_STATE = {
+  name: '', brand: '', market: '', currency: 'GBP',
+  items: [], // { uid, type, label, sublabel, reach, unit, units, unitCost, costMode, currency, meta }
+  search: '', typeFilter: 'all', marketFilter: 'all', verticalFilter: 'all'
+};
+
+// ─── Static catalog: Memestorm tiers + Pubity Classics + Spots + Power-Ups + Impact Lab ───
+const BLD_MEMESTORM = [
+  { id: 'ms_hurricane',       label: 'Memestorm · Hurricane',       sublabel: '19 Pubity-owned pages',     reach: 175e6, unit: 'package', flatCostGBP: 50000  },
+  { id: 'ms_maelstrom',       label: 'Memestorm · Maelstrom',       sublabel: '19 + 54 partner pages',     reach: 225e6, unit: 'package', flatCostGBP: 100000 },
+  { id: 'ms_social_takeover', label: 'Memestorm · Social Takeover', sublabel: 'Full saturation',           reach: 250e6, unit: 'package', flatCostGBP: 200000 }
+];
+const BLD_CLASSICS = [
+  { id: 'cl_product_launch',     label: 'Pubity Classic · Product Launch',       sublabel: 'IP/format launch beat',   flatCostMinGBP: 30000,  flatCostMaxGBP: 400000 },
+  { id: 'cl_ip_movie',           label: 'Pubity Classic · IP/Movie Collab',      sublabel: 'Entertainment hook',      flatCostMinGBP: 30000,  flatCostMaxGBP: 400000 },
+  { id: 'cl_celebrity',          label: 'Pubity Classic · Celebrity',            sublabel: 'Talent-led beat',         flatCostMinGBP: 30000,  flatCostMaxGBP: 400000 },
+  { id: 'cl_buzz_tease',         label: 'Pubity Classic · Buzz Tease',           sublabel: 'Pre-launch heat',         flatCostMinGBP: 30000,  flatCostMaxGBP: 400000 },
+  { id: 'cl_milestone',          label: 'Pubity Classic · Milestone',            sublabel: 'Anniversary / record',    flatCostMinGBP: 30000,  flatCostMaxGBP: 400000 },
+  { id: 'cl_partnership',        label: 'Pubity Classic · Partnership / Deal',   sublabel: 'Co-brand moment',         flatCostMinGBP: 30000,  flatCostMaxGBP: 400000 },
+  { id: 'cl_data_prediction',    label: 'Pubity Classic · Data / Prediction',    sublabel: 'Stat-driven moment',      flatCostMinGBP: 30000,  flatCostMaxGBP: 400000 },
+  { id: 'cl_pr_corporate',       label: 'Pubity Classic · PR / Corporate',       sublabel: 'Reputation beat',         flatCostMinGBP: 30000,  flatCostMaxGBP: 400000 },
+  { id: 'cl_campaign_activation',label: 'Pubity Classic · Campaign Activation',  sublabel: 'Always-on hook',          flatCostMinGBP: 30000,  flatCostMaxGBP: 400000 }
+];
+const BLD_SPOTS = [
+  { id: 'sp_headline_grid', label: 'Spot · Headline Grid',     sublabel: 'Atomic feed unit',     flatCostMinGBP: 25000, flatCostMaxGBP: 60000 },
+  { id: 'sp_reel',          label: 'Spot · Reel',              sublabel: '9:16 vertical',        flatCostMinGBP: 15000, flatCostMaxGBP: 30000 },
+  { id: 'sp_story',         label: 'Spot · Story',             sublabel: '24h ephemeral',        flatCostMinGBP: 18000, flatCostMaxGBP: 50000 },
+  { id: 'sp_tiktok',        label: 'Spot · TikTok',            sublabel: 'Native TT placement',  flatCostMinGBP: 7500,  flatCostMaxGBP: 30000 },
+  { id: 'sp_insiders',      label: 'Spot · Insiders Broadcast',sublabel: '526K subs',            flatCostMinGBP: 8000,  flatCostMaxGBP: 25000 },
+  { id: 'sp_newsletter',    label: 'Spot · Newsletter',        sublabel: 'Per edition',          flatCostMinGBP: 5000,  flatCostMaxGBP: 10000 }
+];
+const BLD_POWERUPS = [
+  { id: 'pu_collab_post', label: 'Power-up · Collab Post',  sublabel: 'IG/TikTok joint post',  flatCostMinGBP: 2000, flatCostMaxGBP: 5000 },
+  { id: 'pu_pinned',      label: 'Power-up · Pinned',       sublabel: 'Pinned 24-48h',          flatCostMinGBP: 1000, flatCostMaxGBP: 3000 },
+  { id: 'pu_paid_boost',  label: 'Power-up · Paid Boost',   sublabel: 'Media + 15% fee',        flatCostMinGBP: 1000, flatCostMaxGBP: 10000 },
+  { id: 'pu_repost',      label: 'Power-up · Repost',       sublabel: 'Second page repost',     flatCostMinGBP: 1000, flatCostMaxGBP: 2000 },
+  { id: 'pu_bio_link',    label: 'Power-up · Bio Link',     sublabel: 'Link in bio 24h',        flatCostMinGBP: 2000, flatCostMaxGBP: 5000 },
+  { id: 'pu_comment_pin', label: 'Power-up · Comment Pin',  sublabel: 'Pinned comment',         flatCostMinGBP: 500,  flatCostMaxGBP: 1000 }
+];
+const BLD_IMPACT = [
+  { id: 'il_bls_small',   label: 'Impact Lab · BLS Small',   sublabel: 'Campaign £75K-£150K',   flatCostGBP: 15000 },
+  { id: 'il_bls_medium',  label: 'Impact Lab · BLS Medium',  sublabel: 'Campaign £150K-£300K',  flatCostGBP: 25000 },
+  { id: 'il_bls_large',   label: 'Impact Lab · BLS Large',   sublabel: 'Campaign £300K+',       flatCostGBP: 40000 },
+  { id: 'il_bls_full',    label: 'Impact Lab · BLS Full Managed', sublabel: 'Top-tier',         flatCostGBP: 65000 },
+  { id: 'il_testbed_quick',label: 'Impact Lab · Testbed Quick Poll','sublabel': '48-72h, 1-2 concepts', flatCostGBP: 15000 },
+  { id: 'il_testbed_full', label: 'Impact Lab · Testbed Full Creative', sublabel: '3-5 concepts, 1-2w', flatCostGBP: 40000 },
+  { id: 'il_benchmark',   label: 'Impact Lab · Benchmark Dashboard', sublabel: 'Per year',     flatCostGBP: 30000 },
+  { id: 'il_trend_intel', label: 'Impact Lab · Trend Intelligence', sublabel: 'Monthly sub, per year', flatCostGBP: 50000 }
+];
+
+// ─── Currency helpers ───
+function bldFmtMoney(amount, currency, opts) {
+  opts = opts || {};
+  if (amount == null || isNaN(amount)) return '—';
+  if (amount === 0 && opts.tbcOnZero) return 'TBC';
+  const sym = currency === 'USD' ? '$' : '£';
+  const v = Math.round(amount);
+  return sym + v.toLocaleString();
+}
+function bldToCampaignCurrency(amount, fromCurrency) {
+  const target = BLD_STATE.currency;
+  if (!amount || amount === 0) return 0;
+  if (fromCurrency === target) return amount;
+  if (fromCurrency === 'GBP' && target === 'USD') return amount * BLD_FX;
+  if (fromCurrency === 'USD' && target === 'GBP') return amount / BLD_FX;
+  return amount;
+}
+function bldParseReach(s) {
+  if (typeof s === 'number') return s;
+  if (!s) return 0;
+  const m = String(s).match(/([0-9.]+)\s*([KMB])?/i);
+  if (!m) return 0;
+  const n = parseFloat(m[1]);
+  const mult = { K: 1e3, M: 1e6, B: 1e9 }[(m[2] || '').toUpperCase()] || 1;
+  return Math.round(n * mult);
+}
+function bldFmtReach(n) {
+  if (!n || isNaN(n)) return '—';
+  if (n >= 1e9) return (n/1e9).toFixed(1).replace('.0','') + 'B';
+  if (n >= 1e6) return (n/1e6).toFixed(1).replace('.0','') + 'M';
+  if (n >= 1e3) return Math.round(n/1e3) + 'K';
+  return String(n);
+}
+
+// ─── Catalog assembly ───
+function bldGetCatalog() {
+  const out = [];
+
+  // Pages — live from PAGES
+  (window.HUB_PAGES || []).forEach(p => {
+    const reach = p.avgImpressions || bldParseReach(p.followers);
+    const gridGBP = parseFloat(String(p.cpm || '').replace(/[^0-9.]/g, '')) || 0;
+    out.push({
+      type: 'page',
+      typeLabel: 'Page',
+      id: 'pg_' + (p.handle || p.name || '').toLowerCase().replace(/[^a-z0-9]/g, '_'),
+      label: '@' + (p.handle || p.name),
+      sublabel: [p.vertical, p.market].filter(Boolean).join(' · ') + (p.star ? ' · ★' : ''),
+      reach,
+      unit: 'post',
+      unitCost: gridGBP,
+      unitCurrency: 'GBP',
+      costMode: gridGBP ? 'flat' : 'tbc',
+      market: p.market || 'Global',
+      vertical: p.vertical || 'General',
+      raw: p
+    });
+  });
+
+  // Creators — CELEBS (Giselle) + CREATORS (legacy)
+  (CELEBS || []).forEach(c => {
+    out.push({
+      type: 'creator',
+      typeLabel: 'Creator',
+      id: c.id || ('cr_' + (c.name || '').toLowerCase().replace(/[^a-z0-9]/g, '_')),
+      label: c.name,
+      sublabel: [c.handle, c.category, c.agency].filter(Boolean).join(' · '),
+      reach: bldParseReach(c.reach),
+      unit: 'booking',
+      unitCost: 0,
+      unitCurrency: 'GBP',
+      costMode: 'tbc',
+      market: c.market || 'UK',
+      vertical: c.creatorTier || c.category || 'Creator',
+      raw: c
+    });
+  });
+  (window.HUB_CREATORS || []).forEach(c => {
+    out.push({
+      type: 'creator',
+      typeLabel: 'Creator (legacy)',
+      id: 'crl_' + (c.name || '').toLowerCase().replace(/[^a-z0-9]/g, '_'),
+      label: c.name,
+      sublabel: [c.niche, c.model].filter(Boolean).join(' · '),
+      reach: bldParseReach(c.reach),
+      unit: 'booking',
+      unitCost: 0,
+      unitCurrency: 'GBP',
+      costMode: 'tbc',
+      market: 'Global',
+      vertical: c.niche || 'General',
+      raw: c
+    });
+  });
+
+  // Formats — short-form, with low/mid/high range bands
+  ((FORMATS_DATA && FORMATS_DATA.shortForm) || []).forEach(f => {
+    out.push({
+      type: 'format',
+      typeLabel: 'Format',
+      id: f.id,
+      label: f.icon + ' ' + f.name,
+      sublabel: f.platforms + ' · ' + f.length,
+      reach: 0, // depends on creator pairing — surfaced when added
+      unit: 'episode',
+      unitCost: 0,
+      unitCurrency: 'GBP',
+      costMode: 'tbc',
+      market: 'UK',
+      vertical: 'Format IP',
+      raw: f
+    });
+  });
+
+  // Eclipse layers (3 CPM tiers)
+  ((ECLIPSE_DATA && ECLIPSE_DATA.pricingTiers) || []).forEach(t => {
+    out.push({
+      type: 'eclipse',
+      typeLabel: 'Eclipse layer',
+      id: t.id,
+      label: '🌒 Eclipse · ' + t.name,
+      sublabel: '$' + t.cpm + ' CPM · ' + t.label,
+      reach: 0, // user-defined via target views
+      unit: '1K views',
+      unitCost: t.cpm,
+      unitCurrency: 'USD',
+      costMode: 'cpm',
+      market: 'Global',
+      vertical: 'Clipping / Eclipse',
+      raw: t
+    });
+  });
+  // Eclipse Lead Network seed accounts (20)
+  ((ECLIPSE_DATA && ECLIPSE_DATA.leadNetworkSeed && ECLIPSE_DATA.leadNetworkSeed.accounts) || []).forEach(a => {
+    const priceStr = String(a.gridPrice || '');
+    const gbp = priceStr.startsWith('£');
+    const num = parseFloat(priceStr.replace(/[^0-9.]/g, '')) || 0;
+    out.push({
+      type: 'eclipse',
+      typeLabel: 'Lead Network page',
+      id: 'eln_' + (a.account || '').toLowerCase().replace(/[^a-z0-9]/g, '_'),
+      label: '@' + a.account,
+      sublabel: 'Lead Net · ' + a.format + ' · ' + (a.niche || ''),
+      reach: a.followers || 0,
+      unit: 'post',
+      unitCost: num,
+      unitCurrency: gbp ? 'GBP' : 'USD',
+      costMode: 'flat',
+      market: 'Global',
+      vertical: 'Clipping / Lead Network',
+      raw: a
+    });
+  });
+
+  // Memestorm tiers
+  BLD_MEMESTORM.forEach(m => out.push({
+    type: 'memestorm', typeLabel: 'Memestorm',
+    id: m.id, label: m.label, sublabel: m.sublabel,
+    reach: m.reach, unit: 'package',
+    unitCost: m.flatCostGBP, unitCurrency: 'GBP', costMode: 'flat',
+    market: 'Global', vertical: 'Amplification', raw: m
+  }));
+
+  // Classics (range)
+  BLD_CLASSICS.forEach(c => out.push({
+    type: 'classic', typeLabel: 'Classic',
+    id: c.id, label: c.label, sublabel: c.sublabel,
+    reach: 0, unit: 'execution',
+    unitCost: c.flatCostMinGBP, unitCostMax: c.flatCostMaxGBP,
+    unitCurrency: 'GBP', costMode: 'range',
+    market: 'Global', vertical: 'Amplification', raw: c
+  }));
+
+  // Spots (range)
+  BLD_SPOTS.forEach(s => out.push({
+    type: 'spot', typeLabel: 'Spot',
+    id: s.id, label: s.label, sublabel: s.sublabel,
+    reach: 0, unit: 'placement',
+    unitCost: s.flatCostMinGBP, unitCostMax: s.flatCostMaxGBP,
+    unitCurrency: 'GBP', costMode: 'range',
+    market: 'Global', vertical: 'Amplification', raw: s
+  }));
+
+  // Power-ups (range)
+  BLD_POWERUPS.forEach(p => out.push({
+    type: 'powerup', typeLabel: 'Power-up',
+    id: p.id, label: p.label, sublabel: p.sublabel,
+    reach: 0, unit: 'add-on',
+    unitCost: p.flatCostMinGBP, unitCostMax: p.flatCostMaxGBP,
+    unitCurrency: 'GBP', costMode: 'range',
+    market: 'Global', vertical: 'Add-on', raw: p
+  }));
+
+  // Impact Lab (flat)
+  BLD_IMPACT.forEach(i => out.push({
+    type: 'impact', typeLabel: 'Impact Lab',
+    id: i.id, label: i.label, sublabel: i.sublabel,
+    reach: 0, unit: 'study',
+    unitCost: i.flatCostGBP, unitCurrency: 'GBP', costMode: 'flat',
+    market: 'Global', vertical: 'Measurement', raw: i
+  }));
+
+  return out;
+}
+
+// ─── Pricing engine ───
+function bldComputeLineCost(item) {
+  // item is a cart item with units + meta
+  if (item.costMode === 'tbc') return { value: 0, label: 'TBC' };
+  if (item.costMode === 'flat') {
+    const v = bldToCampaignCurrency((item.unitCost || 0) * (item.units || 1), item.unitCurrency || 'GBP');
+    return { value: v, label: bldFmtMoney(v, BLD_STATE.currency) };
+  }
+  if (item.costMode === 'range') {
+    const lo = bldToCampaignCurrency((item.unitCost || 0) * (item.units || 1), item.unitCurrency || 'GBP');
+    const hi = bldToCampaignCurrency((item.unitCostMax || item.unitCost || 0) * (item.units || 1), item.unitCurrency || 'GBP');
+    // Use midpoint for total math; show range in label
+    const mid = (lo + hi) / 2;
+    return { value: mid, label: bldFmtMoney(lo, BLD_STATE.currency) + '–' + bldFmtMoney(hi, BLD_STATE.currency) };
+  }
+  if (item.costMode === 'cpm') {
+    // units = target views in thousands
+    const v = bldToCampaignCurrency((item.unitCost || 0) * (item.units || 1), item.unitCurrency || 'USD');
+    return { value: v, label: bldFmtMoney(v, BLD_STATE.currency) };
+  }
+  return { value: 0, label: '—' };
+}
+function bldEffectiveReach(item) {
+  // For CPM lines: reach = units (thousands) × 1000
+  if (item.costMode === 'cpm') return (item.units || 0) * 1000;
+  // Per-post pages: reach × units (each post hits the same followers)
+  if (item.type === 'page' || (item.type === 'eclipse' && item.unit === 'post')) {
+    return (item.reach || 0); // count followers once even if multiple posts
+  }
+  return item.reach || 0;
+}
+
+// ─── Render: catalog ───
+function bldRenderCatalog() {
+  const list = document.getElementById('bldCatalogList');
+  if (!list) return;
+  const all = bldGetCatalog();
+  const q = (BLD_STATE.search || '').toLowerCase().trim();
+  const filtered = all.filter(item => {
+    if (BLD_STATE.typeFilter !== 'all' && item.type !== BLD_STATE.typeFilter) return false;
+    if (BLD_STATE.marketFilter !== 'all' && item.market !== BLD_STATE.marketFilter) return false;
+    if (BLD_STATE.verticalFilter !== 'all' && item.vertical !== BLD_STATE.verticalFilter) return false;
+    if (!q) return true;
+    return [item.label, item.sublabel, item.vertical, item.market, item.typeLabel].some(s => (s || '').toLowerCase().includes(q));
+  });
+
+  document.getElementById('bldCatalogCount').textContent = filtered.length + ' of ' + all.length + ' items';
+
+  // Populate vertical filter (lazy, once per render based on currently filterable set)
+  const vertSel = document.getElementById('bldVerticalFilter');
+  if (vertSel && vertSel.options.length <= 1) {
+    const verticals = Array.from(new Set(all.map(i => i.vertical).filter(Boolean))).sort();
+    verticals.forEach(v => {
+      const opt = document.createElement('option');
+      opt.value = v; opt.textContent = v;
+      vertSel.appendChild(opt);
+    });
+  }
+
+  const typeBadgeMap = {
+    page: 'bg-brand/15 text-brand', creator: 'bg-ok/15 text-ok',
+    format: 'bg-warn/15 text-warn', eclipse: 'bg-destructive/15 text-destructive',
+    memestorm: 'bg-brand/10 text-brand', classic: 'bg-muted text-foreground',
+    spot: 'bg-muted text-foreground', powerup: 'bg-muted/50 text-muted-foreground',
+    impact: 'bg-ok/10 text-ok'
+  };
+  list.innerHTML = filtered.slice(0, 200).map(item => {
+    const inCart = BLD_STATE.items.some(ci => ci._catalogId === item.id);
+    const priceLabel = item.costMode === 'tbc' ? 'TBC'
+      : item.costMode === 'cpm' ? '$' + item.unitCost + '/CPM'
+      : item.costMode === 'range' ? bldFmtMoney(item.unitCost, item.unitCurrency) + '–' + bldFmtMoney(item.unitCostMax, item.unitCurrency)
+      : bldFmtMoney(item.unitCost, item.unitCurrency);
+    return `
+      <div class="rounded-md border border-border bg-card hover:bg-accent/30 transition-colors p-2.5 flex items-center gap-2.5 ${inCart ? 'opacity-50' : ''}">
+        <span class="pill ${typeBadgeMap[item.type] || 'bg-muted'} text-[9px] font-semibold flex-shrink-0">${_eEsc(item.typeLabel)}</span>
+        <div class="min-w-0 flex-1">
+          <div class="text-xs font-semibold truncate">${_eEsc(item.label)}</div>
+          <div class="text-[10px] text-muted-foreground truncate">${_eEsc(item.sublabel)}</div>
+        </div>
+        <div class="text-right flex-shrink-0">
+          <div class="text-[11px] font-bold num">${bldFmtReach(item.reach) === '—' ? '' : bldFmtReach(item.reach)}</div>
+          <div class="text-[10px] text-muted-foreground num">${priceLabel}</div>
+        </div>
+        <button class="bld-add-btn px-2 py-1 rounded-md border border-border bg-card hover:bg-brand hover:text-brand-foreground hover:border-brand text-xs font-bold flex-shrink-0" data-catalog-id="${_eEsc(item.id)}" ${inCart ? 'disabled' : ''}>${inCart ? '✓' : '+'}</button>
+      </div>
+    `;
+  }).join('');
+
+  // Wire add buttons
+  list.querySelectorAll('.bld-add-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const id = btn.dataset.catalogId;
+      const src = bldGetCatalog().find(i => i.id === id);
+      if (!src) return;
+      bldAddToCart(src);
+    });
+  });
+}
+
+// ─── Render: cart ───
+function bldRenderCart() {
+  const list = document.getElementById('bldCartList');
+  const items = BLD_STATE.items;
+  document.getElementById('bldCartCount').textContent = items.length + ' item' + (items.length === 1 ? '' : 's');
+
+  if (items.length === 0) {
+    list.innerHTML = '<div class="text-[11px] text-muted-foreground italic py-4 text-center">Empty cart — click + on any catalog row, or apply a template above.</div>';
+  } else {
+    list.innerHTML = items.map((it, idx) => {
+      const cost = bldComputeLineCost(it);
+      const unitsInput = it.costMode === 'cpm'
+        ? `<input type="number" min="0" step="1" value="${it.units}" data-idx="${idx}" class="bld-units search-input w-16 px-1.5 py-0.5 text-[11px] num" title="Target views in 1000s" />`
+        : `<input type="number" min="1" step="1" value="${it.units}" data-idx="${idx}" class="bld-units search-input w-14 px-1.5 py-0.5 text-[11px] num" />`;
+      return `
+        <div class="rounded-md border border-border bg-muted/20 p-2.5">
+          <div class="flex items-center gap-2 mb-1.5">
+            <span class="pill bg-muted/60 text-foreground text-[9px] font-semibold flex-shrink-0">${_eEsc(it.typeLabel)}</span>
+            <div class="text-xs font-semibold truncate flex-1">${_eEsc(it.label)}</div>
+            <button class="bld-remove-btn text-destructive hover:text-foreground text-sm leading-none flex-shrink-0" data-idx="${idx}">✕</button>
+          </div>
+          <div class="flex items-center gap-2 text-[10px] text-muted-foreground">
+            <span class="truncate flex-1">${_eEsc(it.sublabel)}</span>
+            ${unitsInput}
+            <span class="text-foreground/70">${_eEsc(it.unit)}${(it.units || 1) > 1 ? 's' : ''}</span>
+            ${it.reach ? `<span class="num">· ${bldFmtReach(bldEffectiveReach(it))}</span>` : ''}
+            <span class="font-semibold text-brand num">${cost.label}</span>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    // Wire remove + units inputs
+    list.querySelectorAll('.bld-remove-btn').forEach(btn => {
+      btn.addEventListener('click', () => { BLD_STATE.items.splice(parseInt(btn.dataset.idx,10), 1); bldRender(); });
+    });
+    list.querySelectorAll('.bld-units').forEach(inp => {
+      inp.addEventListener('input', () => {
+        const i = parseInt(inp.dataset.idx, 10);
+        const v = Math.max(inp.value === '0' ? 0 : 1, parseInt(inp.value, 10) || 0);
+        if (BLD_STATE.items[i]) { BLD_STATE.items[i].units = v; bldRender(); }
+      });
+    });
+  }
+
+  // Totals
+  let totalCost = 0, totalReach = 0;
+  items.forEach(it => {
+    const c = bldComputeLineCost(it);
+    totalCost += c.value || 0;
+    totalReach += bldEffectiveReach(it);
+  });
+  document.getElementById('bldTotalReach').textContent = bldFmtReach(totalReach);
+  document.getElementById('bldTotalCost').textContent = bldFmtMoney(totalCost, BLD_STATE.currency);
+  // Alt currency
+  const altCur = BLD_STATE.currency === 'GBP' ? 'USD' : 'GBP';
+  const altAmt = BLD_STATE.currency === 'GBP' ? totalCost * BLD_FX : totalCost / BLD_FX;
+  document.getElementById('bldTotalCostAlt').textContent = totalCost ? '≈ ' + bldFmtMoney(altAmt, altCur) : '';
+  // Effective CPM
+  const ecpm = (totalReach > 0 && totalCost > 0) ? (totalCost / (totalReach / 1000)) : null;
+  document.getElementById('bldEffectiveCpm').textContent = ecpm == null ? '—' : (BLD_STATE.currency === 'GBP' ? '£' : '$') + ecpm.toFixed(2);
+
+  // Breakdown chips
+  const counts = {};
+  items.forEach(it => { counts[it.typeLabel] = (counts[it.typeLabel] || 0) + 1; });
+  document.getElementById('bldBreakdown').innerHTML = Object.entries(counts).map(([k, v]) => `<span class="pill bg-muted/40 text-foreground text-[10px]">${v} ${_eEsc(k)}</span>`).join('');
+
+  // Persist draft
+  bldSaveDraft();
+}
+
+function bldRender() { bldRenderCatalog(); bldRenderCart(); bldRenderSavedChips(); }
+
+// ─── Cart ops ───
+function bldAddToCart(srcItem) {
+  // Avoid dupes by catalog id
+  if (BLD_STATE.items.some(it => it._catalogId === srcItem.id)) return;
+  const defaultUnits = srcItem.costMode === 'cpm' ? 1000 : 1; // CPM lines default to 1M views (1000 × 1K)
+  BLD_STATE.items.push({
+    _catalogId: srcItem.id,
+    type: srcItem.type, typeLabel: srcItem.typeLabel,
+    label: srcItem.label, sublabel: srcItem.sublabel,
+    reach: srcItem.reach, unit: srcItem.unit, units: defaultUnits,
+    unitCost: srcItem.unitCost, unitCostMax: srcItem.unitCostMax,
+    unitCurrency: srcItem.unitCurrency, costMode: srcItem.costMode
+  });
+  bldRender();
+}
+function bldClearCart() {
+  if (BLD_STATE.items.length === 0) return;
+  if (!confirm('Clear all selections?')) return;
+  BLD_STATE.items = [];
+  bldRender();
+}
+
+// ─── Persistence ───
+function bldSaveDraft() {
+  try { localStorage.setItem(BLD_DRAFT_KEY, JSON.stringify(BLD_STATE)); } catch (e) {}
+}
+function bldLoadDraft() {
+  try {
+    const raw = localStorage.getItem(BLD_DRAFT_KEY);
+    if (raw) {
+      const s = JSON.parse(raw);
+      if (s && Array.isArray(s.items)) BLD_STATE = { ...BLD_STATE, ...s };
+    }
+  } catch (e) {}
+}
+function bldGetSaved() {
+  try { return JSON.parse(localStorage.getItem(BLD_KEY) || '[]'); } catch (e) { return []; }
+}
+function bldSaveCampaign() {
+  const name = (document.getElementById('bldCampaignName').value || '').trim() || ('Campaign ' + new Date().toISOString().slice(0,10));
+  const saved = bldGetSaved();
+  const payload = { ...BLD_STATE, name, savedAt: new Date().toISOString() };
+  const i = saved.findIndex(s => s.name === name);
+  if (i >= 0) saved[i] = payload; else saved.push(payload);
+  try { localStorage.setItem(BLD_KEY, JSON.stringify(saved)); } catch (e) { return bldToast('Save failed'); }
+  bldToast('Saved · ' + name);
+  bldRenderSavedChips();
+}
+function bldLoadCampaign(name) {
+  const s = bldGetSaved().find(c => c.name === name);
+  if (!s) return;
+  BLD_STATE = { ...BLD_STATE, ...s };
+  document.getElementById('bldCampaignName').value = s.name || '';
+  document.getElementById('bldCampaignBrand').value = s.brand || '';
+  document.getElementById('bldCampaignMarket').value = s.market || '';
+  document.getElementById('bldCampaignCurrency').value = s.currency || 'GBP';
+  bldRender();
+  bldToast('Loaded · ' + name);
+}
+function bldDeleteSaved(name) {
+  if (!confirm('Delete saved campaign "' + name + '"?')) return;
+  const saved = bldGetSaved().filter(c => c.name !== name);
+  try { localStorage.setItem(BLD_KEY, JSON.stringify(saved)); } catch (e) {}
+  bldRenderSavedChips();
+}
+function bldRenderSavedChips() {
+  const wrap = document.getElementById('bldSavedChips');
+  if (!wrap) return;
+  const saved = bldGetSaved();
+  if (saved.length === 0) { wrap.innerHTML = '<span class="text-[11px] text-muted-foreground italic">none yet</span>'; return; }
+  wrap.innerHTML = saved.map(s => `
+    <span class="inline-flex items-center gap-1 rounded-md border border-border bg-card text-[11px] overflow-hidden">
+      <button class="bld-load-chip px-2 py-1 hover:bg-accent/30" data-name="${_eEsc(s.name)}">${_eEsc(s.name)} <span class="text-muted-foreground">· ${s.items?.length || 0}</span></button>
+      <button class="bld-del-chip px-1.5 py-1 text-destructive hover:bg-destructive/10" data-name="${_eEsc(s.name)}" title="Delete">×</button>
+    </span>
+  `).join('');
+  wrap.querySelectorAll('.bld-load-chip').forEach(b => b.addEventListener('click', () => bldLoadCampaign(b.dataset.name)));
+  wrap.querySelectorAll('.bld-del-chip').forEach(b => b.addEventListener('click', () => bldDeleteSaved(b.dataset.name)));
+}
+
+// ─── Exports ───
+function bldExportCsv() {
+  if (BLD_STATE.items.length === 0) return bldToast('Cart empty');
+  const rows = [['Type','Label','Sublabel','Units','Unit','Unit cost','Currency','Line cost ('+BLD_STATE.currency+')','Reach']];
+  BLD_STATE.items.forEach(it => {
+    const c = bldComputeLineCost(it);
+    rows.push([it.typeLabel, it.label, it.sublabel, it.units, it.unit, it.unitCost, it.unitCurrency, Math.round(c.value), bldEffectiveReach(it)]);
+  });
+  const csv = rows.map(r => r.map(v => '"' + String(v ?? '').replace(/"/g,'""') + '"').join(',')).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = (BLD_STATE.name || 'campaign').replace(/[^a-z0-9-_]/gi,'_') + '.csv';
+  a.click(); URL.revokeObjectURL(url);
+  bldToast('CSV downloaded');
+}
+function bldExportJson() {
+  if (BLD_STATE.items.length === 0) return bldToast('Cart empty');
+  const blob = new Blob([JSON.stringify(BLD_STATE, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = (BLD_STATE.name || 'campaign').replace(/[^a-z0-9-_]/gi,'_') + '.json';
+  a.click(); URL.revokeObjectURL(url);
+  bldToast('JSON downloaded');
+}
+function bldCopyHandles() {
+  if (BLD_STATE.items.length === 0) return bldToast('Cart empty');
+  const handles = BLD_STATE.items.map(it => it.label).join('\n');
+  navigator.clipboard?.writeText(handles).then(() => bldToast('Copied ' + BLD_STATE.items.length + ' handles'));
+}
+function bldToBrief() {
+  if (BLD_STATE.items.length === 0) return bldToast('Cart empty');
+  let totalCost = 0, totalReach = 0;
+  BLD_STATE.items.forEach(it => { totalCost += bldComputeLineCost(it).value || 0; totalReach += bldEffectiveReach(it); });
+  // Synthesize the legacy items[] shape so existing handoff renderer works
+  const items = BLD_STATE.items.map(it => ({
+    handle: it.label.replace(/^@/, ''),
+    category: it.type === 'page' ? 'page' : it.type === 'creator' ? 'creator' : it.type,
+    reach: bldEffectiveReach(it),
+    market: BLD_STATE.market
+  }));
+  const payload = { name: BLD_STATE.name || 'Untitled', items, totalReach, totalCost: Math.round(totalCost) };
+  window._builderHandoff = payload;
+  applyBuilderHandoff(payload);
+  switchTab('brief');
+}
+
+// ─── Templates ───
+const BLD_TEMPLATES = [
+  {
+    id: 'tpl_eclipse_film',
+    name: '🌒 Eclipse Film Launch',
+    description: 'Three-layer clipping drop for a movie release',
+    seed: (catalog) => ({
+      name: 'Film launch — Eclipse', brand: '', market: 'Global', currency: 'USD',
+      pickIds: ['tier_pubity', 'tier_vetted', 'tier_clipping', 'fmt_comedy_skit'],
+      unitsOverride: { tier_pubity: 1000, tier_vetted: 2500, tier_clipping: 5000 }
+    })
+  },
+  {
+    id: 'tpl_memestorm_hurricane',
+    name: '⚡ Memestorm Hurricane',
+    description: 'Flat £50K · 19 Pubity-owned pages saturation',
+    seed: () => ({
+      name: 'Memestorm Hurricane', brand: '', market: 'Global', currency: 'GBP',
+      pickIds: ['ms_hurricane'], unitsOverride: {}
+    })
+  },
+  {
+    id: 'tpl_messy_girl_strand',
+    name: '💋 Messy Girl Strand',
+    description: 'Shelen + Georgia Wood + Messy Girl format',
+    seed: () => ({
+      name: 'Messy Girl Strand', brand: '', market: 'UK', currency: 'GBP',
+      pickIds: ['celeb_shelen_zamora', 'celeb_georgia_wood', 'fmt_messy_girl'], unitsOverride: {}
+    })
+  },
+  {
+    id: 'tpl_dating_app',
+    name: '💕 Dating App Series',
+    description: 'Kimberley + Dating Comedy format · Bumble warm path',
+    seed: () => ({
+      name: 'Dating App Comedy Series', brand: 'Bumble (target)', market: 'UK', currency: 'GBP',
+      pickIds: ['celeb_kimberley_cumberbatch', 'fmt_dating_comedy'], unitsOverride: {}
+    })
+  },
+  {
+    id: 'tpl_uk_premium',
+    name: '💎 UK Premium Vertical',
+    description: 'RHOC + Socks House Meeting + Love of Huns',
+    seed: () => ({
+      name: 'UK Premium Vertical', brand: '', market: 'UK', currency: 'GBP',
+      pickIds: ['pg_real_housewives_of_clapton', 'pg_socks_house_meeting', 'pg_loveofhuns'], unitsOverride: {}
+    })
+  },
+  {
+    id: 'tpl_bls_attach',
+    name: '📊 Add BLS Medium to current',
+    description: 'Attach Brand Lift Study (£25K, medium campaign)',
+    seed: () => ({ _attachMode: true, pickIds: ['il_bls_medium'], unitsOverride: {} })
+  }
+];
+function bldPopulateTemplateDropdown() {
+  const sel = document.getElementById('bldTemplate');
+  if (!sel) return;
+  BLD_TEMPLATES.forEach(t => {
+    const opt = document.createElement('option');
+    opt.value = t.id; opt.textContent = t.name + ' — ' + t.description;
+    sel.appendChild(opt);
+  });
+}
+function bldApplyTemplate() {
+  const sel = document.getElementById('bldTemplate');
+  const tpl = BLD_TEMPLATES.find(t => t.id === sel.value);
+  if (!tpl) return bldToast('Pick a template first');
+  const seed = tpl.seed(bldGetCatalog());
+  const catalog = bldGetCatalog();
+  // If not attach mode, reset cart + meta
+  if (!seed._attachMode) {
+    BLD_STATE.items = [];
+    BLD_STATE.name = seed.name || '';
+    BLD_STATE.brand = seed.brand || '';
+    BLD_STATE.market = seed.market || '';
+    BLD_STATE.currency = seed.currency || 'GBP';
+    document.getElementById('bldCampaignName').value = BLD_STATE.name;
+    document.getElementById('bldCampaignBrand').value = BLD_STATE.brand;
+    document.getElementById('bldCampaignMarket').value = BLD_STATE.market;
+    document.getElementById('bldCampaignCurrency').value = BLD_STATE.currency;
+  }
+  const missing = [];
+  (seed.pickIds || []).forEach(id => {
+    const src = catalog.find(c => c.id === id);
+    if (!src) { missing.push(id); return; }
+    if (BLD_STATE.items.some(it => it._catalogId === id)) return;
+    bldAddToCart(src);
+    // Apply units override
+    if (seed.unitsOverride && seed.unitsOverride[id]) {
+      const it = BLD_STATE.items.find(x => x._catalogId === id);
+      if (it) it.units = seed.unitsOverride[id];
+    }
+  });
+  bldRender();
+  bldToast(tpl.name + ' applied' + (missing.length ? ' (' + missing.length + ' items not found)' : ''));
+}
+
+// ─── Toast ───
+function bldToast(msg) {
+  const t = document.getElementById('bldToast');
+  if (!t) return;
+  t.textContent = msg;
+  t.style.opacity = '1';
+  clearTimeout(window._bldToastT);
+  window._bldToastT = setTimeout(() => { t.style.opacity = '0'; }, 1800);
+}
+
+// ─── Init / wiring ───
+function bldInit() {
+  bldLoadDraft();
+  // Restore meta to inputs
+  document.getElementById('bldCampaignName').value = BLD_STATE.name || '';
+  document.getElementById('bldCampaignBrand').value = BLD_STATE.brand || '';
+  document.getElementById('bldCampaignMarket').value = BLD_STATE.market || '';
+  document.getElementById('bldCampaignCurrency').value = BLD_STATE.currency || 'GBP';
+  bldPopulateTemplateDropdown();
+  bldRender();
+}
+// Wire inputs
+document.getElementById('bldSearch')?.addEventListener('input', e => { BLD_STATE.search = e.target.value; bldRenderCatalog(); });
+document.getElementById('bldMarketFilter')?.addEventListener('change', e => { BLD_STATE.marketFilter = e.target.value; bldRenderCatalog(); });
+document.getElementById('bldVerticalFilter')?.addEventListener('change', e => { BLD_STATE.verticalFilter = e.target.value; bldRenderCatalog(); });
+document.querySelectorAll('.bld-type-chip').forEach(btn => {
+  btn.addEventListener('click', () => {
+    BLD_STATE.typeFilter = btn.dataset.type;
+    document.querySelectorAll('.bld-type-chip').forEach(b => b.dataset.active = (b === btn ? 'true' : 'false'));
+    bldRenderCatalog();
+  });
+});
+document.getElementById('bldCampaignName')?.addEventListener('input', e => { BLD_STATE.name = e.target.value; bldSaveDraft(); });
+document.getElementById('bldCampaignBrand')?.addEventListener('input', e => { BLD_STATE.brand = e.target.value; bldSaveDraft(); });
+document.getElementById('bldCampaignMarket')?.addEventListener('change', e => { BLD_STATE.market = e.target.value; bldSaveDraft(); });
+document.getElementById('bldCampaignCurrency')?.addEventListener('change', e => { BLD_STATE.currency = e.target.value; bldRenderCart(); });
+document.getElementById('bldClear')?.addEventListener('click', bldClearCart);
+document.getElementById('bldSave')?.addEventListener('click', bldSaveCampaign);
+document.getElementById('bldExportCsv')?.addEventListener('click', bldExportCsv);
+document.getElementById('bldExportJson')?.addEventListener('click', bldExportJson);
+document.getElementById('bldCopyHandles')?.addEventListener('click', bldCopyHandles);
+document.getElementById('bldToBrief')?.addEventListener('click', bldToBrief);
+document.getElementById('bldTemplateApply')?.addEventListener('click', bldApplyTemplate);
+// Re-render on tab switch into builder (so it picks up latest CELEBS/FORMATS/ECLIPSE after async loads)
+const _origSwitchTab = window.switchTab;
+if (typeof _origSwitchTab === 'function') {
+  window.switchTab = function(name) {
+    const r = _origSwitchTab.apply(this, arguments);
+    if (name === 'builder') bldRender();
+    return r;
+  };
+}
+// Defer init until other async data has had a chance to load
+setTimeout(bldInit, 800);
 </script>
 
 <!-- ═══════════════ VERTICALS GRID ═══════════════ -->
@@ -4471,16 +5185,152 @@ loadFormats();
 
 <!-- ═══════════════ CAMPAIGN BUILDER ═══════════════ -->
 <section data-pane="builder" class="pane hidden">
-  <div class="mb-4 flex items-end justify-between">
+  <!-- Header -->
+  <div class="mb-4 flex items-end justify-between gap-4 flex-wrap">
     <div>
+      <div class="text-xs text-muted-foreground mb-1 font-mono">Pubity Studio › Builder</div>
       <h1 class="text-3xl font-bold tracking-tight mb-1">Campaign Builder</h1>
-      <p class="text-muted-foreground">Pick pages, anchors and creators across the network into one campaign. Live totals, save and reload, export to brief.</p>
+      <p class="text-muted-foreground">Live catalog across the network. Pages · Creators · Formats · Eclipse layers · Spots · Impact Lab — into one campaign with running totals.</p>
     </div>
-    <a href="uk-layouts/a2-builder.html" target="_blank" rel="noopener" class="text-xs text-muted-foreground hover:text-foreground">Open fullscreen ↗</a>
+    <a href="uk-layouts/a2-builder.html" target="_blank" rel="noopener" class="text-xs text-muted-foreground hover:text-foreground">Standalone UK builder ↗</a>
   </div>
-  <div class="rounded-xl border border-border bg-card overflow-hidden" style="height: calc(100vh - 12rem); min-height: 600px;">
-    <iframe id="builderFrame" src="" class="w-full h-full border-0" title="Campaign Builder"></iframe>
+
+  <!-- Saved campaigns + template picker strip -->
+  <div class="mb-4 rounded-lg border border-border bg-card p-3 flex items-center gap-3 flex-wrap">
+    <div class="flex items-center gap-2 flex-1 min-w-[200px]">
+      <span class="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Templates</span>
+      <select id="bldTemplate" class="search-input px-2 py-1.5 text-xs flex-1 max-w-[280px]">
+        <option value="">— Start blank or pick a template —</option>
+      </select>
+      <button id="bldTemplateApply" class="px-2.5 py-1.5 rounded-md bg-brand text-brand-foreground text-xs font-semibold hover:opacity-90">Apply</button>
+    </div>
+    <div class="h-6 w-px bg-border"></div>
+    <div class="flex items-center gap-2 flex-wrap">
+      <span class="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Saved</span>
+      <div id="bldSavedChips" class="flex items-center gap-1.5 flex-wrap">
+        <span class="text-[11px] text-muted-foreground italic">none yet</span>
+      </div>
+    </div>
   </div>
+
+  <!-- Two-rail layout -->
+  <div class="grid grid-cols-12 gap-4">
+
+    <!-- LEFT · CATALOG -->
+    <div class="col-span-5">
+      <div class="rounded-xl border border-border bg-card p-4 sticky top-4" style="max-height: calc(100vh - 14rem);">
+        <!-- Search -->
+        <div class="relative mb-3">
+          <input id="bldSearch" type="search" placeholder="Search across everything (handle, name, format, vertical)…" class="search-input w-full px-3 py-2 text-sm" />
+        </div>
+
+        <!-- Type filter chips -->
+        <div class="flex flex-wrap gap-1.5 mb-3" id="bldTypeChips">
+          <button class="bld-type-chip pill border border-border bg-card hover:bg-accent text-[11px]" data-type="all" data-active="true">All</button>
+          <button class="bld-type-chip pill border border-border bg-card hover:bg-accent text-[11px]" data-type="page">Pages</button>
+          <button class="bld-type-chip pill border border-border bg-card hover:bg-accent text-[11px]" data-type="creator">Creators</button>
+          <button class="bld-type-chip pill border border-border bg-card hover:bg-accent text-[11px]" data-type="format">Formats</button>
+          <button class="bld-type-chip pill border border-border bg-card hover:bg-accent text-[11px]" data-type="eclipse">Eclipse</button>
+          <button class="bld-type-chip pill border border-border bg-card hover:bg-accent text-[11px]" data-type="memestorm">Memestorm</button>
+          <button class="bld-type-chip pill border border-border bg-card hover:bg-accent text-[11px]" data-type="classic">Classics</button>
+          <button class="bld-type-chip pill border border-border bg-card hover:bg-accent text-[11px]" data-type="spot">Spots</button>
+          <button class="bld-type-chip pill border border-border bg-card hover:bg-accent text-[11px]" data-type="powerup">Power-ups</button>
+          <button class="bld-type-chip pill border border-border bg-card hover:bg-accent text-[11px]" data-type="impact">Impact Lab</button>
+        </div>
+
+        <!-- Market + vertical filters -->
+        <div class="flex flex-wrap gap-1.5 mb-3 text-[11px]">
+          <select id="bldMarketFilter" class="search-input px-2 py-1 text-[11px] flex-1 min-w-[120px]">
+            <option value="all">All markets</option>
+            <option value="UK">UK only</option>
+            <option value="US">US only</option>
+            <option value="Global">Global</option>
+          </select>
+          <select id="bldVerticalFilter" class="search-input px-2 py-1 text-[11px] flex-1 min-w-[120px]">
+            <option value="all">All verticals</option>
+          </select>
+        </div>
+
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold" id="bldCatalogCount">— items</span>
+          <span class="text-[10px] text-muted-foreground">click + to add</span>
+        </div>
+
+        <!-- Catalog list -->
+        <div id="bldCatalogList" class="space-y-1 overflow-y-auto" style="max-height: calc(100vh - 28rem); min-height: 400px;"></div>
+      </div>
+    </div>
+
+    <!-- RIGHT · CART -->
+    <div class="col-span-7">
+      <div class="rounded-xl border-2 border-brand bg-card p-5" style="box-shadow:0 0 60px -20px hsl(51 92% 56% / 0.5);">
+
+        <!-- Campaign meta -->
+        <div class="flex items-center gap-2 mb-3">
+          <span class="pill bg-brand text-brand-foreground text-[10px] font-bold">CAMPAIGN</span>
+          <input id="bldCampaignName" type="text" placeholder="Untitled campaign" class="search-input flex-1 px-2 py-1.5 text-sm font-semibold" />
+          <span id="bldCartCount" class="text-[10px] text-muted-foreground whitespace-nowrap">0 items</span>
+        </div>
+        <div class="grid grid-cols-3 gap-2 mb-4 pb-4 border-b border-border">
+          <input id="bldCampaignBrand" type="text" placeholder="Brand / client" class="search-input px-2 py-1.5 text-xs" />
+          <select id="bldCampaignMarket" class="search-input px-2 py-1.5 text-xs">
+            <option value="">Market…</option>
+            <option value="UK">UK</option>
+            <option value="US">US</option>
+            <option value="Global">Global</option>
+            <option value="Multi">Multi</option>
+          </select>
+          <select id="bldCampaignCurrency" class="search-input px-2 py-1.5 text-xs">
+            <option value="GBP">GBP £</option>
+            <option value="USD">USD $</option>
+          </select>
+        </div>
+
+        <!-- Totals -->
+        <div class="grid grid-cols-3 gap-3 mb-4">
+          <div class="rounded-md border border-border bg-muted/30 p-3">
+            <div class="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">Combined reach</div>
+            <div id="bldTotalReach" class="text-2xl font-black num">0</div>
+          </div>
+          <div class="rounded-md border border-border bg-muted/30 p-3">
+            <div class="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">Estimated cost</div>
+            <div id="bldTotalCost" class="text-2xl font-black num text-brand">—</div>
+            <div id="bldTotalCostAlt" class="text-[10px] text-muted-foreground mt-0.5">—</div>
+          </div>
+          <div class="rounded-md border border-border bg-muted/30 p-3">
+            <div class="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">Effective CPM</div>
+            <div id="bldEffectiveCpm" class="text-2xl font-black num">—</div>
+            <div class="text-[10px] text-muted-foreground mt-0.5">across all reach</div>
+          </div>
+        </div>
+
+        <!-- Per-category breakdown -->
+        <div id="bldBreakdown" class="flex flex-wrap gap-1.5 mb-4 text-[10px]"></div>
+
+        <!-- Items list -->
+        <div class="mb-1 flex items-center justify-between">
+          <span class="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Selections</span>
+          <button id="bldClear" class="text-[10px] text-destructive hover:underline">Clear all</button>
+        </div>
+        <div id="bldCartList" class="space-y-1.5 mb-4 overflow-y-auto" style="max-height: 50vh; min-height: 100px;">
+          <div class="text-[11px] text-muted-foreground italic py-4 text-center">Empty cart — click + on any catalog row, or apply a template above.</div>
+        </div>
+
+        <!-- Actions -->
+        <div class="grid grid-cols-5 gap-2 pt-3 border-t border-border">
+          <button id="bldSave" class="px-3 py-2 rounded-md bg-brand text-brand-foreground text-xs font-bold hover:opacity-90">💾 Save</button>
+          <button id="bldExportCsv" class="px-3 py-2 rounded-md border border-border bg-card text-xs hover:bg-accent/30">CSV</button>
+          <button id="bldExportJson" class="px-3 py-2 rounded-md border border-border bg-card text-xs hover:bg-accent/30">JSON</button>
+          <button id="bldCopyHandles" class="px-3 py-2 rounded-md border border-border bg-card text-xs hover:bg-accent/30">Copy handles</button>
+          <button id="bldToBrief" class="px-3 py-2 rounded-md border-2 border-brand bg-brand/10 text-brand text-xs font-bold hover:bg-brand/20">Brief →</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Toast -->
+  <div id="bldToast" class="fixed bottom-6 left-1/2 -translate-x-1/2 px-4 py-2.5 rounded-md bg-brand text-brand-foreground text-sm font-semibold opacity-0 pointer-events-none transition-opacity z-50">Saved</div>
 </section>
 
 </main>
