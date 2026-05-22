@@ -1,0 +1,223 @@
+{
+  "source": "Giselle UK Creator Pages Audit · Short Form + Long Form sheets",
+  "syncedAt": "2026-05-22",
+  "shortForm": [
+    {
+      "id": "fmt_comedy_skit",
+      "name": "Comedy Skit Series",
+      "icon": "🎭",
+      "phase": "build-now",
+      "phaseLabel": "🔴 Build Now",
+      "mechanic": "Recurring short sketch — same creator(s), different relatable scenario each episode. Consistent tone and voice. Weekly cadence.",
+      "platforms": "TikTok · Instagram Reels",
+      "length": "30–90 seconds",
+      "brandIntegration": "Brand integrated into the scenario — product is part of the world, not an interruption. Sell as 6-episode package.",
+      "creators": ["Jack Joseph", "Cole Anderson-James", "Italian Bach", "Henry Rowley", "Shelen", "Georgia Wood"],
+      "whyBuild": "Broadest commercial reach of any format. Every vertical buys comedy if the audience is right. Cheap to produce. Fastest proof of concept. Gymshark relationship already warm via Jack Joseph.",
+      "priority": "high"
+    },
+    {
+      "id": "fmt_vox_pop",
+      "name": "Vox Pop / Street Format",
+      "icon": "🎤",
+      "phase": "build-now",
+      "phaseLabel": "🔴 Build Now",
+      "mechanic": "Known creator goes to the street to ask the public questions. Genuine reactions = comedy or social commentary. Doubles as research tool for brands.",
+      "platforms": "TikTok · Instagram Reels · YouTube Shorts",
+      "length": "60–120 seconds",
+      "brandIntegration": "Brand brief sets the question — 'We asked 50 people about X.' Brands get entertainment + genuine insight in one. Easy sell-in.",
+      "creators": ["Henry Rowley", "Jack Remmington", "Kimberley Cumberbatch", "Italian Bach"],
+      "whyBuild": "Novel format for Pubity. The 'insight' angle opens research/planning budgets alongside brand budgets. Low cost, high shareability. Doubles as IRL content.",
+      "priority": "high"
+    },
+    {
+      "id": "fmt_messy_girl",
+      "name": "'Messy Girl' British Life Format",
+      "icon": "💋",
+      "phase": "build-now",
+      "phaseLabel": "🔴 Build Now",
+      "mechanic": "Creator documents authentic, chaotic, relatable British female life. No polish. Real situations. Comedy through honesty not setup. Raw aesthetic IS the product.",
+      "platforms": "TikTok · Instagram Reels",
+      "length": "30–60 seconds",
+      "brandIntegration": "Brand IS part of her actual life — feels like genuine use not an ad. Package as a named Pubity strand with 2–3 creators and a format bible. Sell as a series, not a one-off.",
+      "creators": ["Shelen", "Georgia Wood"],
+      "whyBuild": "Garnier, Adidas, Nivea, Tinder already buying this format. Pubity formalising it as a named strand with a format bible means brands get scale and consistency vs. one-off deals.",
+      "priority": "high"
+    },
+    {
+      "id": "fmt_dating_comedy",
+      "name": "Dating / Relationship Comedy",
+      "icon": "💕",
+      "phase": "build-now",
+      "phaseLabel": "🔴 Build Now · intro available",
+      "mechanic": "Comedy-rooted dating and relationship content. First date scenarios, 'types on dating apps' sketches, social experiment format. Consistent host.",
+      "platforms": "TikTok · Instagram Reels",
+      "length": "30–90 seconds",
+      "brandIntegration": "Dating app brand (Bumble, Tinder, Hinge) sponsors the whole series — owns the category. Restaurant brands integrate as the date venue.",
+      "creators": ["Kimberley Cumberbatch (intro available)", "Shelen (Tinder deal)", "Georgia Wood"],
+      "whyBuild": "Dating app brands have large social budgets and actively need quality UK comedy content. Intro to Bumble available via Giselle's contact. Kimberley already works with Bumble.",
+      "priority": "high"
+    },
+    {
+      "id": "fmt_real_people_try",
+      "name": "'Real People Try' / Social Experiment",
+      "icon": "🧪",
+      "phase": "build-next",
+      "phaseLabel": "🟡 Build Next",
+      "mechanic": "Real people in a scenario involving the brand product or experience. Authentic reactions — comedy or emotion comes from the situation, not a script.",
+      "platforms": "TikTok · Instagram · YouTube",
+      "length": "60–180 seconds",
+      "brandIntegration": "Brand product or experience IS the experiment. 'We gave strangers a month of [product]' — brand funds and names the series. C4 proof: Future Me / NICORETTE.",
+      "creators": ["Jack Joseph", "Presenter-led"],
+      "whyBuild": "Widest brand sales pitch — works for virtually every CPG category. Feels native to social, not like an ad. High shareability. Very low production cost.",
+      "priority": "medium"
+    },
+    {
+      "id": "fmt_food_discovery",
+      "name": "Food Discovery Series",
+      "icon": "🍔",
+      "phase": "build-next",
+      "phaseLabel": "🟡 Build Next",
+      "mechanic": "Consistent presenter, repeatable premise, new restaurant/product each episode. 'Best X in London' mechanic.",
+      "platforms": "Instagram · TikTok · YouTube",
+      "length": "60–180 seconds",
+      "brandIntegration": "Food/restaurant brand co-commissions — owns a category (e.g. 'best £10 lunch in London' presented by Deliveroo).",
+      "creators": ["Eating with Tod", "Slater Chef"],
+      "whyBuild": "Food is the most commercially active UK branded content vertical. Eating with Tod at 2M IG is the ready-made partner. Or build own food page using Snacks to Try mechanic.",
+      "priority": "medium"
+    },
+    {
+      "id": "fmt_sports_culture",
+      "name": "Sports Culture Format",
+      "icon": "⚽",
+      "phase": "build-next",
+      "phaseLabel": "🟡 Build Next",
+      "mechanic": "The culture AROUND sport, not match coverage. Fan behaviour, football memes in video form, 'types of fans' sketches.",
+      "platforms": "TikTok · Instagram",
+      "length": "30–90 seconds",
+      "brandIntegration": "Betting brand sponsors for cultural adjacency as direct promotion regulation tightens. Sports/lifestyle brand integrates naturally.",
+      "creators": ["Harry Pinero", "Loudogg Life"],
+      "whyBuild": "Betting brands need cultural adjacency. Sports comedy is proven format. Pubity's male audience is the sweet spot. Regulation-safe approach.",
+      "priority": "medium"
+    },
+    {
+      "id": "fmt_irl_event",
+      "name": "IRL + Social Event Format",
+      "icon": "🎪",
+      "phase": "phase-3",
+      "phaseLabel": "🟢 Phase 3",
+      "mechanic": "Real-world event filmed for social. IRL audience + online audience simultaneously. Brand activates on the ground AND gets content.",
+      "platforms": "Instagram · TikTok (event clips)",
+      "length": "Varies — 60–120s clips",
+      "brandIntegration": "Brand activates at the IRL event AND gets social content — double value. Drinks, beauty, food brands pay premiums for event presence.",
+      "creators": ["Huns Net", "Love of Huns", "Disgrace Campbell (Disgraceful Club)"],
+      "whyBuild": "IRL + social crossover is rare and increasingly valuable. Huns Net already proves the model. Pubity's distribution scale makes the brand proposition significantly stronger.",
+      "priority": "low"
+    }
+  ],
+  "longForm": {
+    "ukExamples": [
+      {
+        "id": "lf_italian_bach_yt",
+        "name": "Italian Bach — Long Form YouTube",
+        "handle": "@italianbach",
+        "type": "LONG FORM / YOUTUBE",
+        "platform": "YouTube",
+        "scale": "2M IG · 3.2M TikTok · YouTube growing",
+        "opportunity": "UK proof point that a social-native creator can build a YouTube audience for longer narrative content. London-based. 'Friends From Work' group channel adds collaborative long-form opportunity.",
+        "brandFit": "Film & Studios, Streaming brands, Consumer Tech, Lifestyle. US skit format model works here too — premium brand integration in longer-form comedy.",
+        "notes": "Insanity managed — Giselle has intro. Priority: explore YouTube content co-production alongside short-form skit work.",
+        "priority": "high"
+      },
+      {
+        "id": "lf_jack_and_ash",
+        "name": "The Jack & Ash Show",
+        "handle": "@thejackandashshow",
+        "type": "PODCAST",
+        "platform": "Spotify · YouTube clips",
+        "scale": "Jack Remmington + Ash Holme — combined 600K+ social",
+        "opportunity": "Conversational duo podcast with built-in audience from Radio 1 + social. Clip economy: one episode = 8–12 social posts for Pubity to distribute.",
+        "brandFit": "Lifestyle brands, FMCG, Consumer Tech, streaming. 'Presented by' format.",
+        "notes": "One management conversation covers Jack + Ash individually + the podcast. Three assets.",
+        "priority": "medium"
+      },
+      {
+        "id": "lf_gk_barry",
+        "name": "GK Barry — Saving Grace",
+        "handle": "@gkbarry_",
+        "type": "PODCAST",
+        "platform": "Spotify top 5 · YouTube",
+        "scale": "852K IG · 3.6M TikTok · 498K YouTube · UK touring",
+        "opportunity": "Top 5 Spotify UK podcast. Mainstream crossover (Loose Women, I'm A Celeb). Touring audience = rare paying fanbase. Premium podcast partnership opportunity.",
+        "brandFit": "Lifestyle & Fintech, Beauty, Travel, Entertainment. High CPM podcast audience.",
+        "notes": "Senior commercial conversation needed. Partnership or co-production rather than one-off post at this scale.",
+        "priority": "medium"
+      },
+      {
+        "id": "lf_bach_arthur",
+        "name": "The Bach & Arthur Show",
+        "handle": "@italianbach + @arthurtv",
+        "type": "PODCAST",
+        "platform": "Spotify top 10",
+        "scale": "Italian Bach + Arthur TV · Spotify top 10 UK",
+        "opportunity": "Gen Z male podcast audience. Natural home for gaming, consumer tech, lifestyle brand sponsorship. Strong clip distribution potential.",
+        "brandFit": "Gaming, Consumer Tech, Lifestyle & Fintech, Sports & Betting.",
+        "notes": "Covered under Insanity relationship via Italian Bach. One conversation.",
+        "priority": "medium"
+      }
+    ],
+    "c40References": [
+      {
+        "id": "c40_minor_issues",
+        "name": "Minor Issues (Series 4 commissioned)",
+        "by": "@channel4.0 / Wall of Entertainment",
+        "type": "LONG FORM / GAME SHOW",
+        "scale": "7.9M UK views in 2024 · 4 series",
+        "premise": "Pre-teen judges roast and review a panel of celebrities. Unfiltered, savage opinions from kids on rappers, footballers, podcasters. Host: PK Humble. Guests: ArrDee, Konan, Nella Rose, ShxtsNGigs, Michail Antonio, Axel Blake.",
+        "brandFit": "Youth brands, music/streaming, sports. Any brand wanting Gen Z credibility via talent + comedy.",
+        "pubityTakeaway": "4 series = proven repeatable format. 7.9M views shows the audience is there. The 'kids judge adults' mechanic is simple, cheap, infinitely bookable with new talent. Pubity version with its own creator talent would work directly."
+      },
+      {
+        "id": "c40_harry_pinero",
+        "name": "Harry Pinero's Worst in Class (Series 2 commissioned)",
+        "by": "@channel4.0 / Wall of Productions",
+        "type": "LONG FORM / GAME SHOW",
+        "scale": "8.4M UK views in 2024 (biggest C4.0 show)",
+        "premise": "Harry Pinero as a strict headteacher. Celebrity 'students' in detention compete in a quiz across 3 rounds. Regular cast: Adeola Patronne, Darkest Man. Weekly celebrity guest. Final round: beat a 10-year-old. Guests: Yung Filly, Mist, Chloe Burrows.",
+        "brandFit": "Youth brands, FMCG, fashion, gaming — strong male and mixed youth audience.",
+        "pubityTakeaway": "Biggest C4.0 show in 2024. The 'talent-as-teacher' mechanic is original and ownable. Harry Pinero is already in Pubity's creator world (works with Chunkz/Yung Filly). Pubity version = new host, same mechanic."
+      },
+      {
+        "id": "c40_catfished",
+        "name": "Don't Get Catfished (Series 2 greenlit on launch day)",
+        "by": "@channel4.0",
+        "type": "LONG FORM / DATING ENTERTAINMENT",
+        "scale": "Series 2 greenlit on launch day of Series 1",
+        "premise": "Creator goes on 5 blind dates — but 2 of their fellow creators are secretly pranking them using voice scrambling tech. 6 x 20-min episodes. Cast: Deji, Nella Rose, Konan, Zeze Millz, Romell Henry, Scousemali.",
+        "brandFit": "Dating apps (Bumble, Tinder, Hinge) — natural sponsor. Drinks/events brands. Any brand wanting dating/relationship comedy adjacency.",
+        "pubityTakeaway": "Greenlit for Series 2 on launch day = format proven immediately. Dating + prank + creator world = three proven content categories in one. Maps directly to Pubity's dating app vertical opportunity. UK talent already identified."
+      },
+      {
+        "id": "c40_intern",
+        "name": "The Intern",
+        "by": "@channel4.0",
+        "type": "LONG FORM / COMPETITION",
+        "scale": "4 episodes · Part of 2025 summer slate",
+        "premise": "20 contestants compete for one internship. Unorthodox creative and problem-solving challenges. Panel of creators select the winner (Angry Ginge, Nella Rose, Harry Pinero or Darkest Man). Winner gets to shadow that creator on a production shoot.",
+        "brandFit": "Consumer Tech, Apps, Gaming, Lifestyle brands — any brand wanting to be associated with opportunity/aspiration narrative.",
+        "pubityTakeaway": "Creator-as-prize mechanic is novel. High shareability — contestants create content themselves. The 'work with a creator' aspiration taps into genuine Gen Z desire. Easy to adapt for different creator talent."
+      },
+      {
+        "id": "c40_family_face_off",
+        "name": "Family Face-Off",
+        "by": "@channel4.0",
+        "type": "LONG FORM / COMPETITION",
+        "scale": "Part of 2025 summer slate",
+        "premise": "Two creators go head-to-head with their families in a quiz competition. Family members become part of the content — warm, funny, high relatability.",
+        "brandFit": "Family-friendly brands, FMCG, food & drink, travel & hospitality — the family dynamic broadens demographic appeal.",
+        "pubityTakeaway": "Brings creator audiences into contact with the creator's real life. Family content performs very well for shareability and emotional engagement. Lower production cost than studio formats."
+      }
+    ],
+    "keyTakeaway": "All 5 C4.0 formats use UK social talent (Harry Pinero, Nella Rose, Konan, Deji etc), have simple repeatable mechanics, run on YouTube at 15–25 mins, and are commissioned in multiple series. This is the long-form model to replicate with Pubity's own creator relationships."
+  }
+}
