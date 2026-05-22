@@ -3585,6 +3585,42 @@ function bldEffectiveReach(item) {
   return item.reach || 0;
 }
 
+// ─── Chip type definitions ───
+const BLD_CHIP_TYPES = [
+  { type: 'all',       label: 'All' },
+  { type: 'page',      label: 'Pages' },
+  { type: 'creator',   label: 'Creators' },
+  { type: 'format',    label: 'Formats' },
+  { type: 'eclipse',   label: 'Eclipse' },
+  { type: 'memestorm', label: 'Memestorm' },
+  { type: 'classic',   label: 'Classics' },
+  { type: 'spot',      label: 'Spots' },
+  { type: 'powerup',   label: 'Power-ups' },
+  { type: 'impact',    label: 'Impact' }
+];
+
+// ─── Render: type chips with live counts ───
+function bldRenderTypeChips() {
+  const wrap = document.getElementById('bldTypeChips');
+  if (!wrap) return;
+  const all = bldGetCatalog();
+  const counts = {};
+  all.forEach(it => { counts[it.type] = (counts[it.type] || 0) + 1; });
+  counts.all = all.length;
+  wrap.innerHTML = BLD_CHIP_TYPES.map(t => {
+    const active = BLD_STATE.typeFilter === t.type;
+    const n = counts[t.type] || 0;
+    return `<button class="bld-type-chip pill text-[11px] border ${active ? 'border-brand bg-brand/15 text-brand' : 'border-border bg-card hover:bg-accent text-muted-foreground hover:text-foreground'}" data-type="${t.type}">${t.label} <span class="${active ? 'text-brand/70' : 'text-muted-foreground/60'} ml-0.5 num">${n}</span></button>`;
+  }).join('');
+  wrap.querySelectorAll('.bld-type-chip').forEach(btn => {
+    btn.addEventListener('click', () => {
+      BLD_STATE.typeFilter = btn.dataset.type;
+      bldRenderTypeChips();
+      bldRenderCatalog();
+    });
+  });
+}
+
 // ─── Render: catalog ───
 function bldRenderCatalog() {
   const list = document.getElementById('bldCatalogList');
@@ -3599,9 +3635,9 @@ function bldRenderCatalog() {
     return [item.label, item.sublabel, item.vertical, item.market, item.typeLabel].some(s => (s || '').toLowerCase().includes(q));
   });
 
-  document.getElementById('bldCatalogCount').textContent = filtered.length + ' of ' + all.length + ' items';
+  document.getElementById('bldCatalogCount').textContent = filtered.length + ' of ' + all.length;
 
-  // Populate vertical filter (lazy, once per render based on currently filterable set)
+  // Populate vertical filter (lazy)
   const vertSel = document.getElementById('bldVerticalFilter');
   if (vertSel && vertSel.options.length <= 1) {
     const verticals = Array.from(new Set(all.map(i => i.vertical).filter(Boolean))).sort();
@@ -3619,6 +3655,10 @@ function bldRenderCatalog() {
     spot: 'bg-muted text-foreground', powerup: 'bg-muted/50 text-muted-foreground',
     impact: 'bg-ok/10 text-ok'
   };
+  if (filtered.length === 0) {
+    list.innerHTML = '<div class="text-[11px] text-muted-foreground italic text-center py-8">No matches. Try removing filters or clearing search.</div>';
+    return;
+  }
   list.innerHTML = filtered.slice(0, 200).map(item => {
     const inCart = BLD_STATE.items.some(ci => ci._catalogId === item.id);
     const priceLabel = item.costMode === 'tbc' ? 'TBC'
@@ -3656,10 +3696,25 @@ function bldRenderCatalog() {
 function bldRenderCart() {
   const list = document.getElementById('bldCartList');
   const items = BLD_STATE.items;
-  document.getElementById('bldCartCount').textContent = items.length + ' item' + (items.length === 1 ? '' : 's');
+  const cartCountEl = document.getElementById('bldCartCount');
+  const selCountEl = document.getElementById('bldSelectionsCount');
+  const quickStart = document.getElementById('bldQuickStart');
+  const actions = document.getElementById('bldActions');
+
+  cartCountEl.textContent = items.length === 0 ? '0 items selected' : items.length + ' item' + (items.length === 1 ? '' : 's') + ' selected';
+  selCountEl.textContent = items.length === 0 ? 'empty' : items.length + ' line' + (items.length === 1 ? '' : 's');
+
+  // Toggle Quick Start vs Actions
+  if (items.length === 0) {
+    quickStart?.classList.remove('hidden');
+    actions?.classList.add('hidden');
+  } else {
+    quickStart?.classList.add('hidden');
+    actions?.classList.remove('hidden');
+  }
 
   if (items.length === 0) {
-    list.innerHTML = '<div class="text-[11px] text-muted-foreground italic py-4 text-center">Empty cart — click + on any catalog row, or apply a template above.</div>';
+    list.innerHTML = '<div class="text-[11px] text-muted-foreground italic py-6 text-center">No selections yet. Click + on any catalog item on the left, or pick a Quick Start template below.</div>';
   } else {
     list.innerHTML = items.map((it, idx) => {
       const cost = bldComputeLineCost(it);
@@ -3704,12 +3759,14 @@ function bldRenderCart() {
     totalCost += c.value || 0;
     totalReach += bldEffectiveReach(it);
   });
-  document.getElementById('bldTotalReach').textContent = bldFmtReach(totalReach);
-  document.getElementById('bldTotalCost').textContent = bldFmtMoney(totalCost, BLD_STATE.currency);
+  const empty = items.length === 0;
+  document.getElementById('bldTotalReach').textContent = empty ? '—' : bldFmtReach(totalReach);
+  document.getElementById('bldReachHint').textContent = empty ? 'add items to see' : 'across selections';
+  document.getElementById('bldTotalCost').textContent = empty ? '—' : bldFmtMoney(totalCost, BLD_STATE.currency);
   // Alt currency
   const altCur = BLD_STATE.currency === 'GBP' ? 'USD' : 'GBP';
   const altAmt = BLD_STATE.currency === 'GBP' ? totalCost * BLD_FX : totalCost / BLD_FX;
-  document.getElementById('bldTotalCostAlt').textContent = totalCost ? '≈ ' + bldFmtMoney(altAmt, altCur) : '';
+  document.getElementById('bldTotalCostAlt').textContent = empty ? 'add items to see' : (totalCost ? '≈ ' + bldFmtMoney(altAmt, altCur) : 'all TBC');
   // Effective CPM
   const ecpm = (totalReach > 0 && totalCost > 0) ? (totalCost / (totalReach / 1000)) : null;
   document.getElementById('bldEffectiveCpm').textContent = ecpm == null ? '—' : (BLD_STATE.currency === 'GBP' ? '£' : '$') + ecpm.toFixed(2);
@@ -3719,11 +3776,35 @@ function bldRenderCart() {
   items.forEach(it => { counts[it.typeLabel] = (counts[it.typeLabel] || 0) + 1; });
   document.getElementById('bldBreakdown').innerHTML = Object.entries(counts).map(([k, v]) => `<span class="pill bg-muted/40 text-foreground text-[10px]">${v} ${_eEsc(k)}</span>`).join('');
 
+  // Header summary
+  const hs = document.getElementById('bldHeaderSummary');
+  if (hs) hs.textContent = empty ? 'Start by picking a template or adding from the catalog' : `${items.length} items · ${bldFmtReach(totalReach)} reach · ${bldFmtMoney(totalCost, BLD_STATE.currency)}`;
+
   // Persist draft
   bldSaveDraft();
 }
 
-function bldRender() { bldRenderCatalog(); bldRenderCart(); bldRenderSavedChips(); }
+// ─── Render: Quick Start tile grid (top 4 templates) ───
+function bldRenderQuickStart() {
+  const grid = document.getElementById('bldQuickStartGrid');
+  if (!grid) return;
+  const featured = BLD_TEMPLATES.filter(t => !t.seed({})._attachMode).slice(0, 4);
+  grid.innerHTML = featured.map(t => `
+    <button class="bld-quickstart-btn text-left rounded-lg border border-border bg-card hover:border-brand hover:bg-brand/5 transition-colors p-3" data-template-id="${_eEsc(t.id)}">
+      <div class="font-semibold text-xs mb-1">${_eEsc(t.name)}</div>
+      <div class="text-[10px] text-muted-foreground leading-snug">${_eEsc(t.description)}</div>
+    </button>
+  `).join('');
+  grid.querySelectorAll('.bld-quickstart-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const sel = document.getElementById('bldTemplate');
+      if (sel) sel.value = btn.dataset.templateId;
+      bldApplyTemplate();
+    });
+  });
+}
+
+function bldRender() { bldRenderTypeChips(); bldRenderCatalog(); bldRenderCart(); bldRenderSavedChips(); bldRenderQuickStart(); }
 
 // ─── Cart ops ───
 function bldAddToCart(srcItem) {
@@ -3792,9 +3873,11 @@ function bldDeleteSaved(name) {
 }
 function bldRenderSavedChips() {
   const wrap = document.getElementById('bldSavedChips');
+  const strip = document.getElementById('bldSavedStrip');
   if (!wrap) return;
   const saved = bldGetSaved();
-  if (saved.length === 0) { wrap.innerHTML = '<span class="text-[11px] text-muted-foreground italic">none yet</span>'; return; }
+  if (saved.length === 0) { strip?.classList.add('hidden'); wrap.innerHTML = ''; return; }
+  strip?.classList.remove('hidden');
   wrap.innerHTML = saved.map(s => `
     <span class="inline-flex items-center gap-1 rounded-md border border-border bg-card text-[11px] overflow-hidden">
       <button class="bld-load-chip px-2 py-1 hover:bg-accent/30" data-name="${_eEsc(s.name)}">${_eEsc(s.name)} <span class="text-muted-foreground">· ${s.items?.length || 0}</span></button>
@@ -5186,30 +5269,23 @@ setTimeout(bldInit, 800);
 <!-- ═══════════════ CAMPAIGN BUILDER ═══════════════ -->
 <section data-pane="builder" class="pane hidden">
   <!-- Header -->
-  <div class="mb-4 flex items-end justify-between gap-4 flex-wrap">
+  <div class="mb-5 flex items-end justify-between gap-4 flex-wrap">
     <div>
       <div class="text-xs text-muted-foreground mb-1 font-mono">Pubity Studio › Builder</div>
-      <h1 class="text-3xl font-bold tracking-tight mb-1">Campaign Builder</h1>
-      <p class="text-muted-foreground">Live catalog across the network. Pages · Creators · Formats · Eclipse layers · Spots · Impact Lab — into one campaign with running totals.</p>
+      <h1 class="text-3xl font-bold tracking-tight">Campaign Builder</h1>
     </div>
-    <a href="uk-layouts/a2-builder.html" target="_blank" rel="noopener" class="text-xs text-muted-foreground hover:text-foreground">Standalone UK builder ↗</a>
+    <div class="flex items-center gap-3 text-xs text-muted-foreground">
+      <span id="bldHeaderSummary">—</span>
+      <span class="text-border">·</span>
+      <a href="uk-layouts/a2-builder.html" target="_blank" rel="noopener" class="hover:text-foreground">Standalone UK ↗</a>
+    </div>
   </div>
 
-  <!-- Saved campaigns + template picker strip -->
-  <div class="mb-4 rounded-lg border border-border bg-card p-3 flex items-center gap-3 flex-wrap">
-    <div class="flex items-center gap-2 flex-1 min-w-[200px]">
-      <span class="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Templates</span>
-      <select id="bldTemplate" class="search-input px-2 py-1.5 text-xs flex-1 max-w-[280px]">
-        <option value="">— Start blank or pick a template —</option>
-      </select>
-      <button id="bldTemplateApply" class="px-2.5 py-1.5 rounded-md bg-brand text-brand-foreground text-xs font-semibold hover:opacity-90">Apply</button>
-    </div>
-    <div class="h-6 w-px bg-border"></div>
-    <div class="flex items-center gap-2 flex-wrap">
-      <span class="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Saved</span>
-      <div id="bldSavedChips" class="flex items-center gap-1.5 flex-wrap">
-        <span class="text-[11px] text-muted-foreground italic">none yet</span>
-      </div>
+  <!-- Saved campaigns strip (only shows when there are saved campaigns) -->
+  <div id="bldSavedStrip" class="mb-4 hidden">
+    <div class="rounded-lg border border-border bg-card p-2.5 flex items-center gap-2 flex-wrap">
+      <span class="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold pl-1">Saved</span>
+      <div id="bldSavedChips" class="flex items-center gap-1.5 flex-wrap"></div>
     </div>
   </div>
 
@@ -5218,60 +5294,56 @@ setTimeout(bldInit, 800);
 
     <!-- LEFT · CATALOG -->
     <div class="col-span-5">
-      <div class="rounded-xl border border-border bg-card p-4 sticky top-4" style="max-height: calc(100vh - 14rem);">
-        <!-- Search -->
-        <div class="relative mb-3">
-          <input id="bldSearch" type="search" placeholder="Search across everything (handle, name, format, vertical)…" class="search-input w-full px-3 py-2 text-sm" />
+      <div class="rounded-xl border border-border bg-card p-4 sticky top-4 flex flex-col" style="max-height: calc(100vh - 9rem);">
+        <!-- Section header -->
+        <div class="mb-3 flex items-center justify-between">
+          <div>
+            <div class="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Catalog</div>
+            <h3 class="text-sm font-bold">Everything sellable</h3>
+          </div>
+          <span class="text-[11px] text-muted-foreground" id="bldCatalogCount">— items</span>
         </div>
 
-        <!-- Type filter chips -->
-        <div class="flex flex-wrap gap-1.5 mb-3" id="bldTypeChips">
-          <button class="bld-type-chip pill border border-border bg-card hover:bg-accent text-[11px]" data-type="all" data-active="true">All</button>
-          <button class="bld-type-chip pill border border-border bg-card hover:bg-accent text-[11px]" data-type="page">Pages</button>
-          <button class="bld-type-chip pill border border-border bg-card hover:bg-accent text-[11px]" data-type="creator">Creators</button>
-          <button class="bld-type-chip pill border border-border bg-card hover:bg-accent text-[11px]" data-type="format">Formats</button>
-          <button class="bld-type-chip pill border border-border bg-card hover:bg-accent text-[11px]" data-type="eclipse">Eclipse</button>
-          <button class="bld-type-chip pill border border-border bg-card hover:bg-accent text-[11px]" data-type="memestorm">Memestorm</button>
-          <button class="bld-type-chip pill border border-border bg-card hover:bg-accent text-[11px]" data-type="classic">Classics</button>
-          <button class="bld-type-chip pill border border-border bg-card hover:bg-accent text-[11px]" data-type="spot">Spots</button>
-          <button class="bld-type-chip pill border border-border bg-card hover:bg-accent text-[11px]" data-type="powerup">Power-ups</button>
-          <button class="bld-type-chip pill border border-border bg-card hover:bg-accent text-[11px]" data-type="impact">Impact Lab</button>
+        <!-- Search -->
+        <div class="relative mb-3">
+          <input id="bldSearch" type="search" placeholder="Search handle, name, format, vertical…" class="search-input w-full px-3 py-2 text-sm" />
         </div>
+
+        <!-- Type filter chips with live counts -->
+        <div class="flex flex-wrap gap-1 mb-3" id="bldTypeChips"></div>
 
         <!-- Market + vertical filters -->
         <div class="flex flex-wrap gap-1.5 mb-3 text-[11px]">
-          <select id="bldMarketFilter" class="search-input px-2 py-1 text-[11px] flex-1 min-w-[120px]">
+          <select id="bldMarketFilter" class="search-input px-2 py-1 text-[11px] flex-1 min-w-[100px]">
             <option value="all">All markets</option>
-            <option value="UK">UK only</option>
-            <option value="US">US only</option>
+            <option value="UK">UK</option>
+            <option value="US">US</option>
             <option value="Global">Global</option>
           </select>
-          <select id="bldVerticalFilter" class="search-input px-2 py-1 text-[11px] flex-1 min-w-[120px]">
+          <select id="bldVerticalFilter" class="search-input px-2 py-1 text-[11px] flex-1 min-w-[100px]">
             <option value="all">All verticals</option>
           </select>
         </div>
 
-        <div class="flex items-center justify-between mb-2">
-          <span class="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold" id="bldCatalogCount">— items</span>
-          <span class="text-[10px] text-muted-foreground">click + to add</span>
-        </div>
-
         <!-- Catalog list -->
-        <div id="bldCatalogList" class="space-y-1 overflow-y-auto" style="max-height: calc(100vh - 28rem); min-height: 400px;"></div>
+        <div id="bldCatalogList" class="space-y-1 overflow-y-auto flex-1" style="min-height: 320px;"></div>
       </div>
     </div>
 
-    <!-- RIGHT · CART -->
-    <div class="col-span-7">
-      <div class="rounded-xl border-2 border-brand bg-card p-5" style="box-shadow:0 0 60px -20px hsl(51 92% 56% / 0.5);">
+    <!-- RIGHT · CAMPAIGN -->
+    <div class="col-span-7 space-y-4">
 
-        <!-- Campaign meta -->
-        <div class="flex items-center gap-2 mb-3">
-          <span class="pill bg-brand text-brand-foreground text-[10px] font-bold">CAMPAIGN</span>
-          <input id="bldCampaignName" type="text" placeholder="Untitled campaign" class="search-input flex-1 px-2 py-1.5 text-sm font-semibold" />
-          <span id="bldCartCount" class="text-[10px] text-muted-foreground whitespace-nowrap">0 items</span>
+      <!-- Campaign meta card -->
+      <div class="rounded-xl border border-border bg-card p-4">
+        <div class="flex items-center justify-between mb-3">
+          <div>
+            <div class="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Campaign</div>
+            <div class="text-sm text-muted-foreground" id="bldCartCount">0 items selected</div>
+          </div>
+          <button id="bldClear" class="text-[11px] text-muted-foreground hover:text-destructive">Clear all</button>
         </div>
-        <div class="grid grid-cols-3 gap-2 mb-4 pb-4 border-b border-border">
+        <input id="bldCampaignName" type="text" placeholder="Untitled campaign — name it" class="search-input w-full px-3 py-2 text-base font-semibold mb-2" />
+        <div class="grid grid-cols-3 gap-2">
           <input id="bldCampaignBrand" type="text" placeholder="Brand / client" class="search-input px-2 py-1.5 text-xs" />
           <select id="bldCampaignMarket" class="search-input px-2 py-1.5 text-xs">
             <option value="">Market…</option>
@@ -5285,46 +5357,66 @@ setTimeout(bldInit, 800);
             <option value="USD">USD $</option>
           </select>
         </div>
+      </div>
 
-        <!-- Totals -->
-        <div class="grid grid-cols-3 gap-3 mb-4">
-          <div class="rounded-md border border-border bg-muted/30 p-3">
+      <!-- Totals card (always visible, defaults make it clear what populates) -->
+      <div class="rounded-xl border border-border bg-card p-4">
+        <div class="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold mb-3">Live totals</div>
+        <div class="grid grid-cols-3 gap-3">
+          <div>
             <div class="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">Combined reach</div>
-            <div id="bldTotalReach" class="text-2xl font-black num">0</div>
+            <div id="bldTotalReach" class="text-2xl font-black num">—</div>
+            <div class="text-[10px] text-muted-foreground mt-0.5" id="bldReachHint">add items to see</div>
           </div>
-          <div class="rounded-md border border-border bg-muted/30 p-3">
+          <div class="border-l border-border pl-3">
             <div class="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">Estimated cost</div>
             <div id="bldTotalCost" class="text-2xl font-black num text-brand">—</div>
-            <div id="bldTotalCostAlt" class="text-[10px] text-muted-foreground mt-0.5">—</div>
+            <div id="bldTotalCostAlt" class="text-[10px] text-muted-foreground mt-0.5">add items to see</div>
           </div>
-          <div class="rounded-md border border-border bg-muted/30 p-3">
+          <div class="border-l border-border pl-3">
             <div class="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">Effective CPM</div>
             <div id="bldEffectiveCpm" class="text-2xl font-black num">—</div>
             <div class="text-[10px] text-muted-foreground mt-0.5">across all reach</div>
           </div>
         </div>
+        <div id="bldBreakdown" class="flex flex-wrap gap-1 mt-3 text-[10px]"></div>
+      </div>
 
-        <!-- Per-category breakdown -->
-        <div id="bldBreakdown" class="flex flex-wrap gap-1.5 mb-4 text-[10px]"></div>
-
-        <!-- Items list -->
-        <div class="mb-1 flex items-center justify-between">
-          <span class="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Selections</span>
-          <button id="bldClear" class="text-[10px] text-destructive hover:underline">Clear all</button>
+      <!-- Selections card -->
+      <div class="rounded-xl border border-border bg-card p-4">
+        <div class="flex items-center justify-between mb-3">
+          <div class="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Selections</div>
+          <span id="bldSelectionsCount" class="text-[10px] text-muted-foreground">—</span>
         </div>
-        <div id="bldCartList" class="space-y-1.5 mb-4 overflow-y-auto" style="max-height: 50vh; min-height: 100px;">
-          <div class="text-[11px] text-muted-foreground italic py-4 text-center">Empty cart — click + on any catalog row, or apply a template above.</div>
-        </div>
+        <div id="bldCartList" class="space-y-1.5 overflow-y-auto" style="max-height: 50vh; min-height: 120px;"></div>
+      </div>
 
-        <!-- Actions -->
-        <div class="grid grid-cols-5 gap-2 pt-3 border-t border-border">
-          <button id="bldSave" class="px-3 py-2 rounded-md bg-brand text-brand-foreground text-xs font-bold hover:opacity-90">💾 Save</button>
-          <button id="bldExportCsv" class="px-3 py-2 rounded-md border border-border bg-card text-xs hover:bg-accent/30">CSV</button>
-          <button id="bldExportJson" class="px-3 py-2 rounded-md border border-border bg-card text-xs hover:bg-accent/30">JSON</button>
-          <button id="bldCopyHandles" class="px-3 py-2 rounded-md border border-border bg-card text-xs hover:bg-accent/30">Copy handles</button>
-          <button id="bldToBrief" class="px-3 py-2 rounded-md border-2 border-brand bg-brand/10 text-brand text-xs font-bold hover:bg-brand/20">Brief →</button>
+      <!-- Quick start (only shown when cart is empty) -->
+      <div id="bldQuickStart" class="rounded-xl border-2 border-dashed border-border bg-card/50 p-5">
+        <div class="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold mb-2">Quick start</div>
+        <h3 class="text-base font-bold mb-1">Start from a template</h3>
+        <p class="text-xs text-muted-foreground mb-3">Pre-built campaigns you can tweak. Or browse the catalog on the left and click + to add.</p>
+        <div class="grid grid-cols-2 gap-2" id="bldQuickStartGrid"></div>
+        <div class="mt-3 pt-3 border-t border-border flex items-center gap-2 flex-wrap">
+          <span class="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Or pick any template</span>
+          <select id="bldTemplate" class="search-input px-2 py-1 text-xs flex-1 min-w-[220px]">
+            <option value="">— Choose template —</option>
+          </select>
+          <button id="bldTemplateApply" class="px-2.5 py-1 rounded-md bg-brand text-brand-foreground text-xs font-semibold hover:opacity-90">Apply</button>
         </div>
       </div>
+
+      <!-- Actions (only shown when cart has items) -->
+      <div id="bldActions" class="hidden rounded-xl border border-border bg-card p-3">
+        <div class="grid grid-cols-12 gap-2 items-center">
+          <button id="bldToBrief" class="col-span-5 px-3 py-2.5 rounded-md bg-brand text-brand-foreground text-sm font-bold hover:opacity-90">Send to Brief →</button>
+          <button id="bldSave" class="col-span-2 px-2 py-2.5 rounded-md border border-border bg-card text-xs hover:bg-accent/30" title="Save">💾 Save</button>
+          <button id="bldExportCsv" class="col-span-2 px-2 py-2.5 rounded-md border border-border bg-card text-xs hover:bg-accent/30">CSV</button>
+          <button id="bldExportJson" class="col-span-2 px-2 py-2.5 rounded-md border border-border bg-card text-xs hover:bg-accent/30">JSON</button>
+          <button id="bldCopyHandles" class="col-span-1 px-1 py-2.5 rounded-md border border-border bg-card text-xs hover:bg-accent/30" title="Copy handles">📋</button>
+        </div>
+      </div>
+
     </div>
 
   </div>
