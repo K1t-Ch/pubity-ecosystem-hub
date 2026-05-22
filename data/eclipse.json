@@ -1,0 +1,254 @@
+{
+  "source": "Clipping Report (Apr 2026) + Clipping_Full_Context_V1 (Iyrah, May 2026) + Eclipse_V2.1 deck (Apr 2026) + Extended Network CPM Shortlist (Aya, Apr 2026)",
+  "syncedAt": "2026-05-22",
+  "hero": {
+    "name": "Eclipse",
+    "tagline": "Mass-awareness clipping, at network scale.",
+    "deckVersion": "V2.1 External Sales Deck · April 2026",
+    "verticals": ["Film", "TV", "Gaming", "Music"],
+    "exclusions": ["No gambling", "No betting", "No categories that erode brand permission"],
+    "scale": {
+      "ownedFollowers": "175M+",
+      "extendedReach": "500M",
+      "editorialYears": "10+"
+    },
+    "differentiators": [
+      "We're the operator, not middleware",
+      "A decade reading what actually clips",
+      "Carousel + reels — formats others can't",
+      "Brand-safe by default · vetted partner layer · FTC-safe"
+    ]
+  },
+  "pricingTiers": [
+    {
+      "id": "tier_pubity",
+      "rank": 1,
+      "name": "Pubity Group Pages",
+      "cpm": 13,
+      "currency": "USD",
+      "label": "Ultimate trust + audience loyalty",
+      "description": "Premium placement on Pubity-owned pages. Where editorial fit is right, this is the highest-trust layer.",
+      "tone": "premium"
+    },
+    {
+      "id": "tier_vetted",
+      "rank": 2,
+      "name": "Vetted Partners",
+      "cpm": 10,
+      "currency": "USD",
+      "label": "Trust + brand safety",
+      "description": "A curated set of partner pages that pass our brand-safety bar. Mid-tier for buyers who want quality at scale.",
+      "tone": "mid"
+    },
+    {
+      "id": "tier_clipping",
+      "rank": 3,
+      "name": "Clipping Network",
+      "cpm": 6,
+      "currency": "USD",
+      "label": "Mass awareness",
+      "description": "Wider clipping layer — built for volume, velocity, and algorithmic momentum.",
+      "tone": "mass"
+    }
+  ],
+  "products": [
+    {
+      "id": "prod_eclipse_launch",
+      "name": "Eclipse — Entertainment Launch Buzz",
+      "pillar": "demand",
+      "icon": "🚀",
+      "what": "Coordinated launch moment across three layers (Pubity → vetted partners → clipping network) for movies, TV series, gaming, music. \"The launch is the product.\"",
+      "buyer": "Film studios · streamers · game publishers · music labels",
+      "model": "$13 / $10 / $6 CPM by layer · blended campaign package",
+      "currentState": "Deck V2.1 live · no paying client test yet",
+      "targetState": "Productised entertainment SKU · first paid Lead-led launch campaign as anchor case study",
+      "priority": "high",
+      "owner": "Iyrah / Alex G",
+      "milestone": "First client test due 22 May",
+      "status": "live-deck-no-client"
+    },
+    {
+      "id": "prod_buzz_upsell",
+      "name": "Buzz Upsell",
+      "pillar": "demand",
+      "icon": "➕",
+      "what": "Clipping bolted onto existing Pubity brand deals as a premium add-on — the \"extra buzz above the memes.\"",
+      "buyer": "Existing brand-partnership clients (entertainment-adjacent)",
+      "model": "Add-on SKU layered on CPM",
+      "currentState": "Not productised · sales team not yet trained",
+      "targetState": "Live SKU the brand partnerships team attaches to every entertainment-adjacent deal",
+      "priority": "high",
+      "owner": "Alex G / Commercial",
+      "milestone": "Live SKU in Q2",
+      "status": "not-yet-productised"
+    },
+    {
+      "id": "prod_creator_growth",
+      "name": "Creator Growth Engine",
+      "pillar": "demand",
+      "icon": "📈",
+      "what": "Same supply chain pointed at smaller Pubity creators — clipping their best moments to grow audience and unlock monetisation.",
+      "buyer": "Internal — Pubity's own creator roster inside Pillar 2",
+      "model": "Service fee · bundled into Creators deals",
+      "currentState": "Ad hoc — done case-by-case",
+      "targetState": "Productised inside Creators Pillar 2 · one supply chain, two demand-side products",
+      "priority": "medium",
+      "owner": "Creators team",
+      "status": "ad-hoc"
+    },
+    {
+      "id": "prod_lead_network",
+      "name": "Lead Network",
+      "pillar": "supply",
+      "icon": "🏆",
+      "what": "~500 of the biggest and best accounts on the internet — the strategic asset brands actually care about. The moat.",
+      "buyer": "Internal — powers Eclipse + Buzz Upsell",
+      "model": "Premium CPM / retainer",
+      "currentState": "Ad hoc relationships in extended network · 20 accounts shortlisted (Aya, ~130M combined followers, all Telegram-contactable)",
+      "targetState": "~500 accounts on retainer or per-campaign premium CPM",
+      "priority": "high",
+      "owner": "Mehz / Iyrah",
+      "milestone": "First 50–100 retained · Q2/Q3",
+      "status": "20-mapped-of-500"
+    },
+    {
+      "id": "prod_micro_network",
+      "name": "Micro Network",
+      "pillar": "supply",
+      "icon": "🌐",
+      "what": "Open community of ~50,000 clippers — the Discord-economy layer. Lower CPM, mass volume, gives launches the depth and ubiquity that makes them feel everywhere.",
+      "buyer": "Internal — powers Eclipse mass-awareness layer",
+      "model": "Per-clip CPM",
+      "currentState": "Doesn't exist as Pubity-owned · clipper Discord + Pubity-only Discord running",
+      "targetState": "~50,000-strong open community on per-clip CPM · first 5,000 active clippers inside 90 days",
+      "priority": "high",
+      "owner": "New hire (TBC)",
+      "milestone": "5,000 active clippers · 90 days from hire",
+      "status": "not-yet-built"
+    },
+    {
+      "id": "prod_clipper_suite",
+      "name": "Clipper Suite",
+      "pillar": "infra",
+      "icon": "🛠️",
+      "what": "Platform that runs both Lead + Micro tiers. Discord-first MVP evolving into a Pubity-built clipper app — clippers manage briefs, see live campaigns, access tier-gated private campaigns.",
+      "buyer": "Internal · owned infrastructure (not sold)",
+      "model": "Owned infrastructure",
+      "currentState": "None · operating via partner platforms (Clipster, ViralGrowth)",
+      "targetState": "Discord MVP → Pubity-built clipper app",
+      "priority": "medium",
+      "owner": "TBC",
+      "status": "not-started"
+    }
+  ],
+  "lifecycle": [
+    { "step": 1, "label": "Brief",      "detail": "Client provides asset, target views, budget, launch window. Pubity confirms scope + recommended layer mix." },
+    { "step": 2, "label": "Position",   "detail": "Vetted partners + clipping network choose how to position clips. Pubity provides examples / raw footage." },
+    { "step": 3, "label": "Distribute", "detail": "Coordinated posting across Pubity pages, vetted partners, and clipping network. Platform-native formatting per page." },
+    { "step": 4, "label": "Report",     "detail": "Live dashboard: views, engagement, CPM. Final wrap delivered after campaign window closes." }
+  ],
+  "leadNetworkSeed": {
+    "source": "Aya · Extended Network CPM Outreach Shortlist · April 2026",
+    "totalReach": "~130M",
+    "comms": "All Telegram unless noted",
+    "note": "Top 20 accounts by format and reach — all have confirmed pricing and contact. CPM cols filled on response.",
+    "accounts": [
+      { "rank": 1,  "account": "Sarcasm_Only",         "format": "News/Headline", "followers": 16500000, "niche": "General",                 "gridPrice": "$5,000",      "contact": "xavi911" },
+      { "rank": 2,  "account": "Wasted",               "format": "News/Headline", "followers": 15400000, "niche": "General",                 "gridPrice": "$2,500",      "contact": "NetworkPromos" },
+      { "rank": 3,  "account": "CLIPS",                "format": "News/Headline", "followers": 14500000, "niche": "General",                 "gridPrice": "$3,500",      "contact": "Spray" },
+      { "rank": 4,  "account": "meme.ig",              "format": "News/Headline", "followers": 12100000, "niche": "General",                 "gridPrice": "$3,000",      "contact": "memeigbiz" },
+      { "rank": 5,  "account": "ight",                 "format": "News/Headline", "followers": 9800000,  "niche": "General",                 "gridPrice": "$1,500",      "contact": "new0pportunities" },
+      { "rank": 6,  "account": "TodayYearsOld",        "format": "News/Headline", "followers": 9500000,  "niche": "General",                 "gridPrice": "$2,500",      "contact": "oddflex" },
+      { "rank": 7,  "account": "hoodville",            "format": "News/Headline", "followers": 9200000,  "niche": "General",                 "gridPrice": "$3,500",      "contact": "SocialMediaTrapLord" },
+      { "rank": 8,  "account": "pickuplines",          "format": "News/Headline", "followers": 6500000,  "niche": "General",                 "gridPrice": "£600",        "contact": "finestsocial" },
+      { "rank": 9,  "account": "Fuckologyofficial",    "format": "News/Headline", "followers": 5200000,  "niche": "General",                 "gridPrice": "$825",        "contact": "topshelfestate" },
+      { "rank": 10, "account": "insidehistory",        "format": "News/Headline", "followers": 5000000,  "niche": "General",                 "gridPrice": "$700",        "contact": "insidehistoryig" },
+      { "rank": 11, "account": "Thehoodsfinest",       "format": "News/Headline", "followers": 4700000,  "niche": "General",                 "gridPrice": "$1,000",      "contact": "thehoodsfinest" },
+      { "rank": 12, "account": "scoobydoofruitsnacks", "format": "News/Headline", "followers": 4000000,  "niche": "General",                 "gridPrice": "$2,000",      "contact": "Scoobypromotions" },
+      { "rank": 13, "account": "hoenest",              "format": "News/Headline", "followers": 3700000,  "niche": "General",                 "gridPrice": "$500–800",    "contact": "lllllllllll" },
+      { "rank": 14, "account": "instatroll_football",  "format": "News/Headline", "followers": 3000000,  "niche": "Sports",                  "gridPrice": "$1,900",      "contact": "jkenny94" },
+      { "rank": 15, "account": "pun_bible",            "format": "News/Headline", "followers": 2500000,  "niche": "General",                 "gridPrice": "$800",        "contact": "average_organism" },
+      { "rank": 16, "account": "MarvelMovies",         "format": "News/Headline", "followers": 2500000,  "niche": "Movies & Entertainment",  "gridPrice": "$1,250",      "contact": "sales_strivemedia" },
+      { "rank": 17, "account": "Forthnite",            "format": "Meme",          "followers": 2700000,  "niche": "General",                 "gridPrice": "$500–1,000",  "contact": "mattrusnak" },
+      { "rank": 18, "account": "Forrtnite",            "format": "Meme",          "followers": 1900000,  "niche": "General",                 "gridPrice": "$450",        "contact": "FGVNetwork" },
+      { "rank": 19, "account": "urbantv",              "format": "Meme",          "followers": 1700000,  "niche": "General",                 "gridPrice": "$550",        "contact": "urbantele" },
+      { "rank": 20, "account": "funnygamesvidz",       "format": "Meme",          "followers": 1400000,  "niche": "Gaming",                  "gridPrice": "$300",        "contact": "FGVNetwork" }
+    ]
+  },
+  "partners": [
+    {
+      "id": "partner_fixated",
+      "name": "Fixated",
+      "lead": "Reed Broussard",
+      "clippers": "~3,000 curated",
+      "focus": "Premium brand work (EA, PrizePicks, Fanatics, GoPuff, music labels)",
+      "cpm": "$3–$4 typical · up to ~$10 on niche briefs",
+      "offer": "Direct partnership with Pubity · dedicated campaign manager · higher-CPM campaigns routed to Pubity pages (not open Discord). Flagged Pubity's static carousels as a distinct differentiator.",
+      "outlook": "Streaming/Twitch bearish — discoverability poor, top creators monopolise spend. Reinforces entertainment-launch wedge.",
+      "status": "warm · partnership offered",
+      "nextStep": "Decide: structured partnership in parallel to own build · could be fastest path to non-TEO case study"
+    },
+    {
+      "id": "partner_clipping_culture",
+      "name": "Clipping Culture",
+      "lead": "Grayson Peil / Evan Stanfield",
+      "clippers": "TBC",
+      "focus": "Gaming-heavy · top-tier campaigns in flight (top global game)",
+      "offer": "Plug Pubity in as a partner. White-label service for Pubity clients. WhatsApp group with their team + notification of incoming top-tier gaming campaigns.",
+      "cpm": "TBC",
+      "status": "active partnership · Mehz on WAP platform",
+      "nextStep": "Trial inbound brief via this channel"
+    },
+    {
+      "id": "partner_vyro",
+      "name": "Vyro",
+      "lead": "Saeed",
+      "clippers": "MrBeast network",
+      "focus": "Mainstream entertainment + creator",
+      "cpm": "Charges 30% fee · may negotiate",
+      "offer": "Pitch framework is reusable: target view-driven KPI owner (Marketing Director, Social Director); two-path pitch (differentiators vs. their problem).",
+      "status": "evaluated · history caution",
+      "history": "Underdelivered on Nov 2024 Simpsons x Fortnite campaign (3.18M views vs 10M goal). Factor into any future commitments.",
+      "nextStep": "Use pitch framework · approach with caution on delivery commitments"
+    },
+    {
+      "id": "partner_clip_money",
+      "name": "Clip Money",
+      "lead": "Max",
+      "clippers": "TBC",
+      "focus": "Music + film + creator campaigns (Warner Music, Fear Factor/FOX, MrBeast, Zootopia 2, NASCAR)",
+      "cpm": "$0.09–$0.78 across campaigns",
+      "offer": "Burns budget fast — positive signal for delivery capability",
+      "status": "evaluated",
+      "nextStep": "Benchmark · not currently in partnership conversation"
+    },
+    {
+      "id": "partner_promote_fun",
+      "name": "Promote.fun",
+      "lead": "TBC",
+      "clippers": "Newer / less proven",
+      "focus": "Music + brand (Central Cee, Dua Lipa, Polymarket, Jared Leto, Manscaped)",
+      "cpm": "$0.04–$1.82",
+      "offer": "Benchmark only · not in partnership conversation",
+      "status": "evaluated",
+      "nextStep": "Monitor"
+    }
+  ],
+  "cpmBenchmarks": [
+    { "contentType": "Music (viral audio / high clip-affinity)",   "cpmRange": "$0.04–$0.16", "source": "Promote.fun Central Cee $0.044 · Clip Money Warner Music $0.095" },
+    { "contentType": "Creator interview / entertainment",          "cpmRange": "$0.11–$0.16", "source": "Fixated/Cono $0.11 · Clip Money Fear Factor (FOX) $0.16" },
+    { "contentType": "Brand (clip-friendly content)",              "cpmRange": "$0.14–$0.50", "source": "Clip Money 1X Tech $0.14 · Promote Polymarket $0.50" },
+    { "contentType": "Music / live moment (concert, event)",       "cpmRange": "$0.30",       "source": "Promote.fun Dua Lipa $0.30" },
+    { "contentType": "Creator / personality content",              "cpmRange": "$0.31–$0.32", "source": "Clip Money MrBeast $0.31 · NASCAR $0.32" },
+    { "contentType": "Awareness / niche / political",              "cpmRange": "$0.62–$0.78", "source": "Promote Jared Leto $0.62 · Clip Money Zootopia 2 $0.78" },
+    { "contentType": "Brand (less clip-friendly, hard brief)",     "cpmRange": "$0.72–$1.82", "source": "Promote Manscaped $0.80 · Wasserman Taco Bell $1.82" }
+  ],
+  "openQuestions": [
+    { "id": "q_naming",      "q": "Is Eclipse the locked name? V1 strategy still references 'Culture Club / Trend Club TBC' — internal/external mismatch." },
+    { "id": "q_pricing_gap", "q": "Eclipse charges $13/$10/$6 CPM. Industry benchmarks deliver at $0.09–$0.78. Either high-margin productised resell or delivery vs. invoice CPM distinction — needs spelling out before deal-room scrutiny." },
+    { "id": "q_lead_fit",    "q": "Aya's 20-account seed is General News/Meme — not entertainment-vertical. For Eclipse to deliver on entertainment positioning, parallel pass needed for entertainment-fit accounts." },
+    { "id": "q_fixated",     "q": "Take Reed's partnership offer ($3–4 CPM premium routed to Pubity pages, dedicated CM, carousel differentiator)? Fastest path to non-TEO case study." },
+    { "id": "q_owner",       "q": "Does the clipping owner sit in Innovation, Content, or Commercial — and what budget envelope for the team beneath?" },
+    { "id": "q_phase_two",   "q": "Pre-approve a second pot for TEO phase-two bespoke campaign so there's no gap between phases one and two." }
+  ]
+}

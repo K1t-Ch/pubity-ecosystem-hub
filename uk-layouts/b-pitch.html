@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+<meta charset="utf-8">
+<title>Pubity UK · Layout B · Pitch deck</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config = { darkMode: 'class', theme: { extend: { colors: {
+  border: 'hsl(0 0% 16%)', input: 'hsl(0 0% 16%)', card: 'hsl(0 0% 7%)', cardForeground: 'hsl(0 0% 98%)',
+  background: 'hsl(0 0% 4%)', foreground: 'hsl(0 0% 98%)',
+  brand: { DEFAULT: 'hsl(51 92% 56%)', foreground: 'hsl(0 0% 0%)' },
+  ok: 'hsl(142 60% 50%)', warn: 'hsl(38 92% 60%)', destructive: 'hsl(0 70% 55%)',
+  muted: { DEFAULT: 'hsl(0 0% 10%)', foreground: 'hsl(0 0% 64%)' }
+}}}}</script>
+<style>
+  :root { color-scheme: dark; }
+  body { font-family: 'Inter', system-ui, sans-serif; background: #0a0a0a; color: #fafafa; -webkit-font-smoothing: antialiased; }
+  .num { font-feature-settings: 'tnum'; font-variant-numeric: tabular-nums; }
+  .glow-yellow { box-shadow: 0 0 120px -20px hsl(51 92% 56% / 0.5); }
+  .gradient-text { background: linear-gradient(135deg, hsl(51 92% 56%), hsl(38 92% 60%)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .slide { scroll-margin-top: 80px; }
+  .display { font-family: 'Inter', system-ui, sans-serif; font-feature-settings: 'ss01'; letter-spacing: -0.03em; }
+</style>
+</head>
+<body class="min-h-screen">
+
+<!-- Layout switcher -->
+<div class="fixed top-3 right-3 z-50 flex items-center gap-1 p-1 rounded-md border border-border bg-card text-xs">
+  <a href="a-dashboard.html" class="px-2.5 py-1 text-muted-foreground hover:text-foreground">A</a>
+  <a href="a2-builder.html" class="px-2.5 py-1 text-muted-foreground hover:text-foreground">A+ Builder</a>
+  <a href="b-pitch.html" class="px-2.5 py-1 rounded bg-brand text-brand-foreground font-semibold">B</a>
+  <a href="c-operator.html" class="px-2.5 py-1 text-muted-foreground hover:text-foreground">C</a>
+  <a href="../" class="px-2.5 py-1 text-muted-foreground hover:text-foreground border-l border-border ml-1 pl-3">← Hub</a>
+</div>
+
+<!-- Slide nav -->
+<div class="fixed left-3 top-1/2 -translate-y-1/2 z-40 flex flex-col gap-2 text-[10px] font-mono">
+  <a href="#hero" class="text-muted-foreground hover:text-brand">● 01 Why</a>
+  <a href="#bundle" class="text-muted-foreground hover:text-brand">● 02 Bundle</a>
+  <a href="#proof" class="text-muted-foreground hover:text-brand">● 03 Proof</a>
+  <a href="#price" class="text-muted-foreground hover:text-brand">● 04 Price</a>
+</div>
+
+<!-- 01 Hero / Why UK -->
+<section id="hero" class="slide min-h-screen flex items-center justify-center px-8 py-16 relative overflow-hidden">
+  <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+    <div class="w-[600px] h-[600px] rounded-full bg-brand/10 blur-3xl"></div>
+  </div>
+  <div class="relative max-w-5xl mx-auto text-center">
+    <div class="inline-flex items-center gap-2 mb-6 px-3 py-1 rounded-full border border-brand/40 bg-brand/5">
+      <span class="text-2xl">🇬🇧</span>
+      <span class="text-[10px] uppercase tracking-[0.2em] text-brand font-semibold">Pubity UK · Market bundle · Ready</span>
+    </div>
+    <h1 class="display text-7xl md:text-9xl font-bold tracking-tight mb-6 leading-[0.95]">
+      <span class="gradient-text">~30M</span>
+      <span class="block text-foreground">UK reach.</span>
+      <span class="block text-foreground">One bundle.</span>
+    </h1>
+    <p class="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-10 leading-relaxed">
+      Premium UK pages, UK culture creators and UK Extended Network inventory — packaged for brands targeting UK Gen Z + Millennials.
+    </p>
+    <div class="flex items-center justify-center gap-3 flex-wrap">
+      <button class="px-6 py-3.5 rounded-md bg-brand text-brand-foreground font-bold hover:opacity-90 glow-yellow">Generate UK pitch one-pager →</button>
+      <button class="px-6 py-3.5 rounded-md border border-border bg-card hover:bg-accent/20">Send a brief →</button>
+    </div>
+    <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl mx-auto">
+      <div><div class="text-5xl font-bold num display gradient-text">19</div><div class="text-[10px] uppercase tracking-wider text-muted-foreground mt-2">UK Pages</div></div>
+      <div><div class="text-5xl font-bold num display">12</div><div class="text-[10px] uppercase tracking-wider text-muted-foreground mt-2">UK Creators</div></div>
+      <div><div class="text-5xl font-bold num display">~30M</div><div class="text-[10px] uppercase tracking-wider text-muted-foreground mt-2">Combined reach</div></div>
+      <div><div class="text-5xl font-bold num display text-brand">3+</div><div class="text-[10px] uppercase tracking-wider text-muted-foreground mt-2">Proof campaigns</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 Bundle -->
+<section id="bundle" class="slide py-24 px-8 border-t border-border">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-[10px] uppercase tracking-[0.2em] text-brand font-semibold mb-2">02 · The bundle</div>
+    <h2 class="display text-5xl md:text-6xl font-bold tracking-tight mb-12">Three layers. <span class="text-muted-foreground">One offering.</span></h2>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- Specialist -->
+      <div class="rounded-2xl border border-border bg-card p-8">
+        <div class="text-4xl mb-4">⭐</div>
+        <h3 class="text-2xl font-bold mb-2">Specialist UK pages</h3>
+        <div class="text-5xl font-bold num display gradient-text mb-3">19</div>
+        <p class="text-sm text-muted-foreground mb-6 leading-relaxed">UK-native audience. Built specifically for UK content. Brings credibility in market.</p>
+        <div class="space-y-2 text-sm">
+          <div class="flex items-center gap-2 text-muted-foreground"><span class="text-ok">●</span>greatbritishmemes</div>
+          <div class="flex items-center gap-2 text-muted-foreground"><span class="text-ok">●</span>thearchbishopofbanterbury</div>
+          <div class="flex items-center gap-2 text-muted-foreground"><span class="text-ok">●</span>mememanmyles · 200K</div>
+          <div class="flex items-center gap-2 text-muted-foreground"><span class="text-ok">●</span>imjustnews</div>
+          <div class="flex items-center gap-2 text-muted-foreground"><span class="text-ok">●</span>youngkingstv</div>
+          <div class="text-[11px] text-brand pt-2">+ 14 more →</div>
+        </div>
+      </div>
+
+      <!-- Anchor -->
+      <div class="rounded-2xl border border-border bg-card p-8">
+        <div class="text-4xl mb-4">🪨</div>
+        <h3 class="text-2xl font-bold mb-2">Anchor pages</h3>
+        <div class="text-5xl font-bold num display gradient-text mb-3">8</div>
+        <p class="text-sm text-muted-foreground mb-6 leading-relaxed">Mass-reach, multi-vertical. Brings the scale layer of the bundle.</p>
+        <div class="space-y-2 text-sm">
+          <div class="flex items-center justify-between"><span>9GAG</span><span class="text-muted-foreground">52.8M</span></div>
+          <div class="flex items-center justify-between"><span>Wasted</span><span class="text-muted-foreground">20.5M</span></div>
+          <div class="flex items-center justify-between"><span>ladbible</span><span class="text-muted-foreground">15.5M</span></div>
+          <div class="flex items-center justify-between"><span>ight</span><span class="text-muted-foreground">10.9M</span></div>
+          <div class="flex items-center justify-between"><span>insidehistory</span><span class="text-muted-foreground">8.2M</span></div>
+          <div class="text-[11px] text-brand pt-2">+ 3 more →</div>
+        </div>
+      </div>
+
+      <!-- Creators -->
+      <div class="rounded-2xl border border-border bg-card p-8">
+        <div class="text-4xl mb-4">🎙️</div>
+        <h3 class="text-2xl font-bold mb-2">UK Creators</h3>
+        <div class="text-5xl font-bold num display gradient-text mb-3">12</div>
+        <p class="text-sm text-muted-foreground mb-6 leading-relaxed">UK-native talent. Per-project booking for cast amplification and brand integration.</p>
+        <div class="space-y-2 text-sm">
+          <div class="flex items-center justify-between"><span>KSI</span><span class="text-muted-foreground">50M+</span></div>
+          <div class="flex items-center justify-between"><span>Sidemen</span><span class="text-muted-foreground">9.2M</span></div>
+          <div class="flex items-center justify-between"><span>Dr Karan Rajan</span><span class="text-muted-foreground">11.3M</span></div>
+          <div class="flex items-center justify-between"><span>Shxts N Gigs</span><span class="text-muted-foreground">3.5M</span></div>
+          <div class="flex items-center justify-between"><span>Chunkz</span><span class="text-muted-foreground">3M</span></div>
+          <div class="text-[11px] text-brand pt-2">+ 7 more →</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 Proof -->
+<section id="proof" class="slide py-24 px-8 border-t border-border">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-[10px] uppercase tracking-[0.2em] text-brand font-semibold mb-2">03 · Proof</div>
+    <h2 class="display text-5xl md:text-6xl font-bold tracking-tight mb-12">Already shipped <span class="text-muted-foreground">for UK briefs.</span></h2>
+
+    <div class="rounded-2xl border-2 border-brand/40 bg-card p-10 mb-6 glow-yellow">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="md:col-span-2">
+          <div class="text-[10px] uppercase tracking-[0.2em] text-brand font-semibold mb-2">Anchor case</div>
+          <h3 class="text-3xl font-bold mb-2">Yas Island × 4 campaigns</h3>
+          <p class="text-muted-foreground leading-relaxed">UK Gen Z movies launches. Anchored by 9GAG (52.8M) + Wasted (20.5M) + ladbible (15.5M). 4 campaigns delivered, all running through the UK pages stack.</p>
+        </div>
+        <div class="flex flex-col justify-center">
+          <div class="text-5xl font-bold num display gradient-text">1.9M</div>
+          <div class="text-[10px] uppercase tracking-wider text-muted-foreground mb-3">total views</div>
+          <div class="text-2xl font-bold num display">£0.18</div>
+          <div class="text-[10px] uppercase tracking-wider text-muted-foreground">avg CPV</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="rounded-2xl border border-border bg-card p-8">
+        <div class="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-semibold mb-2">Live now · UK + US</div>
+        <h3 class="text-2xl font-bold mb-3">L'Oreal NYX × Simpsons</h3>
+        <p class="text-sm text-muted-foreground">23 partners · 1.9M views in flight · L'Oreal UK retail anchor</p>
+      </div>
+      <div class="rounded-2xl border border-border bg-card p-8">
+        <div class="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-semibold mb-2">In flight · Apr 2026</div>
+        <h3 class="text-2xl font-bold mb-3">Felix × CFS AMP</h3>
+        <p class="text-sm text-muted-foreground">CPG · UK · 9 partners · Felix CF Samp</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 Price -->
+<section id="price" class="slide py-24 px-8 border-t border-border">
+  <div class="max-w-4xl mx-auto text-center">
+    <div class="text-[10px] uppercase tracking-[0.2em] text-brand font-semibold mb-2">04 · Pricing</div>
+    <h2 class="display text-5xl md:text-6xl font-bold tracking-tight mb-12">CPM band <span class="text-muted-foreground">that scales with brief.</span></h2>
+
+    <div class="rounded-2xl border border-border bg-card p-10 text-left">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div>
+          <div class="text-[10px] uppercase tracking-wider text-muted-foreground mb-2">Specialist UK CPM band</div>
+          <div class="text-3xl font-bold num">£350–£1.5K</div>
+          <div class="text-xs text-muted-foreground mt-1">per onboarded page</div>
+        </div>
+        <div>
+          <div class="text-[10px] uppercase tracking-wider text-muted-foreground mb-2">Anchor pages CPM band</div>
+          <div class="text-3xl font-bold num">£700–£20K</div>
+          <div class="text-xs text-muted-foreground mt-1">scales with reach</div>
+        </div>
+        <div>
+          <div class="text-[10px] uppercase tracking-wider text-muted-foreground mb-2">Creators</div>
+          <div class="text-3xl font-bold num">£10K–£500K</div>
+          <div class="text-xs text-muted-foreground mt-1">per-project booking</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-12 flex items-center justify-center gap-3 flex-wrap">
+      <button class="px-8 py-4 rounded-md bg-brand text-brand-foreground font-bold text-lg hover:opacity-90 glow-yellow">Generate UK pitch one-pager →</button>
+      <button class="px-8 py-4 rounded-md border border-border bg-card hover:bg-accent/20">Send brief →</button>
+    </div>
+  </div>
+</section>
+
+<div class="text-center text-[10px] text-muted-foreground py-6 border-t border-border">Layout B · Pitch deck · sales-facing presentation</div>
+
+</body>
+</html>

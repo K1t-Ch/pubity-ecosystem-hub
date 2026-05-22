@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+<meta charset="utf-8">
+<title>Pubity UK · Layout A · Dashboard</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config = { darkMode: 'class', theme: { extend: { colors: {
+  border: 'hsl(0 0% 16%)', input: 'hsl(0 0% 16%)', card: 'hsl(0 0% 7%)', cardForeground: 'hsl(0 0% 98%)',
+  background: 'hsl(0 0% 4%)', foreground: 'hsl(0 0% 98%)',
+  brand: { DEFAULT: 'hsl(51 92% 56%)', foreground: 'hsl(0 0% 0%)' },
+  ok: 'hsl(142 60% 50%)', warn: 'hsl(38 92% 60%)', destructive: 'hsl(0 70% 55%)',
+  muted: { DEFAULT: 'hsl(0 0% 10%)', foreground: 'hsl(0 0% 64%)' }
+}}}}</script>
+<style>
+  :root { color-scheme: dark; }
+  body { font-family: 'Inter', system-ui, sans-serif; background: #0a0a0a; color: #fafafa; -webkit-font-smoothing: antialiased; }
+  .num { font-feature-settings: 'tnum'; font-variant-numeric: tabular-nums; }
+  .glow { box-shadow: 0 0 80px -10px hsl(51 92% 56% / 0.35); }
+  .layout-pill { font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 8px; border-radius: 999px; background: hsl(0 0% 10%); color: hsl(0 0% 64%); border: 1px solid hsl(0 0% 16%); }
+</style>
+</head>
+<body class="min-h-screen">
+
+<!-- Layout switcher -->
+<div class="fixed top-3 right-3 z-50 flex items-center gap-1 p-1 rounded-md border border-border bg-card text-xs">
+  <a href="a-dashboard.html" class="px-2.5 py-1 rounded bg-brand text-brand-foreground font-semibold">A</a>
+  <a href="a2-builder.html" class="px-2.5 py-1 text-muted-foreground hover:text-foreground">A+ Builder</a>
+  <a href="b-pitch.html" class="px-2.5 py-1 text-muted-foreground hover:text-foreground">B</a>
+  <a href="c-operator.html" class="px-2.5 py-1 text-muted-foreground hover:text-foreground">C</a>
+  <a href="../" class="px-2.5 py-1 text-muted-foreground hover:text-foreground border-l border-border ml-1 pl-3">← Hub</a>
+</div>
+
+<div class="max-w-7xl mx-auto px-8 py-10">
+
+  <!-- Hero -->
+  <div class="mb-10 grid grid-cols-12 gap-6 items-center">
+    <div class="col-span-12 lg:col-span-7">
+      <div class="text-[10px] uppercase tracking-wider text-muted-foreground mb-2">← All offerings · Pubity UK</div>
+      <div class="flex items-center gap-3 mb-3 flex-wrap">
+        <h1 class="text-5xl font-bold tracking-tight">🇬🇧 Pubity UK</h1>
+        <span class="text-[10px] font-semibold uppercase tracking-wider px-2 py-1 rounded bg-ok/15 text-ok">Ready · Market bundle</span>
+      </div>
+      <p class="text-lg text-muted-foreground max-w-2xl">UK GenZ + Millennial reach across 31 partners. Premium UK pages + UK culture creators + UK Extended Network inventory.</p>
+    </div>
+    <div class="col-span-12 lg:col-span-5 flex items-center justify-end gap-2 flex-wrap">
+      <button class="px-4 py-2.5 rounded-md border border-border bg-card text-sm hover:bg-accent/30">Send brief →</button>
+      <button class="px-4 py-2.5 rounded-md bg-brand text-brand-foreground text-sm font-bold hover:opacity-90">Generate UK pitch one-pager →</button>
+    </div>
+  </div>
+
+  <!-- Single stat strip (no boxes — feels lighter) -->
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12 border-t border-b border-border py-6">
+    <div>
+      <div class="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">Combined UK reach</div>
+      <div class="text-4xl font-bold num">~30M</div>
+      <div class="text-xs text-muted-foreground mt-1">pages + creators</div>
+    </div>
+    <div>
+      <div class="text-[10px] uppercase tracking-wider text-ok mb-1">UK Pages onboarded</div>
+      <div class="text-4xl font-bold num text-ok">19</div>
+      <div class="text-xs text-muted-foreground mt-1">in extended network</div>
+    </div>
+    <div>
+      <div class="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">UK Creators</div>
+      <div class="text-4xl font-bold num">12</div>
+      <div class="text-xs text-muted-foreground mt-1">campaign-use roster</div>
+    </div>
+    <div>
+      <div class="text-[10px] uppercase tracking-wider text-brand mb-1">Proof campaigns</div>
+      <div class="text-4xl font-bold num text-brand">3+</div>
+      <div class="text-xs text-muted-foreground mt-1">Yas Island UK-targeted</div>
+    </div>
+  </div>
+
+  <!-- Three-column grid: Specialist / Anchor / Creators -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">
+
+    <!-- Specialist -->
+    <div class="rounded-xl border border-border bg-card p-5">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-sm font-bold uppercase tracking-wider">⭐ Specialist UK <span class="text-muted-foreground font-normal ml-1">19</span></h3>
+        <a href="#" class="text-[11px] text-brand hover:underline">All →</a>
+      </div>
+      <p class="text-xs text-muted-foreground mb-4">UK-native audience. These give campaigns credibility in market.</p>
+      <div class="space-y-2.5">
+        ${'<!-- repeated rows below -->'}
+        <div class="flex items-center gap-2.5 p-2 -mx-2 rounded-md hover:bg-accent/20 cursor-pointer">
+          <div class="w-8 h-8 rounded-full bg-warn/20 text-warn flex items-center justify-center text-[10px] font-bold flex-shrink-0">GB</div>
+          <div class="flex-1 min-w-0">
+            <div class="text-sm font-semibold truncate">greatbritishmemes</div>
+            <div class="text-[10px] text-muted-foreground">UK · Slack</div>
+          </div>
+          <span class="text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-warn/15 text-warn">Prospect</span>
+        </div>
+        <div class="flex items-center gap-2.5 p-2 -mx-2 rounded-md hover:bg-accent/20 cursor-pointer">
+          <div class="w-8 h-8 rounded-full bg-brand/20 text-brand flex items-center justify-center text-[10px] font-bold flex-shrink-0">AB</div>
+          <div class="flex-1 min-w-0">
+            <div class="text-sm font-semibold truncate">thearchbishopofbanterbury</div>
+            <div class="text-[10px] text-muted-foreground">UK · Slack</div>
+          </div>
+          <span class="text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-warn/15 text-warn">Prospect</span>
+        </div>
+        <div class="flex items-center gap-2.5 p-2 -mx-2 rounded-md hover:bg-accent/20 cursor-pointer">
+          <div class="w-8 h-8 rounded-full bg-ok/20 text-ok flex items-center justify-center text-[10px] font-bold flex-shrink-0">MM</div>
+          <div class="flex-1 min-w-0">
+            <div class="text-sm font-semibold truncate">mememanmyles</div>
+            <div class="text-[10px] text-muted-foreground">200K · Slack · £350</div>
+          </div>
+          <span class="text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-ok/15 text-ok">Onboarded</span>
+        </div>
+        <div class="flex items-center gap-2.5 p-2 -mx-2 rounded-md hover:bg-accent/20 cursor-pointer">
+          <div class="w-8 h-8 rounded-full bg-warn/20 text-warn flex items-center justify-center text-[10px] font-bold flex-shrink-0">IJ</div>
+          <div class="flex-1 min-w-0">
+            <div class="text-sm font-semibold truncate">imjustnews</div>
+            <div class="text-[10px] text-muted-foreground">UK · IG DM</div>
+          </div>
+          <span class="text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-warn/15 text-warn">Prospect</span>
+        </div>
+        <div class="flex items-center gap-2.5 p-2 -mx-2 rounded-md hover:bg-accent/20 cursor-pointer">
+          <div class="w-8 h-8 rounded-full bg-destructive/20 text-destructive flex items-center justify-center text-[10px] font-bold flex-shrink-0">YK</div>
+          <div class="flex-1 min-w-0">
+            <div class="text-sm font-semibold truncate">youngkingstv</div>
+            <div class="text-[10px] text-muted-foreground">UK · IG DM</div>
+          </div>
+          <span class="text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-warn/15 text-warn">Prospect</span>
+        </div>
+        <button class="w-full text-[11px] text-brand hover:underline mt-1 text-left">+ 14 more →</button>
+      </div>
+    </div>
+
+    <!-- Anchor -->
+    <div class="rounded-xl border border-border bg-card p-5">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-sm font-bold uppercase tracking-wider">🪨 Anchor pages <span class="text-muted-foreground font-normal ml-1">8</span></h3>
+        <a href="#" class="text-[11px] text-brand hover:underline">All →</a>
+      </div>
+      <p class="text-xs text-muted-foreground mb-4">Mass-reach, multi-vertical. Brings the scale layer of the bundle.</p>
+      <div class="space-y-2.5">
+        <div class="flex items-center gap-2.5 p-2 -mx-2 rounded-md hover:bg-accent/20 cursor-pointer">
+          <div class="w-8 h-8 rounded-full bg-brand/20 text-brand flex items-center justify-center text-[10px] font-bold flex-shrink-0">LB</div>
+          <div class="flex-1 min-w-0">
+            <div class="text-sm font-semibold truncate">ladbible</div>
+            <div class="text-[10px] text-muted-foreground">15.5M · UK Mass</div>
+          </div>
+          <span class="text-sm font-bold num text-muted-foreground">£20,000</span>
+        </div>
+        <div class="flex items-center gap-2.5 p-2 -mx-2 rounded-md hover:bg-accent/20 cursor-pointer">
+          <div class="w-8 h-8 rounded-full bg-brand/20 text-brand flex items-center justify-center text-[10px] font-bold flex-shrink-0">9G</div>
+          <div class="flex-1 min-w-0">
+            <div class="text-sm font-semibold truncate">9GAG</div>
+            <div class="text-[10px] text-muted-foreground">52.8M · Multi-vertical</div>
+          </div>
+          <span class="text-sm font-bold num text-muted-foreground">£12,000</span>
+        </div>
+        <div class="flex items-center gap-2.5 p-2 -mx-2 rounded-md hover:bg-accent/20 cursor-pointer">
+          <div class="w-8 h-8 rounded-full bg-ok/20 text-ok flex items-center justify-center text-[10px] font-bold flex-shrink-0">WA</div>
+          <div class="flex-1 min-w-0">
+            <div class="text-sm font-semibold truncate">Wasted</div>
+            <div class="text-[10px] text-muted-foreground">20.5M · Humour</div>
+          </div>
+          <span class="text-sm font-bold num text-muted-foreground">£2,500</span>
+        </div>
+        <div class="flex items-center gap-2.5 p-2 -mx-2 rounded-md hover:bg-accent/20 cursor-pointer">
+          <div class="w-8 h-8 rounded-full bg-warn/20 text-warn flex items-center justify-center text-[10px] font-bold flex-shrink-0">IH</div>
+          <div class="flex-1 min-w-0">
+            <div class="text-sm font-semibold truncate">insidehistory</div>
+            <div class="text-[10px] text-muted-foreground">8.2M · Headline</div>
+          </div>
+          <span class="text-sm font-bold num text-muted-foreground">£700</span>
+        </div>
+        <button class="w-full text-[11px] text-brand hover:underline mt-1 text-left">+ 4 more →</button>
+      </div>
+    </div>
+
+    <!-- Creators -->
+    <div class="rounded-xl border border-border bg-card p-5">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-sm font-bold uppercase tracking-wider">🎙️ UK Creators <span class="text-muted-foreground font-normal ml-1">12</span></h3>
+        <a href="#" class="text-[11px] text-brand hover:underline">All →</a>
+      </div>
+      <p class="text-xs text-muted-foreground mb-4">UK-native talent we can book per-project for campaigns.</p>
+      <div class="space-y-2.5">
+        <div class="flex items-center gap-2.5 p-2 -mx-2 rounded-md hover:bg-accent/20 cursor-pointer">
+          <div class="w-8 h-8 rounded-full bg-brand/20 text-brand flex items-center justify-center text-[10px] font-bold flex-shrink-0">KS</div>
+          <div class="flex-1 min-w-0">
+            <div class="text-sm font-semibold truncate">KSI</div>
+            <div class="text-[10px] text-muted-foreground">50M+ · Music · Entertainment</div>
+          </div>
+          <span class="text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-brand/15 text-brand">Outreach</span>
+        </div>
+        <div class="flex items-center gap-2.5 p-2 -mx-2 rounded-md hover:bg-accent/20 cursor-pointer">
+          <div class="w-8 h-8 rounded-full bg-ok/20 text-ok flex items-center justify-center text-[10px] font-bold flex-shrink-0">SN</div>
+          <div class="flex-1 min-w-0">
+            <div class="text-sm font-semibold truncate">Shxts N Gigs</div>
+            <div class="text-[10px] text-muted-foreground">3.5M · Comedy · Podcast</div>
+          </div>
+          <span class="text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-ok/15 text-ok">Used</span>
+        </div>
+        <div class="flex items-center gap-2.5 p-2 -mx-2 rounded-md hover:bg-accent/20 cursor-pointer">
+          <div class="w-8 h-8 rounded-full bg-brand/20 text-brand flex items-center justify-center text-[10px] font-bold flex-shrink-0">SI</div>
+          <div class="flex-1 min-w-0">
+            <div class="text-sm font-semibold truncate">Sidemen</div>
+            <div class="text-[10px] text-muted-foreground">9.2M · Gaming · Lifestyle</div>
+          </div>
+          <span class="text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-warn/15 text-warn">Limited</span>
+        </div>
+        <div class="flex items-center gap-2.5 p-2 -mx-2 rounded-md hover:bg-accent/20 cursor-pointer">
+          <div class="w-8 h-8 rounded-full bg-ok/20 text-ok flex items-center justify-center text-[10px] font-bold flex-shrink-0">DK</div>
+          <div class="flex-1 min-w-0">
+            <div class="text-sm font-semibold truncate">Dr Karan Rajan</div>
+            <div class="text-[10px] text-muted-foreground">11.3M · Medical · Educational</div>
+          </div>
+          <span class="text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-ok/15 text-ok">Used</span>
+        </div>
+        <div class="flex items-center gap-2.5 p-2 -mx-2 rounded-md hover:bg-accent/20 cursor-pointer">
+          <div class="w-8 h-8 rounded-full bg-warn/20 text-warn flex items-center justify-center text-[10px] font-bold flex-shrink-0">CC</div>
+          <div class="flex-1 min-w-0">
+            <div class="text-sm font-semibold truncate">Chunkz</div>
+            <div class="text-[10px] text-muted-foreground">3M · Comedy · Football</div>
+          </div>
+          <span class="text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-warn/15 text-warn">Outreach</span>
+        </div>
+        <button class="w-full text-[11px] text-brand hover:underline mt-1 text-left">+ 7 more →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Proof campaigns horizontal scroller -->
+  <div class="mb-12">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-xl font-bold tracking-tight">🏆 Proof — UK-targeted campaigns delivered</h2>
+      <a href="#" class="text-xs text-brand hover:underline">See all campaigns →</a>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="rounded-lg border border-brand/40 bg-card p-4 glow">
+        <div class="text-[10px] uppercase tracking-wider text-brand mb-1">Yas Island · 4 campaigns</div>
+        <div class="text-2xl font-bold mb-2">1.9M views</div>
+        <div class="text-xs text-muted-foreground">UK GenZ x Movies wedge · £0.18 avg CPV</div>
+      </div>
+      <div class="rounded-lg border border-border bg-card p-4">
+        <div class="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">L'Oreal NYX x Simpsons</div>
+        <div class="text-2xl font-bold mb-2">UK + US</div>
+        <div class="text-xs text-muted-foreground">23 partners · 1.9M views · LIVE</div>
+      </div>
+      <div class="rounded-lg border border-border bg-card p-4">
+        <div class="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">Felix x CFS AMP</div>
+        <div class="text-2xl font-bold mb-2">CPG · UK</div>
+        <div class="text-xs text-muted-foreground">9 partners · In flight Apr 2026</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center text-[10px] text-muted-foreground border-t border-border pt-6">Layout A · Dashboard · data-forward executive view</div>
+
+</div>
+</body>
+</html>

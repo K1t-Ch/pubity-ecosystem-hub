@@ -1,0 +1,32 @@
+[
+  {
+    "id": "sp_shxts_n_gigs",
+    "name": "Shxts N Gigs",
+    "tag": "REV-SHARE",
+    "market": "UK",
+    "categoryLabel": "Comedy podcast",
+    "headline": "The UK's sharpest podcast duo, and Pubity's top rev-share creator.",
+    "stats": [
+      { "value": "$48.5K", "label": "paid to date" },
+      { "value": "50/50", "label": "rev-share split" },
+      { "value": "3.5M", "label": "combined reach" },
+      { "value": "#1", "label": "on Danny's roster" }
+    ],
+    "nextStep": "Lock formal preferred-partner agreement before competitors do. Co-package with their UK tour Q4 2026."
+  },
+  {
+    "id": "sp_insanity",
+    "name": "Insanity Agency",
+    "tag": "TALENT-AGENCY",
+    "market": "UK",
+    "categoryLabel": "Creator talent agency · warm relationship",
+    "headline": "Giselle's warm relationship into Insanity unlocks Italian Bach, Jack Remmington and their growing Gen-Z creator roster (ex-Channel 4.0 team) in one conversation.",
+    "stats": [
+      { "value": "1 intro", "label": "covers full roster" },
+      { "value": "ex-C4.0", "label": "Gen-Z team signed 2025" },
+      { "value": "Italian Bach", "label": "anchor creator (2M IG)" },
+      { "value": "Warm", "label": "Giselle has client-lead relationship" }
+    ],
+    "nextStep": "Set up meeting with Insanity client lead. Anchor conversation on Italian Bach. Bring two format ideas (skit series + long form YouTube). Source: Giselle audit 2026-05-22."
+  }
+]

@@ -1,0 +1,43 @@
+{
+  "source": "https://creator-partnerships-hub.vercel.app/network",
+  "syncedAt": "2026-05-20",
+  "rolodexStats": {
+    "totalContacts": 471,
+    "creators": 225,
+    "agencies": 119,
+    "companies": 58,
+    "activePartners": 7,
+    "inPipeline": 36
+  },
+  "collabReadyStats": {
+    "totalCreators": 23,
+    "availableNow": 15,
+    "combinedReach": "231.6M",
+    "brandDealReady": 4
+  },
+  "creators": [
+    { "name": "SocksFor3",        "handle": "@SocksFor3",        "status": "Available", "enriched": true, "collabTypes": [] },
+    { "name": "SocksFor2",        "handle": "@SocksFor2",        "status": "Available", "enriched": true, "collabTypes": [] },
+    { "name": "SocksFor1",        "handle": "@socksfor1",        "status": "Available", "enriched": true, "collabTypes": ["Custom Content","Brand Deals","Paid Posts"] },
+    { "name": "Crazy Gorilla",    "handle": "@thecrazygorilla",  "followers": "9.0M",   "niches": "Family & Relationships · Sports · Food", "status": "Available", "tier": "Pipeline", "enriched": true, "collabTypes": [] },
+    { "name": "Sadcasm.og",       "handle": "@sadcasm.og",       "followers": "1.9M",   "niches": "Memes · Meme Account",                  "status": "Available",                       "enriched": true, "collabTypes": ["Custom Content","Brand Deals","Paid Posts"] },
+    { "name": "Proper Football",  "handle": "@properfootball",   "followers": "1.9M",   "niches": "Football · Sports",                     "status": "Available",                       "enriched": true, "collabTypes": ["Custom Content","Brand Deals","Paid Posts"] },
+    { "name": "Therapy Gecko",    "handle": "@lyle4ever",        "followers": "4.0M",   "niches": "Art & Design · Tourism & Aviation · Sports", "status": "Available", "tier": "Pipeline", "enriched": true, "collabTypes": [] },
+    { "name": "Kimmelot",         "handle": "@jimmykimmel",      "followers": "4.3M",                                                       "status": "Limited",   "tier": "Pipeline", "enriched": true, "collabTypes": [] },
+    { "name": "FlashGitz",        "handle": "@flashgitz",        "followers": "5.4M",                                                       "status": "Available", "tier": "Pipeline", "enriched": true, "collabTypes": [] },
+    { "name": "Xavier Mortimer",  "handle": "@xaviermortimer",   "followers": "29.1M",  "niches": "Television & Film · Sports · Fitness & Yoga", "status": "Available", "tier": "Pipeline", "enriched": true, "collabTypes": [] },
+    { "name": "Pivot Podcast",    "handle": "@thepivot",         "followers": "645.2K",                                                     "status": "Available", "tier": "Pipeline", "enriched": true, "collabTypes": ["Podcast"] },
+    { "name": "Jason Banks",      "handle": "@jasonbankscomedy", "followers": "1.9M",   "niches": "Television & Film · Business & Careers", "status": "Available", "tier": "Pipeline", "enriched": true, "collabTypes": [] },
+    { "name": "Matt & Abby",      "handle": "@abbyelizabethoward","followers": "1.5M",                                                      "status": "Available", "tier": "Pipeline", "enriched": true, "collabTypes": [] },
+    { "name": "Dean Schneider",   "handle": "@dean.schneider",   "followers": "11.5M",                                                      "status": "Available", "tier": "Pipeline", "enriched": true, "collabTypes": [] },
+    { "name": "George Janko",     "handle": "@georgejanko",      "followers": "5.6M",                                                       "status": "Limited",   "tier": "Pipeline", "enriched": true, "collabTypes": [] },
+    { "name": "Shxts N Gigs",     "handle": "@shxtsngigs",       "followers": "15.5M",                                                      "status": "Limited",   "tier": "Partner",  "enriched": true, "collabTypes": ["Custom Content","Paid Posts","Podcast","FB"] },
+    { "name": "Josh Peck",        "handle": "@shuapeck",         "followers": "30.9M",  "niches": "Podcast · Comedy · Vine",                "status": "Limited",   "tier": "Partner",  "enriched": true, "collabTypes": ["Custom Content","Paid Posts","Podcast","FB"] },
+    { "name": "Drake Bell",       "handle": "@drakebell",        "followers": "19.5M",                                                      "status": "Limited",   "tier": "Partner",  "enriched": true, "collabTypes": ["Brand Deals","Paid Posts","FB"] },
+    { "name": "Joe Mele",         "handle": "@mmmjoemele",       "followers": "49.3M",                                                      "status": "Limited",   "tier": "Partner",  "enriched": true, "collabTypes": ["FB"] },
+    { "name": "Dr Karan Rajan",   "handle": "@drkaranrajan",     "followers": "11.3M",                                                      "status": "Available", "tier": "Partner",  "enriched": true, "collabTypes": ["Custom Content","Brand Deals","FB"] },
+    { "name": "Sidemen",          "handle": "@sidemen",          "followers": "9.2M",   "niches": "Gaming · Sports · Lifestyle · Shows",    "status": "Limited",   "tier": "Partner",  "enriched": true, "collabTypes": ["Brand Deals","Paid Posts","FB"] },
+    { "name": "Zach Choi",        "handle": "@zachchoi",         "followers": "16.3M",                                                      "status": "Limited",   "tier": "Partner",  "enriched": true, "collabTypes": ["Custom Content","Brand Deals","FB"] },
+    { "name": "Nancy Cartwright", "handle": "@nancy_cartwright", "followers": "3.0M",   "niches": "Podcast · Voiceover · Voiceactor",       "status": "Available",                       "enriched": true, "collabTypes": ["Custom Content","Podcast","FB"] }
+  ]
+}

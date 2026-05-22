@@ -1,0 +1,972 @@
+{
+  "source": "https://deals.pubitypgl.com/api/partner-network/partners?status=all",
+  "syncedAt": "2026-05-20",
+  "stats": {
+    "totalPartners": 69,
+    "totalReach": "683.7M",
+    "activeCollabs": 0,
+    "avgAudience": "3.1M"
+  },
+  "partners": [
+    {
+      "handle": "Earthpix",
+      "tier": "Mega",
+      "followers": "22.5M",
+      "niches": [
+        "Memes (General)"
+      ],
+      "price": "\u00a37,473",
+      "active": 0,
+      "star": true,
+      "managedBy": "",
+      "region": ""
+    },
+    {
+      "handle": "joshpeck",
+      "tier": "Large",
+      "followers": "6.0M",
+      "niches": [
+        "Entertainment",
+        "Vlogs"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "",
+      "region": ""
+    },
+    {
+      "handle": "archbishopofbantebury",
+      "tier": "Medium",
+      "followers": "4.6M",
+      "niches": [
+        "General",
+        "Meme"
+      ],
+      "price": "\u00a34,000",
+      "active": 0,
+      "star": false,
+      "managedBy": "archbishopofbantebury",
+      "region": ""
+    },
+    {
+      "handle": "howeverythingworks",
+      "tier": "Medium",
+      "followers": "4.1M",
+      "niches": [
+        "General",
+        "Meme"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": "USA"
+    },
+    {
+      "handle": "thefuck.tv",
+      "tier": "Medium",
+      "followers": "3.5M",
+      "niches": [
+        "Memes",
+        "Meme"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": ""
+    },
+    {
+      "handle": "i_have_no_memes96_v2",
+      "tier": "Medium",
+      "followers": "2.7M",
+      "niches": [
+        "Memes",
+        "Meme"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": ""
+    },
+    {
+      "handle": "nflmemes_ig",
+      "tier": "Medium",
+      "followers": "2.4M",
+      "niches": [
+        "Sports",
+        "Meme"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "nflmemes",
+      "region": "USA"
+    },
+    {
+      "handle": "hoodreels",
+      "tier": "Medium",
+      "followers": "2.1M",
+      "niches": [
+        "Memes",
+        "Meme"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": ""
+    },
+    {
+      "handle": "psychological",
+      "tier": "Medium",
+      "followers": "2.0M",
+      "niches": [
+        "Memes",
+        "Meme"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": ""
+    },
+    {
+      "handle": "oddlyhorrifying",
+      "tier": "Medium",
+      "followers": "1.9M",
+      "niches": [
+        "General",
+        "Meme"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": ""
+    },
+    {
+      "handle": "dailyhoodposts",
+      "tier": "Medium",
+      "followers": "1.8M",
+      "niches": [
+        "Memes",
+        "Meme"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": ""
+    },
+    {
+      "handle": "hitsblunt",
+      "tier": "Medium",
+      "followers": "1.8M",
+      "niches": [
+        "Memes",
+        "Meme"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": ""
+    },
+    {
+      "handle": "hoereacts",
+      "tier": "Medium",
+      "followers": "1.6M",
+      "niches": [
+        "Memes",
+        "Meme"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": ""
+    },
+    {
+      "handle": "bitchy.tweets",
+      "tier": "Medium",
+      "followers": "1.5M",
+      "niches": [
+        "Memes",
+        "Meme"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": ""
+    },
+    {
+      "handle": "memerats",
+      "tier": "Medium",
+      "followers": "1.5M",
+      "niches": [
+        "Memes",
+        "Meme"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": ""
+    },
+    {
+      "handle": "bitchyquotes",
+      "tier": "Medium",
+      "followers": "1.4M",
+      "niches": [
+        "Memes",
+        "Meme"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": ""
+    },
+    {
+      "handle": "endstv",
+      "tier": "Medium",
+      "followers": "1.3M",
+      "niches": [
+        "Memes",
+        "Meme"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "Ends TV",
+      "region": "APAC"
+    },
+    {
+      "handle": "historic",
+      "tier": "Medium",
+      "followers": "1.2M",
+      "niches": [
+        "General",
+        "Meme"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": ""
+    },
+    {
+      "handle": "northwitch69",
+      "tier": "Medium",
+      "followers": "1.2M",
+      "niches": [
+        "Memes",
+        "Meme"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": ""
+    },
+    {
+      "handle": "scooby",
+      "tier": "Medium",
+      "followers": "1.2M",
+      "niches": [
+        "Memes",
+        "Meme"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": ""
+    },
+    {
+      "handle": "shitsngigspodcast",
+      "tier": "Medium",
+      "followers": "1.2M",
+      "niches": [
+        "Comedy",
+        "Podcast"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "",
+      "region": ""
+    },
+    {
+      "handle": "thecrazygorilla",
+      "tier": "Medium",
+      "followers": "1.2M",
+      "niches": [
+        "Comedy",
+        "Skits"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "",
+      "region": ""
+    },
+    {
+      "handle": "goal",
+      "tier": "Medium",
+      "followers": "1.1M",
+      "niches": [
+        "Sports",
+        "General"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": ""
+    },
+    {
+      "handle": "Lastnightchat.s",
+      "tier": "Medium",
+      "followers": "1.0M",
+      "niches": [
+        "General",
+        "Headline"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "FuckologyOfficial",
+      "region": "USA"
+    },
+    {
+      "handle": "whatsif",
+      "tier": "Medium",
+      "followers": "1.0M",
+      "niches": [
+        "Memes",
+        "Meme"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": ""
+    },
+    {
+      "handle": "laughmail",
+      "tier": "Growing",
+      "followers": "998K",
+      "niches": [
+        "General",
+        "Headline"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "FuckologyOfficial",
+      "region": "USA"
+    },
+    {
+      "handle": "motivationmaniahub",
+      "tier": "Growing",
+      "followers": "919K",
+      "niches": [
+        "General",
+        "Headline"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "FuckologyOfficial",
+      "region": "APAC"
+    },
+    {
+      "handle": "neymarjrgoals",
+      "tier": "Growing",
+      "followers": "877K",
+      "niches": [
+        "Sports",
+        "General"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": ""
+    },
+    {
+      "handle": "bestofhumors",
+      "tier": "Growing",
+      "followers": "836K",
+      "niches": [
+        "Memes",
+        "Meme"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": ""
+    },
+    {
+      "handle": "DangerWorkPlanet",
+      "tier": "Growing",
+      "followers": "792K",
+      "niches": [
+        "General",
+        "General"
+      ],
+      "price": "$160",
+      "active": 0,
+      "star": false,
+      "managedBy": "FuckologyOfficial",
+      "region": "USA"
+    },
+    {
+      "handle": "plocced",
+      "tier": "Growing",
+      "followers": "773K",
+      "niches": [
+        "Memes",
+        "Meme"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": ""
+    },
+    {
+      "handle": "memedwyd",
+      "tier": "Growing",
+      "followers": "768K",
+      "niches": [
+        "Memes",
+        "Meme"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": ""
+    },
+    {
+      "handle": "fmlplugs",
+      "tier": "Growing",
+      "followers": "749K",
+      "niches": [
+        "Memes",
+        "Meme"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": ""
+    },
+    {
+      "handle": "faillgram",
+      "tier": "Growing",
+      "followers": "732K",
+      "niches": [
+        "Memes",
+        "Meme"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": ""
+    },
+    {
+      "handle": "zer",
+      "tier": "Growing",
+      "followers": "676K",
+      "niches": [
+        "Gaming",
+        "Meme"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": ""
+    },
+    {
+      "handle": "imbeingsarcastic",
+      "tier": "Growing",
+      "followers": "663K",
+      "niches": [
+        "Memes",
+        "Meme"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": ""
+    },
+    {
+      "handle": "jacked",
+      "tier": "Growing",
+      "followers": "654K",
+      "niches": [
+        "Sports",
+        "Meme"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": ""
+    },
+    {
+      "handle": "tinderreels",
+      "tier": "Growing",
+      "followers": "630K",
+      "niches": [
+        "Memes",
+        "Meme"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": ""
+    },
+    {
+      "handle": "privatehoroscope",
+      "tier": "Growing",
+      "followers": "604K",
+      "niches": [
+        "General",
+        "General"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "FuckologyOfficial",
+      "region": "USA"
+    },
+    {
+      "handle": "motorchive",
+      "tier": "Growing",
+      "followers": "603K",
+      "niches": [
+        "Sports",
+        "General"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": ""
+    },
+    {
+      "handle": "guysrunningfrombeasts",
+      "tier": "Growing",
+      "followers": "590K",
+      "niches": [
+        "Memes",
+        "Meme"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "FuckologyOfficial",
+      "region": ""
+    },
+    {
+      "handle": "pastpreserved",
+      "tier": "Growing",
+      "followers": "589K",
+      "niches": [
+        "General",
+        "Meme"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": ""
+    },
+    {
+      "handle": "coverededit",
+      "tier": "Growing",
+      "followers": "572K",
+      "niches": [
+        "General",
+        "Headline"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "FuckologyOfficial",
+      "region": "USA"
+    },
+    {
+      "handle": "Resorts",
+      "tier": "Growing",
+      "followers": "480K",
+      "niches": [
+        "Travel",
+        "General"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "",
+      "region": ""
+    },
+    {
+      "handle": "skillersfactory",
+      "tier": "Growing",
+      "followers": "465K",
+      "niches": [
+        "Sports",
+        "Meme"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": ""
+    },
+    {
+      "handle": "archiveracing",
+      "tier": "Growing",
+      "followers": "456K",
+      "niches": [
+        "Sports",
+        "General"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": ""
+    },
+    {
+      "handle": "real_nbamemes",
+      "tier": "Growing",
+      "followers": "433K",
+      "niches": [
+        "Sports",
+        "Meme"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": ""
+    },
+    {
+      "handle": "igfootballers",
+      "tier": "Growing",
+      "followers": "350K",
+      "niches": [
+        "Sports",
+        "Meme"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": ""
+    },
+    {
+      "handle": "factmayor",
+      "tier": "Growing",
+      "followers": "348K",
+      "niches": [
+        "General",
+        "General"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": ""
+    },
+    {
+      "handle": "archiverally",
+      "tier": "Growing",
+      "followers": "334K",
+      "niches": [
+        "Sports",
+        "General"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": "USA"
+    },
+    {
+      "handle": "thefilmmemes",
+      "tier": "Growing",
+      "followers": "329K",
+      "niches": [
+        "Movies & Entertainment",
+        "Meme"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "",
+      "region": ""
+    },
+    {
+      "handle": "memerzify",
+      "tier": "Growing",
+      "followers": "329K",
+      "niches": [
+        "Memes",
+        "Meme"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": ""
+    },
+    {
+      "handle": "crankybitchprobs",
+      "tier": "Growing",
+      "followers": "286K",
+      "niches": [
+        "Memes",
+        "Meme"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": ""
+    },
+    {
+      "handle": "answerallquestions",
+      "tier": "Growing",
+      "followers": "256K",
+      "niches": [
+        "General",
+        "Meme"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": ""
+    },
+    {
+      "handle": "rare_sports",
+      "tier": "Growing",
+      "followers": "247K",
+      "niches": [
+        "Sports",
+        "General"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": ""
+    },
+    {
+      "handle": "selfcaresis",
+      "tier": "Growing",
+      "followers": "241K",
+      "niches": [
+        "Memes",
+        "Meme"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": ""
+    },
+    {
+      "handle": "hoopers",
+      "tier": "Growing",
+      "followers": "221K",
+      "niches": [
+        "Sports",
+        "General"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": ""
+    },
+    {
+      "handle": "full.vid.ig",
+      "tier": "Growing",
+      "followers": "199K",
+      "niches": [
+        "Memes",
+        "Meme"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": ""
+    },
+    {
+      "handle": "highlightsofthenfl",
+      "tier": "Growing",
+      "followers": "178K",
+      "niches": [
+        "Sports",
+        "Headline"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": ""
+    },
+    {
+      "handle": "dunksx",
+      "tier": "Growing",
+      "followers": "169K",
+      "niches": [
+        "Sports",
+        "Headline"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": ""
+    },
+    {
+      "handle": "secrets.jp",
+      "tier": "Growing",
+      "followers": "155K",
+      "niches": [
+        "Fashion/Retail",
+        "General"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": "APAC"
+    },
+    {
+      "handle": "relatablegirlymemes",
+      "tier": "Growing",
+      "followers": "135K",
+      "niches": [
+        "Memes",
+        "Memes"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": ""
+    },
+    {
+      "handle": "baseballhighlights",
+      "tier": "Growing",
+      "followers": "90K",
+      "niches": [
+        "Sports",
+        "Headline"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": ""
+    },
+    {
+      "handle": "kickoffs",
+      "tier": "Growing",
+      "followers": "57K",
+      "niches": [
+        "Sports",
+        "Headline"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": ""
+    },
+    {
+      "handle": "outsideclips",
+      "tier": "Growing",
+      "followers": "7K",
+      "niches": [
+        "Memes",
+        "Meme"
+      ],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "strive sales media",
+      "region": ""
+    },
+    {
+      "handle": "localhost",
+      "tier": "Growing",
+      "followers": "\u2014",
+      "niches": [],
+      "price": null,
+      "active": 0,
+      "star": false,
+      "managedBy": "",
+      "region": ""
+    },
+    {
+      "handle": "8Facts",
+      "tier": "Growing",
+      "followers": "\u2014",
+      "niches": [
+        "Memes (General)"
+      ],
+      "price": "\u00a34,483",
+      "active": 0,
+      "star": true,
+      "managedBy": "",
+      "region": ""
+    },
+    {
+      "handle": "I'm Just Bait",
+      "tier": "Growing",
+      "followers": "\u2014",
+      "niches": [
+        "Memes (General)"
+      ],
+      "price": "\u00a36,000",
+      "active": 0,
+      "star": true,
+      "managedBy": "",
+      "region": ""
+    },
+    {
+      "handle": "@handle",
+      "tier": "Growing",
+      "followers": "\u2014",
+      "niches": [
+        "Meme",
+        "Short videos"
+      ],
+      "price": null,
+      "active": 0,
+      "star": true,
+      "managedBy": "handle",
+      "region": ""
+    }
+  ]
+}

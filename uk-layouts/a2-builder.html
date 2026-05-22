@@ -1,0 +1,650 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+<meta charset="utf-8">
+<title>Pubity UK · A+ Builder · Campaign builder</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config = { darkMode: 'class', theme: { extend: { colors: {
+  border: 'hsl(0 0% 16%)', input: 'hsl(0 0% 16%)', card: 'hsl(0 0% 7%)', cardForeground: 'hsl(0 0% 98%)',
+  background: 'hsl(0 0% 4%)', foreground: 'hsl(0 0% 98%)',
+  brand: { DEFAULT: 'hsl(51 92% 56%)', foreground: 'hsl(0 0% 0%)' },
+  ok: 'hsl(142 60% 50%)', warn: 'hsl(38 92% 60%)', destructive: 'hsl(0 70% 55%)',
+  muted: { DEFAULT: 'hsl(0 0% 10%)', foreground: 'hsl(0 0% 64%)' }
+}}}}</script>
+<style>
+  :root { color-scheme: dark; }
+  body { font-family: 'Inter', system-ui, sans-serif; background: #0a0a0a; color: #fafafa; -webkit-font-smoothing: antialiased; }
+  .num { font-feature-settings: 'tnum'; font-variant-numeric: tabular-nums; }
+  .glow { box-shadow: 0 0 80px -10px hsl(51 92% 56% / 0.35); }
+  .row.selected { background: hsl(51 92% 56% / 0.08); box-shadow: inset 2px 0 0 hsl(51 92% 56%); }
+  .row.selected .add-btn { background: hsl(51 92% 56%); color: #000; border-color: hsl(51 92% 56%); }
+  .add-btn { transition: all .12s ease; }
+  .chip { font-size: 11px; padding: 4px 10px; border-radius: 999px; border: 1px solid hsl(0 0% 16%); background: hsl(0 0% 7%); color: hsl(0 0% 64%); cursor: pointer; transition: all .12s ease; white-space: nowrap; }
+  .chip:hover { color: hsl(0 0% 98%); border-color: hsl(0 0% 25%); }
+  .chip.active { background: hsl(51 92% 56% / 0.15); color: hsl(51 92% 56%); border-color: hsl(51 92% 56% / 0.4); }
+  .cart { max-height: calc(100vh - 4rem); }
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-thumb { background: hsl(0 0% 16%); border-radius: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  input[type="text"], input[type="search"], select { background: hsl(0 0% 7%); border: 1px solid hsl(0 0% 16%); color: hsl(0 0% 98%); border-radius: 6px; padding: 8px 10px; font-size: 13px; }
+  input:focus, select:focus { outline: none; border-color: hsl(51 92% 56% / 0.6); box-shadow: 0 0 0 2px hsl(51 92% 56% / 0.15); }
+  .saved-chip { font-size: 11px; padding: 6px 12px; border-radius: 6px; border: 1px solid hsl(0 0% 16%); background: hsl(0 0% 7%); color: hsl(0 0% 64%); cursor: pointer; transition: all .12s ease; }
+  .saved-chip:hover { border-color: hsl(51 92% 56% / 0.5); color: hsl(0 0% 98%); }
+</style>
+</head>
+<body class="min-h-screen">
+
+<!-- Layout switcher -->
+<div id="layoutSwitcher" class="fixed top-3 right-3 z-50 flex items-center gap-1 p-1 rounded-md border border-border bg-card text-xs shadow-xl">
+  <a href="a-dashboard.html" class="px-2.5 py-1 text-muted-foreground hover:text-foreground">A</a>
+  <a href="a2-builder.html" class="px-2.5 py-1 rounded bg-brand text-brand-foreground font-semibold">A+ Builder</a>
+  <a href="b-pitch.html" class="px-2.5 py-1 text-muted-foreground hover:text-foreground">B</a>
+  <a href="c-operator.html" class="px-2.5 py-1 text-muted-foreground hover:text-foreground">C</a>
+  <a href="../" class="px-2.5 py-1 text-muted-foreground hover:text-foreground border-l border-border ml-1 pl-3">← Hub</a>
+</div>
+
+<div class="max-w-[1600px] mx-auto px-6 py-8">
+
+  <!-- Compact header -->
+  <div class="mb-6 flex items-start justify-between gap-6 flex-wrap">
+    <div>
+      <div class="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">Pubity UK · Campaign builder</div>
+      <div class="flex items-center gap-3">
+        <h1 class="text-3xl font-bold tracking-tight">UK Verticals</h1>
+        <span class="text-[10px] font-semibold uppercase tracking-wider px-2 py-1 rounded bg-ok/15 text-ok">39 partners</span>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <button id="clearAll" class="px-3 py-2 rounded-md border border-border bg-card text-xs text-muted-foreground hover:text-foreground">Clear selection</button>
+      <button id="newCampaign" class="px-3 py-2 rounded-md border border-border bg-card text-xs">+ New campaign</button>
+    </div>
+  </div>
+
+  <!-- Toolbar: search + filters -->
+  <div class="mb-4 rounded-xl border border-border bg-card/50 p-3 flex flex-wrap items-center gap-3 sticky top-0 z-30 backdrop-blur" style="background: hsl(0 0% 4% / 0.92);">
+    <input id="search" type="search" placeholder="Search across all categories..." class="flex-1 min-w-[240px]" />
+    <div class="flex items-center gap-1.5 flex-wrap" id="verticalChips">
+      <span class="text-[10px] uppercase tracking-wider text-muted-foreground mr-1">Vertical:</span>
+      <button class="chip active" data-vertical="all">All</button>
+    </div>
+    <select id="marketFilter" class="w-[120px]">
+      <option value="all">All markets</option>
+      <option value="uk">UK</option>
+      <option value="us">US</option>
+      <option value="global">Global</option>
+      <option value="multi">Multi</option>
+    </select>
+    <select id="statusFilter" class="w-[140px]">
+      <option value="all">All status</option>
+      <option value="onboarded">Onboarded</option>
+      <option value="outreach">Outreach</option>
+      <option value="prospect">Prospect</option>
+    </select>
+    <select id="reachFilter" class="w-[120px]">
+      <option value="all">All reach</option>
+      <option value="100k">100K+</option>
+      <option value="1m">1M+</option>
+      <option value="5m">5M+</option>
+      <option value="10m">10M+</option>
+    </select>
+  </div>
+
+  <!-- Saved campaigns row -->
+  <div id="savedRow" class="mb-4 flex items-center gap-2 flex-wrap min-h-[24px]">
+    <span class="text-[10px] uppercase tracking-wider text-muted-foreground">Saved:</span>
+    <div id="savedChips" class="flex items-center gap-2 flex-wrap"></div>
+  </div>
+
+  <!-- Main grid: 3 roster columns + sticky cart -->
+  <div class="grid grid-cols-1 lg:grid-cols-[1fr_1fr_1fr_360px] gap-4 mb-10">
+
+    <!-- Specialist -->
+    <div class="rounded-xl border border-border bg-card p-4 flex flex-col">
+      <div class="flex items-center justify-between mb-3">
+        <h3 class="text-xs font-bold uppercase tracking-wider">Specialist UK <span id="countSpecialist" class="text-muted-foreground font-normal ml-1">0</span></h3>
+        <span id="selSpecialist" class="text-[10px] text-brand font-semibold">0 selected</span>
+      </div>
+      <p class="text-[11px] text-muted-foreground mb-3">UK-native audience credibility</p>
+      <div id="listSpecialist" class="space-y-1.5 overflow-y-auto" style="max-height: calc(100vh - 22rem);"></div>
+    </div>
+
+    <!-- Anchor -->
+    <div class="rounded-xl border border-border bg-card p-4 flex flex-col">
+      <div class="flex items-center justify-between mb-3">
+        <h3 class="text-xs font-bold uppercase tracking-wider">Anchor pages <span id="countAnchor" class="text-muted-foreground font-normal ml-1">0</span></h3>
+        <span id="selAnchor" class="text-[10px] text-brand font-semibold">0 selected</span>
+      </div>
+      <p class="text-[11px] text-muted-foreground mb-3">Mass-reach scale layer</p>
+      <div id="listAnchor" class="space-y-1.5 overflow-y-auto" style="max-height: calc(100vh - 22rem);"></div>
+    </div>
+
+    <!-- Creators -->
+    <div class="rounded-xl border border-border bg-card p-4 flex flex-col">
+      <div class="flex items-center justify-between mb-3">
+        <h3 class="text-xs font-bold uppercase tracking-wider">UK Creators <span id="countCreator" class="text-muted-foreground font-normal ml-1">0</span></h3>
+        <span id="selCreator" class="text-[10px] text-brand font-semibold">0 selected</span>
+      </div>
+      <p class="text-[11px] text-muted-foreground mb-3">Per-project bookable talent</p>
+      <div id="listCreator" class="space-y-1.5 overflow-y-auto" style="max-height: calc(100vh - 22rem);"></div>
+    </div>
+
+    <!-- Sticky cart -->
+    <aside class="sticky top-[5.5rem] self-start cart">
+      <div class="rounded-xl border border-brand/40 bg-card p-4 glow">
+        <div class="flex items-center justify-between mb-3">
+          <div class="text-xs font-bold uppercase tracking-wider text-brand">Campaign</div>
+          <span id="cartCount" class="text-[10px] font-semibold text-muted-foreground">0 selected</span>
+        </div>
+        <input id="campaignName" type="text" placeholder="Untitled campaign" class="w-full mb-4" />
+
+        <!-- Running totals -->
+        <div class="grid grid-cols-2 gap-3 mb-4 pb-4 border-b border-border">
+          <div>
+            <div class="text-[9px] uppercase tracking-wider text-muted-foreground mb-1">Combined reach</div>
+            <div id="totalReach" class="text-xl font-bold num">0</div>
+          </div>
+          <div>
+            <div class="text-[9px] uppercase tracking-wider text-muted-foreground mb-1">Est. cost</div>
+            <div id="totalCost" class="text-xl font-bold num text-brand">£0</div>
+          </div>
+        </div>
+
+        <!-- Per-category breakdown -->
+        <div id="cartBreakdown" class="mb-3 text-[11px] text-muted-foreground space-y-1"></div>
+
+        <!-- Selected list -->
+        <div id="cartList" class="space-y-1 mb-4 overflow-y-auto" style="max-height: 30vh;">
+          <div class="text-[11px] text-muted-foreground italic py-2">Click + on any row to add</div>
+        </div>
+
+        <!-- Actions -->
+        <div class="grid grid-cols-2 gap-2 mb-2">
+          <button id="saveCampaign" class="px-3 py-2 rounded-md bg-brand text-brand-foreground text-xs font-bold hover:opacity-90">Save</button>
+          <button id="copyHandles" class="px-3 py-2 rounded-md border border-border bg-card text-xs hover:bg-accent/30">Copy</button>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <button id="exportCsv" class="px-3 py-2 rounded-md border border-border bg-card text-xs hover:bg-accent/30">CSV</button>
+          <button id="buildBrief" class="px-3 py-2 rounded-md border border-border bg-card text-xs hover:bg-accent/30">Brief →</button>
+        </div>
+      </div>
+
+      <!-- Tip card -->
+      <div class="mt-3 rounded-lg border border-border bg-card/50 p-3 text-[11px] text-muted-foreground">
+        <div class="text-[9px] uppercase tracking-wider text-foreground mb-1">Pro tip</div>
+        Search filters all 3 columns at once. Use chips to narrow by vertical. Selection persists across reloads.
+      </div>
+    </aside>
+
+  </div>
+
+  <div class="text-center text-[10px] text-muted-foreground border-t border-border pt-6">Layout A+ · Builder · campaign-selection workflow</div>
+
+</div>
+
+<!-- Toast -->
+<div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 px-4 py-2.5 rounded-md bg-brand text-brand-foreground text-sm font-semibold opacity-0 pointer-events-none transition-opacity z-50">Saved</div>
+
+<script>
+// ===== HUB DATA ADAPTER =====
+// When embedded inside the hub iframe, pull live PAGES + CREATORS + EXTENDED from parent.
+function _initials(name) {
+  const clean = (name || '').replace(/[^a-zA-Z0-9 ]/g, '').trim();
+  const parts = clean.split(/\s+/).filter(Boolean);
+  if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
+  return clean.slice(0, 2).toUpperCase() || '··';
+}
+function _parseReach(s) {
+  if (!s) return 0;
+  const m = String(s).match(/([0-9.]+)\s*([KMB])?/i);
+  if (!m) return 0;
+  const n = parseFloat(m[1]);
+  const mult = { K: 1e3, M: 1e6, B: 1e9 }[(m[2] || '').toUpperCase()] || 1;
+  return Math.round(n * mult);
+}
+function _reachLabel(n) {
+  if (!n) return '—';
+  if (n >= 1e9) return (n/1e9).toFixed(1) + 'B';
+  if (n >= 1e6) return (n/1e6).toFixed(1).replace('.0','') + 'M';
+  if (n >= 1e3) return Math.round(n/1e3) + 'K';
+  return String(n);
+}
+function _statusFromHub(s) {
+  if (s === 'onboarded' || s === 'signed' || s === 'active') return 'onboarded';
+  if (s === 'in_conversation' || s === 'in-conv') return 'outreach';
+  if (s === 'prospect' || s === 'early' || s === 'discovery') return 'prospect';
+  if (s === 'stalled') return 'prospect';
+  return 'prospect';
+}
+function _vertTags(v) {
+  if (!v) return ['general'];
+  const x = String(v).toLowerCase();
+  const out = [];
+  if (/movie|film|cinema/.test(x)) out.push('movies');
+  if (/female|woman/.test(x)) out.push('female');
+  if (/foot|soccer|sport/.test(x)) out.push('football','sports');
+  if (/com(edy|ic)|humour|humor|meme/.test(x)) out.push('comedy');
+  if (/gam(e|ing)/.test(x)) out.push('gaming');
+  if (/news|polit/.test(x)) out.push('news');
+  if (/cultur|youth|gen[ -]?z/.test(x)) out.push('culture');
+  if (/lifestyle|fashion|beauty|wellness/.test(x)) out.push('lifestyle');
+  if (/food|drink|cook/.test(x)) out.push('food');
+  if (/music/.test(x)) out.push('music');
+  if (/tech|finance|crypto/.test(x)) out.push('tech');
+  if (!out.length) out.push(x.split(/[ ,/]/)[0] || 'general');
+  return [...new Set(out)];
+}
+
+function buildRosterFromHub() {
+  try {
+    const top = window.parent;
+    const PAGES = top.HUB_PAGES || [];
+    const CREATORS = top.HUB_CREATORS || [];
+    const EXTENDED = (top.HUB_EXTENDED && (top.HUB_EXTENDED.creators || top.HUB_EXTENDED)) || [];
+    if (!PAGES.length && !CREATORS.length) return null;
+
+    const out = [];
+
+    // Pages → Specialist (reach < 5M) or Anchor (reach >= 5M)
+    PAGES.forEach(p => {
+      const reach = p.avgImpressions || _parseReach(p.followers);
+      const cat = reach >= 5e6 ? 'anchor' : 'specialist';
+      const colorMap = { onboarded: 'ok', in_conversation: 'brand', prospect: 'warn', stalled: 'destructive' };
+      out.push({
+        handle: p.handle || p.name,
+        category: cat,
+        initials: _initials(p.handle || p.name),
+        verticals: _vertTags(p.vertical),
+        reach, reachLabel: p.followers || _reachLabel(reach),
+        status: _statusFromHub(p.status),
+        price: typeof p.cpm === 'number' ? p.cpm : (parseFloat(String(p.cpm || '').replace(/[^0-9.]/g, '')) || 0),
+        market: p.market || 'Global',
+        color: colorMap[p.status] || 'warn',
+        _source: 'page'
+      });
+    });
+
+    // Creators → Creator
+    CREATORS.forEach(c => {
+      const reach = _parseReach(c.reach);
+      out.push({
+        handle: c.name,
+        category: 'creator',
+        initials: _initials(c.name),
+        verticals: _vertTags(c.niche),
+        reach, reachLabel: c.reach || _reachLabel(reach),
+        status: _statusFromHub(c.status),
+        price: 0,
+        market: c.niche && /\(US\)/.test(c.name) ? 'US' : (c.niche && /\(UK\)/.test(c.name) ? 'UK' : 'Global'),
+        color: c.status === 'signed' ? 'ok' : c.status === 'active' ? 'brand' : 'warn',
+        _source: 'creator'
+      });
+    });
+
+    // Extended Network → Creator column (only those typed as creator)
+    EXTENDED.forEach(c => {
+      if (c.type && c.type !== 'creator') return;
+      const reach = _parseReach(c.followers || c.reach);
+      out.push({
+        handle: c.handle || c.name,
+        category: 'creator',
+        initials: _initials(c.handle || c.name),
+        verticals: _vertTags(c.niche || (c.tags || []).join(' ')),
+        reach, reachLabel: c.followers || _reachLabel(reach),
+        status: 'outreach',
+        price: c.priceMin || 0,
+        market: c.region || 'Global',
+        color: 'brand',
+        _source: 'extended'
+      });
+    });
+
+    // Dedupe by handle (case-insensitive), prefer first occurrence (PAGES come first)
+    const seen = new Set();
+    return out.filter(r => {
+      const k = (r.handle || '').toLowerCase();
+      if (seen.has(k)) return false;
+      seen.add(k);
+      return true;
+    });
+  } catch (e) { console.warn('Hub data load failed, falling back to sample:', e); return null; }
+}
+
+// ===== DATA =====
+const SAMPLE_ROSTER = [
+  // Specialist UK
+  { handle: 'greatbritishmemes', category: 'specialist', initials: 'GB', verticals: ['comedy','culture'], reach: 0, reachLabel: 'UK', status: 'prospect', price: 0, color: 'warn' },
+  { handle: 'thearchbishopofbanterbury', category: 'specialist', initials: 'AB', verticals: ['comedy','culture'], reach: 0, reachLabel: 'UK', status: 'prospect', price: 0, color: 'brand' },
+  { handle: 'mememanmyles', category: 'specialist', initials: 'MM', verticals: ['comedy'], reach: 200000, reachLabel: '200K', status: 'onboarded', price: 350, color: 'ok' },
+  { handle: 'imjustnews', category: 'specialist', initials: 'IJ', verticals: ['news','culture'], reach: 0, reachLabel: 'UK', status: 'prospect', price: 0, color: 'warn' },
+  { handle: 'youngkingstv', category: 'specialist', initials: 'YK', verticals: ['culture','lifestyle'], reach: 0, reachLabel: 'UK', status: 'prospect', price: 0, color: 'destructive' },
+  { handle: 'londonfeed', category: 'specialist', initials: 'LF', verticals: ['culture','news'], reach: 850000, reachLabel: '850K', status: 'outreach', price: 800, color: 'brand' },
+  { handle: 'ukfootballfans', category: 'specialist', initials: 'UK', verticals: ['football'], reach: 1200000, reachLabel: '1.2M', status: 'onboarded', price: 1500, color: 'ok' },
+  { handle: 'britishproblems', category: 'specialist', initials: 'BP', verticals: ['comedy','culture'], reach: 480000, reachLabel: '480K', status: 'outreach', price: 600, color: 'brand' },
+  { handle: 'ukrappers', category: 'specialist', initials: 'UR', verticals: ['culture'], reach: 320000, reachLabel: '320K', status: 'prospect', price: 0, color: 'warn' },
+  { handle: 'pubityuk', category: 'specialist', initials: 'PU', verticals: ['culture','news'], reach: 1500000, reachLabel: '1.5M', status: 'onboarded', price: 2000, color: 'ok' },
+  { handle: 'oddlybritishhumour', category: 'specialist', initials: 'OB', verticals: ['comedy'], reach: 290000, reachLabel: '290K', status: 'prospect', price: 0, color: 'warn' },
+
+  // Anchor pages
+  { handle: 'ladbible', category: 'anchor', initials: 'LB', verticals: ['culture','comedy'], reach: 15500000, reachLabel: '15.5M', status: 'used', price: 20000, color: 'brand' },
+  { handle: '9gag', category: 'anchor', initials: '9G', verticals: ['comedy','gaming'], reach: 52800000, reachLabel: '52.8M', status: 'onboarded', price: 12000, color: 'brand' },
+  { handle: 'wasted', category: 'anchor', initials: 'WA', verticals: ['comedy'], reach: 20500000, reachLabel: '20.5M', status: 'onboarded', price: 2500, color: 'ok' },
+  { handle: 'insidehistory', category: 'anchor', initials: 'IH', verticals: ['news','culture'], reach: 8200000, reachLabel: '8.2M', status: 'onboarded', price: 700, color: 'warn' },
+  { handle: 'sociaty', category: 'anchor', initials: 'SO', verticals: ['lifestyle','culture'], reach: 5400000, reachLabel: '5.4M', status: 'onboarded', price: 900, color: 'ok' },
+  { handle: 'earthpix', category: 'anchor', initials: 'EP', verticals: ['lifestyle'], reach: 31200000, reachLabel: '31.2M', status: 'onboarded', price: 3500, color: 'brand' },
+  { handle: 'shitpostsonlyig', category: 'anchor', initials: 'SP', verticals: ['comedy'], reach: 4100000, reachLabel: '4.1M', status: 'onboarded', price: 800, color: 'ok' },
+  { handle: 'ight', category: 'anchor', initials: 'IG', verticals: ['comedy','culture'], reach: 6300000, reachLabel: '6.3M', status: 'onboarded', price: 1100, color: 'ok' },
+
+  // UK Creators
+  { handle: 'ksi', category: 'creator', initials: 'KS', verticals: ['culture','gaming'], reach: 50000000, reachLabel: '50M', status: 'outreach', price: 75000, color: 'brand' },
+  { handle: 'shxtsngigs', category: 'creator', initials: 'SN', verticals: ['comedy'], reach: 3500000, reachLabel: '3.5M', status: 'used', price: 8500, color: 'ok' },
+  { handle: 'sidemen', category: 'creator', initials: 'SI', verticals: ['gaming','lifestyle'], reach: 9200000, reachLabel: '9.2M', status: 'outreach', price: 35000, color: 'warn' },
+  { handle: 'drkaranraj', category: 'creator', initials: 'DK', verticals: ['lifestyle'], reach: 11300000, reachLabel: '11.3M', status: 'used', price: 12000, color: 'ok' },
+  { handle: 'chunkz', category: 'creator', initials: 'CC', verticals: ['comedy','football'], reach: 3000000, reachLabel: '3M', status: 'outreach', price: 9500, color: 'warn' },
+  { handle: 'maxfosh', category: 'creator', initials: 'MF', verticals: ['comedy'], reach: 2400000, reachLabel: '2.4M', status: 'outreach', price: 7000, color: 'brand' },
+  { handle: 'yungfilly', category: 'creator', initials: 'YF', verticals: ['comedy','culture'], reach: 1800000, reachLabel: '1.8M', status: 'used', price: 6500, color: 'ok' },
+  { handle: 'sharkyx', category: 'creator', initials: 'SX', verticals: ['football'], reach: 1400000, reachLabel: '1.4M', status: 'outreach', price: 4000, color: 'brand' },
+  { handle: 'angryginge', category: 'creator', initials: 'AG', verticals: ['football','comedy'], reach: 950000, reachLabel: '950K', status: 'outreach', price: 3500, color: 'warn' },
+  { handle: 'theroyalweekend', category: 'creator', initials: 'RW', verticals: ['lifestyle','culture'], reach: 620000, reachLabel: '620K', status: 'prospect', price: 0, color: 'warn' },
+  { handle: 'specs_gonzalez', category: 'creator', initials: 'SG', verticals: ['comedy','gaming'], reach: 1100000, reachLabel: '1.1M', status: 'used', price: 5000, color: 'ok' },
+];
+
+// Use live hub data when embedded, fall back to sample otherwise
+let ROSTER = buildRosterFromHub() || SAMPLE_ROSTER;
+console.log('[Builder] roster loaded:', ROSTER.length, 'rows · source:', ROSTER === SAMPLE_ROSTER ? 'sample' : 'hub');
+
+// ===== STATE =====
+const LS_CURRENT = 'pubity-uk-builder-current-v1';
+const LS_SAVED = 'pubity-uk-builder-saved-v1';
+let selected = new Set(JSON.parse(localStorage.getItem(LS_CURRENT) || '[]'));
+let campaignName = '';
+let filters = { search: '', vertical: 'all', market: 'all', status: 'all', reach: 'all' };
+
+// ===== FILTER =====
+function passesFilters(c) {
+  if (filters.search) {
+    const s = filters.search.toLowerCase();
+    if (!c.handle.toLowerCase().includes(s) && !c.verticals.some(v => v.includes(s))) return false;
+  }
+  if (filters.vertical !== 'all' && !c.verticals.includes(filters.vertical)) return false;
+  if (filters.market !== 'all' && (c.market || 'Global').toLowerCase() !== filters.market) return false;
+  if (filters.status !== 'all' && c.status !== filters.status) return false;
+  if (filters.reach !== 'all') {
+    const min = { '100k': 100000, '1m': 1000000, '5m': 5000000, '10m': 10000000 }[filters.reach];
+    if ((c.reach || 0) < min) return false;
+  }
+  return true;
+}
+
+// ===== RENDER ROW =====
+function rowHtml(c) {
+  const isSel = selected.has(c.handle);
+  const colorMap = {
+    brand: 'bg-brand/20 text-brand', ok: 'bg-ok/20 text-ok', warn: 'bg-warn/20 text-warn',
+    destructive: 'bg-destructive/20 text-destructive'
+  };
+  const statusLabel = {
+    onboarded: 'Onboarded', used: 'Used', outreach: 'Outreach', prospect: 'Prospect'
+  }[c.status];
+  const statusColor = {
+    onboarded: 'bg-ok/15 text-ok', used: 'bg-ok/15 text-ok',
+    outreach: 'bg-brand/15 text-brand', prospect: 'bg-warn/15 text-warn'
+  }[c.status];
+  const priceStr = c.price ? `£${c.price.toLocaleString()}` : '—';
+  return `
+    <div class="row group flex items-center gap-2 p-2 rounded-md hover:bg-accent/20 cursor-pointer ${isSel ? 'selected' : ''}" data-handle="${c.handle}">
+      <div class="w-7 h-7 rounded-full ${colorMap[c.color]} flex items-center justify-center text-[9px] font-bold flex-shrink-0">${c.initials}</div>
+      <div class="flex-1 min-w-0">
+        <div class="text-[13px] font-semibold truncate">${c.handle}</div>
+        <div class="text-[10px] text-muted-foreground truncate">${c.reachLabel} · ${c.verticals.slice(0,2).join(' · ')} · ${priceStr}</div>
+      </div>
+      <span class="text-[9px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded ${statusColor} hidden sm:inline-block">${statusLabel}</span>
+      <button class="add-btn w-6 h-6 rounded-md border border-border bg-card text-xs font-bold flex items-center justify-center flex-shrink-0" data-add="${c.handle}">
+        ${isSel ? '✓' : '+'}
+      </button>
+    </div>
+  `;
+}
+
+// ===== RENDER ALL =====
+function renderColumns() {
+  const cats = ['specialist','anchor','creator'];
+  const labelMap = { specialist: 'Specialist', anchor: 'Anchor', creator: 'Creator' };
+  cats.forEach(cat => {
+    const list = ROSTER.filter(c => c.category === cat && passesFilters(c));
+    document.getElementById('count' + cat.charAt(0).toUpperCase() + cat.slice(1)).textContent = list.length;
+    const selCount = list.filter(c => selected.has(c.handle)).length;
+    document.getElementById('sel' + cat.charAt(0).toUpperCase() + cat.slice(1)).textContent = selCount + ' selected';
+    document.getElementById('list' + cat.charAt(0).toUpperCase() + cat.slice(1)).innerHTML =
+      list.length ? list.map(rowHtml).join('') : '<div class="text-[11px] text-muted-foreground italic py-4 text-center">No matches</div>';
+  });
+  renderCart();
+  persistCurrent();
+}
+
+// ===== CART =====
+function renderCart() {
+  const selectedItems = ROSTER.filter(c => selected.has(c.handle));
+  document.getElementById('cartCount').textContent = selectedItems.length + ' selected';
+
+  const totalReach = selectedItems.reduce((s, c) => s + (c.reach || 0), 0);
+  const totalCost = selectedItems.reduce((s, c) => s + (c.price || 0), 0);
+
+  const formatReach = n => n >= 1e9 ? (n/1e9).toFixed(1) + 'B' : n >= 1e6 ? (n/1e6).toFixed(1) + 'M' : n >= 1e3 ? (n/1e3).toFixed(0) + 'K' : n.toString();
+  document.getElementById('totalReach').textContent = formatReach(totalReach);
+  document.getElementById('totalCost').textContent = '£' + totalCost.toLocaleString();
+
+  const byCat = { specialist: 0, anchor: 0, creator: 0 };
+  selectedItems.forEach(c => byCat[c.category]++);
+  document.getElementById('cartBreakdown').innerHTML = `
+    <div class="flex justify-between"><span>Specialist</span><span class="text-foreground font-semibold num">${byCat.specialist}</span></div>
+    <div class="flex justify-between"><span>Anchor</span><span class="text-foreground font-semibold num">${byCat.anchor}</span></div>
+    <div class="flex justify-between"><span>Creator</span><span class="text-foreground font-semibold num">${byCat.creator}</span></div>
+  `;
+
+  const listEl = document.getElementById('cartList');
+  if (!selectedItems.length) {
+    listEl.innerHTML = '<div class="text-[11px] text-muted-foreground italic py-2">Click + on any row to add</div>';
+  } else {
+    listEl.innerHTML = selectedItems.map(c => `
+      <div class="flex items-center gap-2 p-1.5 rounded text-[11px] hover:bg-accent/20">
+        <div class="w-5 h-5 rounded-full bg-muted text-foreground flex items-center justify-center text-[8px] font-bold flex-shrink-0">${c.initials}</div>
+        <div class="flex-1 truncate">${c.handle}</div>
+        <span class="text-muted-foreground num">${c.reachLabel}</span>
+        <button class="text-muted-foreground hover:text-destructive" data-remove="${c.handle}">×</button>
+      </div>
+    `).join('');
+  }
+}
+
+// ===== PERSIST =====
+function persistCurrent() {
+  localStorage.setItem(LS_CURRENT, JSON.stringify([...selected]));
+}
+
+function renderSaved() {
+  const saved = JSON.parse(localStorage.getItem(LS_SAVED) || '[]');
+  const wrap = document.getElementById('savedChips');
+  if (!saved.length) {
+    wrap.innerHTML = '<span class="text-[11px] text-muted-foreground italic">no campaigns yet — build one and hit Save</span>';
+    return;
+  }
+  wrap.innerHTML = saved.map((s, i) => `
+    <div class="saved-chip group flex items-center gap-2" data-load="${i}">
+      <span>${s.name}</span>
+      <span class="text-[10px] text-muted-foreground">${s.handles.length}</span>
+      <button class="text-muted-foreground hover:text-destructive opacity-0 group-hover:opacity-100" data-del="${i}">×</button>
+    </div>
+  `).join('');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.opacity = '1';
+  setTimeout(() => t.style.opacity = '0', 1800);
+}
+
+// ===== EVENTS =====
+document.getElementById('search').addEventListener('input', e => { filters.search = e.target.value; renderColumns(); });
+document.getElementById('statusFilter').addEventListener('change', e => { filters.status = e.target.value; renderColumns(); });
+document.getElementById('reachFilter').addEventListener('change', e => { filters.reach = e.target.value; renderColumns(); });
+document.getElementById('marketFilter').addEventListener('change', e => { filters.market = e.target.value; renderColumns(); });
+
+// Populate vertical chips from roster
+function populateVerticalChips() {
+  const counts = {};
+  ROSTER.forEach(c => (c.verticals || []).forEach(v => { counts[v] = (counts[v] || 0) + 1; }));
+  const top = Object.entries(counts).sort((a,b) => b[1] - a[1]).slice(0, 10);
+  const wrap = document.getElementById('verticalChips');
+  const label = '<span class="text-[10px] uppercase tracking-wider text-muted-foreground mr-1">Vertical:</span>';
+  const all = '<button class="chip active" data-vertical="all">All</button>';
+  const chips = top.map(([v, n]) => `<button class="chip" data-vertical="${v}">${v.charAt(0).toUpperCase()+v.slice(1)} <span class="text-muted-foreground ml-0.5">${n}</span></button>`).join('');
+  wrap.innerHTML = label + all + chips;
+}
+populateVerticalChips();
+
+document.getElementById('verticalChips').addEventListener('click', e => {
+  const chip = e.target.closest('.chip'); if (!chip) return;
+  document.querySelectorAll('#verticalChips .chip').forEach(c => c.classList.remove('active'));
+  chip.classList.add('active');
+  filters.vertical = chip.dataset.vertical;
+  renderColumns();
+});
+
+// Row + remove clicks (delegated)
+document.body.addEventListener('click', e => {
+  const addBtn = e.target.closest('[data-add]');
+  const row = e.target.closest('.row');
+  const rem = e.target.closest('[data-remove]');
+  const load = e.target.closest('[data-load]');
+  const del = e.target.closest('[data-del]');
+
+  if (del) {
+    e.stopPropagation();
+    const saved = JSON.parse(localStorage.getItem(LS_SAVED) || '[]');
+    saved.splice(parseInt(del.dataset.del), 1);
+    localStorage.setItem(LS_SAVED, JSON.stringify(saved));
+    renderSaved();
+    return;
+  }
+  if (load) {
+    const saved = JSON.parse(localStorage.getItem(LS_SAVED) || '[]');
+    const s = saved[parseInt(load.dataset.load)];
+    if (s) {
+      selected = new Set(s.handles);
+      document.getElementById('campaignName').value = s.name;
+      renderColumns();
+      showToast('Loaded: ' + s.name);
+    }
+    return;
+  }
+  if (rem) {
+    e.stopPropagation();
+    selected.delete(rem.dataset.remove);
+    renderColumns();
+    return;
+  }
+  if (addBtn || row) {
+    const handle = (addBtn || row).dataset.add || (addBtn || row).dataset.handle;
+    if (selected.has(handle)) selected.delete(handle); else selected.add(handle);
+    renderColumns();
+  }
+});
+
+document.getElementById('clearAll').addEventListener('click', () => {
+  if (!selected.size) return;
+  if (confirm('Clear all selections?')) { selected.clear(); renderColumns(); }
+});
+
+document.getElementById('newCampaign').addEventListener('click', () => {
+  selected.clear();
+  document.getElementById('campaignName').value = '';
+  renderColumns();
+});
+
+document.getElementById('saveCampaign').addEventListener('click', () => {
+  if (!selected.size) { showToast('Add some selections first'); return; }
+  const name = document.getElementById('campaignName').value.trim() || ('Campaign ' + new Date().toLocaleDateString());
+  const saved = JSON.parse(localStorage.getItem(LS_SAVED) || '[]');
+  saved.unshift({ name, handles: [...selected], savedAt: Date.now() });
+  localStorage.setItem(LS_SAVED, JSON.stringify(saved.slice(0, 20)));
+  renderSaved();
+  showToast('Saved: ' + name);
+});
+
+document.getElementById('copyHandles').addEventListener('click', () => {
+  if (!selected.size) return;
+  const handles = [...selected].map(h => '@' + h).join(', ');
+  navigator.clipboard.writeText(handles);
+  showToast('Copied ' + selected.size + ' handles');
+});
+
+document.getElementById('exportCsv').addEventListener('click', () => {
+  if (!selected.size) return;
+  const items = ROSTER.filter(c => selected.has(c.handle));
+  const rows = [['handle','category','reach','verticals','status','price']];
+  items.forEach(c => rows.push([c.handle, c.category, c.reach, c.verticals.join('|'), c.status, c.price]));
+  const csv = rows.map(r => r.map(x => `"${x}"`).join(',')).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (document.getElementById('campaignName').value.trim() || 'campaign') + '.csv';
+  a.click();
+  showToast('CSV downloaded');
+});
+
+document.getElementById('buildBrief').addEventListener('click', () => {
+  if (!selected.size) { showToast('Add some selections first'); return; }
+  const items = ROSTER.filter(c => selected.has(c.handle));
+  const payload = {
+    name: document.getElementById('campaignName').value.trim() || 'Untitled campaign',
+    handles: items.map(c => c.handle),
+    items: items.map(c => ({ handle: c.handle, category: c.category, reach: c.reach, price: c.price })),
+    totalReach: items.reduce((s, c) => s + (c.reach || 0), 0),
+    totalCost: items.reduce((s, c) => s + (c.price || 0), 0)
+  };
+  if (window.top !== window.self) {
+    window.parent.postMessage({ type: 'pubity-builder-brief', payload }, '*');
+    showToast('Handed off to Brief');
+  } else {
+    localStorage.setItem('pubity-builder-brief-handoff', JSON.stringify(payload));
+    showToast('Saved to handoff slot');
+  }
+});
+
+// Hide layout switcher when embedded (running inside an iframe)
+try {
+  if (window.top !== window.self) {
+    const sw = document.getElementById('layoutSwitcher');
+    if (sw) sw.style.display = 'none';
+    const wrap = document.querySelector('[class*="max-w-"]');
+    if (wrap) { wrap.classList.remove('py-8'); wrap.classList.add('py-4'); }
+  }
+} catch (e) { /* cross-origin top access — ignore */ }
+
+// ===== INIT =====
+renderColumns();
+renderSaved();
+
+// Refresh from hub data when Extended Network loads (async in parent)
+if (window.top !== window.self) {
+  let lastLen = ROSTER.length;
+  let tries = 0;
+  const poll = setInterval(() => {
+    tries++;
+    const fresh = buildRosterFromHub();
+    if (fresh && fresh.length !== lastLen) {
+      ROSTER = fresh;
+      lastLen = fresh.length;
+      populateVerticalChips();
+      renderColumns();
+      console.log('[Builder] roster refreshed:', ROSTER.length, 'rows');
+    }
+    if (tries > 20) clearInterval(poll); // give up after 20s
+  }, 1000);
+}
+</script>
+
+</body>
+</html>
